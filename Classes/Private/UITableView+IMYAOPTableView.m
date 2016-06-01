@@ -9,7 +9,7 @@
 #import "IMYAOPTableViewUtils+Private.h"
 #import "UITableView+IMYAOPTableView.h"
 #import "IMYAOPTableView.h"
-#import <NSObject+IMYAsyncBlock.h>
+#import <IMYAsyncBlock/NSObject+IMYAsyncBlock.h>
 #import <objc/message.h>
 #import <objc/runtime.h>
 
