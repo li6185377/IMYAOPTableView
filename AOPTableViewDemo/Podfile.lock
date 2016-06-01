@@ -1,5 +1,5 @@
 PODS:
-  - IMYAOPTableView (1.0):
+  - IMYAOPTableView (1.1):
     - IMYAsyncBlock
   - IMYAsyncBlock (1.0)
 
@@ -7,7 +7,7 @@ DEPENDENCIES:
   - IMYAOPTableView
 
 SPEC CHECKSUMS:
-  IMYAOPTableView: 57411b2c525fc5ef4fa6ff8c82500c2853dd0a58
+  IMYAOPTableView: 498daf79a05efd8047d185bd59b2ca47141472b9
   IMYAsyncBlock: 8efd91d9f7a7bd4388bbf12137e783e1d1f2eaa8
 
 COCOAPODS: 0.39.0
