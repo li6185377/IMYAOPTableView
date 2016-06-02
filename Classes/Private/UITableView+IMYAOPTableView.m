@@ -14,6 +14,42 @@
 #import <objc/runtime.h>
 
 @implementation UITableView (IMYADTableUtils)
++ (SEL)aop_userSelectRowAtPendingSelectionIndexPathSEL
+{
+    static SEL sel;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_userSelectRowAtPending", @"SelectionIndexPath:"]);
+    });
+    return sel;
+}
++ (SEL)aop_updateRowDataSEL
+{
+    static SEL sel;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_updateRow", @"Data"]);
+    });
+    return sel;
+}
++ (SEL)aop_rebuildGeometrySEL
+{
+    static SEL sel;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_rebuild", @"Geometry"]);
+    });
+    return sel;
+}
++ (SEL)aop_updateContentSizeSEL
+{
+    static SEL sel;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_updateContent", @"Size"]);
+    });
+    return sel;
+}
 - (IMYAOPTableViewUtils*)aop_uiCallingUtils
 {
     IMYAOPTableViewUtils* aop_utils = self.aop_utils;
@@ -105,7 +141,10 @@
 {
     IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
     aop_utils.isUICalling += 1;
-    [super _userSelectRowAtPendingSelectionIndexPath:indexPath];
+    struct objc_super objcSuper;
+    objcSuper.receiver = self;
+    objcSuper.super_class = self.aop_utils.tableViewClass;
+    ((void (*)(void*, SEL, NSIndexPath*))(void*)objc_msgSendSuper)(&objcSuper, [UITableView aop_userSelectRowAtPendingSelectionIndexPathSEL], indexPath);
     aop_utils.isUICalling -= 1;
 }
 - (void)aop_touchesEnded:(NSSet<UITouch*>*)touches withEvent:(UIEvent*)event
@@ -150,21 +189,30 @@
 {
     IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
     aop_utils.isUICalling += 1;
-    [super _rebuildGeometry];
+    struct objc_super objcSuper;
+    objcSuper.receiver = self;
+    objcSuper.super_class = self.aop_utils.tableViewClass;
+    ((void (*)(void*, SEL))(void*)objc_msgSendSuper)(&objcSuper, [UITableView aop_rebuildGeometrySEL]);
     aop_utils.isUICalling -= 1;
 }
 - (void)aop__updateRowData
 {
     IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
     aop_utils.isUICalling += 1;
-    [super _updateRowData];
+    struct objc_super objcSuper;
+    objcSuper.receiver = self;
+    objcSuper.super_class = self.aop_utils.tableViewClass;
+    ((void (*)(void*, SEL))(void*)objc_msgSendSuper)(&objcSuper, [UITableView aop_updateRowDataSEL]);
     aop_utils.isUICalling -= 1;
 }
 - (void)aop__updateContentSize
 {
     IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
     aop_utils.isUICalling += 1;
-    [super _updateContentSize];
+    struct objc_super objcSuper;
+    objcSuper.receiver = self;
+    objcSuper.super_class = self.aop_utils.tableViewClass;
+    ((void (*)(void*, SEL))(void*)objc_msgSendSuper)(&objcSuper, [UITableView aop_updateContentSizeSEL]);
     aop_utils.isUICalling -= 1;
 }
 - (void)aop_layoutSubviews

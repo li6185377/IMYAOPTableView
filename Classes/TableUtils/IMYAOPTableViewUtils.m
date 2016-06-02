@@ -211,9 +211,9 @@ static Class kIMYTVAOPClass;
     ///UI Calling
     [self addOverriteMethod:@selector(reloadData) aopClass:aopClass];
     [self addOverriteMethod:@selector(layoutSubviews) aopClass:aopClass];
-    [self addOverriteMethod:@selector(_updateRowData) aopClass:aopClass];
-    [self addOverriteMethod:@selector(_updateContentSize) aopClass:aopClass];
-    [self addOverriteMethod:@selector(_rebuildGeometry) aopClass:aopClass];
+    [self addOverriteMethod:[UITableView aop_updateRowDataSEL] aopClass:aopClass];
+    [self addOverriteMethod:[UITableView aop_updateContentSizeSEL] aopClass:aopClass];
+    [self addOverriteMethod:[UITableView aop_rebuildGeometrySEL] aopClass:aopClass];
     [self addOverriteMethod:@selector(beginUpdates) aopClass:aopClass];
     [self addOverriteMethod:@selector(endUpdates) aopClass:aopClass];
     [self addOverriteMethod:@selector(reloadSectionIndexTitles) aopClass:aopClass];
@@ -224,7 +224,7 @@ static Class kIMYTVAOPClass;
     [self addOverriteMethod:@selector(touchesEstimatedPropertiesUpdated:) aopClass:aopClass];
     [self addOverriteMethod:@selector(touchesShouldBegin:withEvent:inContentView:) aopClass:aopClass];
     [self addOverriteMethod:@selector(touchesShouldCancelInContentView:) aopClass:aopClass];
-    [self addOverriteMethod:@selector(_userSelectRowAtPendingSelectionIndexPath:) aopClass:aopClass];
+    [self addOverriteMethod:[UITableView aop_userSelectRowAtPendingSelectionIndexPathSEL] aopClass:aopClass];
     [self addOverriteMethod:@selector(dequeueReusableHeaderFooterViewWithIdentifier:) aopClass:aopClass];
     [self addOverriteMethod:@selector(dequeueReusableCellWithIdentifier:) aopClass:aopClass];
     [self addOverriteMethod:@selector(gestureRecognizerShouldBegin:) aopClass:aopClass];
@@ -285,7 +285,7 @@ static Class kIMYTVAOPClass;
     IMP imp = method_getImplementation(method);
     class_addMethod(clazz, seletor, imp, types);
 }
-    - (BOOL)respondsToSelector : (SEL)aSelector
+- (BOOL)respondsToSelector:(SEL)aSelector
 {
     BOOL responds = NO;
     responds = ([self.tableDelegate respondsToSelector:aSelector] || [self.tableDataSource respondsToSelector:aSelector]);

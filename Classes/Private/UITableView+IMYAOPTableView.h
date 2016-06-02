@@ -9,15 +9,12 @@
 #import "IMYAOPTableViewUtils.h"
 #import <UIKit/UIKit.h>
 
-@protocol IMYAOPTableViewPrivate
-@optional
-- (void)_userSelectRowAtPendingSelectionIndexPath:(NSIndexPath*)indexPath;
-- (void)_updateRowData;
-- (void)_rebuildGeometry;
-- (void)_updateContentSize;
-@end
+@interface UITableView (IMYAOPTableOperation)
++ (SEL)aop_userSelectRowAtPendingSelectionIndexPathSEL;
++ (SEL)aop_updateRowDataSEL;
++ (SEL)aop_rebuildGeometrySEL;
++ (SEL)aop_updateContentSizeSEL;
 
-@interface UITableView (IMYAOPTableOperation) <IMYAOPTableViewPrivate>
 + (Class)imy_aopClass;
 @end
 
