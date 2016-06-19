@@ -29,11 +29,11 @@ Look ./AOPTableViewDemo
 ====================================
 当应用发展到一定阶段，一般都会在feeds流中插入广告，来进行广告的变现，这是每个应用都要进行的过程。 比如微信朋友圈，微博，QQ空间。。。 不列举了，一般有feeds流的都会有广告。
 
-![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo1.jpeg)
+![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo1.jpg)
 
 当你的应用也需要在原有的业务上插入广告，你会怎么做？ 可能你会直接叫接口把广告跟业务数据合并下，就下发给你。然后你在业务层去各种判断。 
 
-![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo2.jpeg)
+![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo2.jpg)
 
 曾经这样做的程序猿应该很多，累吗？ 这样子的插入，需要去改各种代码，还可能在一个微小的角落 可能直接调用了  `- (nullable __kindof UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;` ，然后返回的类型不对，应用直接Crash了
 
@@ -49,7 +49,7 @@ Look ./AOPTableViewDemo
 4. 上手简单
 
 
-![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo3.jpeg)
+![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo3.jpg)
 
 ### 用法：
 
