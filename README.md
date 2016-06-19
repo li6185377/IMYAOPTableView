@@ -11,7 +11,7 @@ Requirements
 * ARC only
 * IMYAsyncBlock(https://github.com/li6185377/IMYAsyncBlock)
 
-##Adding to your project
+## Adding to your project
 
 If you are using CocoaPods, then, just add this line to your PodFile<br>
 
@@ -19,169 +19,168 @@ If you are using CocoaPods, then, just add this line to your PodFile<br>
 pod 'IMYAOPTableView'
 ```
 
-##Basic usage
+## Basic usage
 
 ```
 Look ./AOPTableViewDemo
 ```
 
-业务代码：
+开始讲故事 《如何优雅的插入广告》
+====================================
+当应用发展到一定阶段，一般都会在feeds流中插入广告，来进行广告的变现，这是每个应用都要进行的过程。 比如微信朋友圈，微博，QQ空间。。。 不列举了，一般有feeds流的都会有广告。
+
+![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo1.jpeg)
+
+当你的应用也需要在原有的业务上插入广告，你会怎么做？ 可能你会直接叫接口把广告跟业务数据合并下，就下发给你。然后你在业务层去各种判断。 
+
+![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo2.jpeg)
+
+曾经这样做的程序猿应该很多，累吗？ 这样子的插入，需要去改各种代码，还可能在一个微小的角落 可能直接调用了  `- (nullable __kindof UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;` ，然后返回的类型不对，应用直接Crash了
+
+### 出栏
+
+现在有个新框架来解决这种情况啦，该框架前无古人开源（可能我没搜到），超级一流xxxx（呃，不懂吹啥了，发现不说大一点，都没人敢用，有bug可以提哦。目前公司应用加起来，总用户突破1个亿，日活700W。其实代码的稳定性还是可以放心的。）
+
+要解决的目标：
+
+1. 旧代码少改动，或者不改动。
+2. 业务跟广告模块分离
+3. 广告模块可以获取真实数据源。
+4. 上手简单
+
+
+![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo3.jpeg)
+
+### 用法：
+
+我先下载了 [YYKit](https://github.com/ibireme/YYKit)，YYKit作者对代码的极致追求也是我喜欢的。主要原因是因为它里面有Feeds(Twitter,微博)的demo。就像我们以前的业务代码，够复杂，逻辑够多。
+
+### 开始
+
+我对demo的具体代码是不了解的，但是有了IMYAOPTableView，我已经可以不需要懂内部的实现，就可以对它进行广告的插入。 
+
+先找到了初始化 Twitter,微博 的ViewController地方，并且获取TableView的AopUtils。只有3行代码。  哦，还有一个声明。
+
 
 ```objective-c
 
-@interface ViewController () <UITableViewDelegate,UITableViewDataSource>
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (strong, nonatomic) IMYAOPDemo *aopDemo;
-@end
-
-
-@implementation ViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@"Cell"];
-    
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    
-    self.aopDemo = [IMYAOPDemo new];
-    self.aopDemo.aopUtils = self.tableView.aop_utils;
+	///只是声明，防止提前释放
+	@property (nonatomic, strong) IMYAOPDemo* aopDemo;
+	
+	///插入3行代码的地方
+	- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSString *className = self.classNames[indexPath.row];
+    Class class = NSClassFromString(className);
+    if (class) {
+        UIViewController *ctrl = class.new;
+        
+        ///begin 插入3行代码
+        self.aopDemo = [IMYAOPDemo new];
+        UITableView* feedsTableView = [ctrl valueForKey:@"tableView"];
+        self.aopDemo.aopUtils = feedsTableView.aop_utils;
+        ///end
+        
+        ctrl.title = _titles[indexPath.row];
+        self.title = @" ";
+        [self.navigationController pushViewController:ctrl animated:YES];
+    }
+    [self.tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
-
-- (IBAction)insertRows:(id)sender {
-    [self.aopDemo insertRows];
-}
-
-- (IBAction)insertSections:(id)sender {
-    [self.aopDemo insertSections];
-}
-
-#pragma mark- TableView Delegate/DataSource
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 50;
-}
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 44;
-}
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"willDisplayCell %ld ,%ld ",indexPath.section,indexPath.row);
-}
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"cellForRowAtIndexPath %ld ,%ld ",indexPath.section,indexPath.row);
-    
-    UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"Cell"];
-    cell.textLabel.text = [NSString stringWithFormat:@"%ld , %ld",indexPath.section,indexPath.row];
-    cell.contentView.backgroundColor = [UIColor whiteColor];
-    return cell;
-}
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    NSLog(@"didSelectRowAtIndexPath %ld ,%ld ",indexPath.section,indexPath.row);
-}
-@end
 
 ```
 
-AOP代码：
+这个时候需要新建一个，维护广告逻辑的类，简单的建立了个`IMYAOPDemo`文件，核心代码就是设置数据回调，跟选择插入的位置。
+
 
 ```objective-c
 
-@interface IMYAOPDemo : NSObject <IMYAOPTableViewDelegate, IMYAOPTableViewDataSource>
-@property (weak, nonatomic) IMYAOPTableViewUtils *aopUtils;
-@end
-
-@implementation IMYAOPDemo
-- (void)setAopUtils:(IMYAOPTableViewUtils *)aopUtils
-{
-    _aopUtils = aopUtils;
-    [self injectTableView];
-}
 - (void)injectTableView
 {
     [self.aopUtils.tableView registerClass:[UITableViewCell class]  forCellReuseIdentifier:@"AD"];
+
+    ///广告回调，跟TableView的Delegate，DataSource 一样。
     self.aopUtils.delegate = self;
     self.aopUtils.dataSource = self;
-
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self insertRows];
+    });
 }
+///简单的rows插入
 - (void)insertRows
 {
     NSMutableArray<IMYAOPTableViewInsertBody*>* insertBodys = [NSMutableArray array];
+    ///随机生成了5个要插入的位置
     for (int i = 0 ; i< 5; i++) {
         NSIndexPath* indexPath = [NSIndexPath indexPathForRow:arc4random()%10 inSection:0];
         [insertBodys addObject:[IMYAOPTableViewInsertBody insertBodyWithIndexPath:indexPath]];
     }
-    ///清空 sections
+    ///清空 旧数据
     [self.aopUtils insertWithSections:nil];
-    [self.aopUtils insertWithIndexPaths:insertBodys];
-    [self.aopUtils.tableView reloadData];
-}
-- (void)insertSections
-{
-    NSMutableArray<IMYAOPTableViewInsertBody*>* insertBodys = [NSMutableArray array];
-    for (int i = 1 ; i< 6; i++) {
-        NSInteger section = arc4random() % i;
-        IMYAOPTableViewInsertBody* body = [IMYAOPTableViewInsertBody insertBodyWithSection:section];
-        [insertBodys addObject:body];
-    }
-    [self.aopUtils insertWithSections:insertBodys];
+    [self.aopUtils insertWithIndexPaths:nil];
     
-    ///单纯插入section 是没法显示的。  要跟 row 配合
-    ///同一个 row 会按数组的顺序 row 进行 递增
-    [insertBodys enumerateObjectsUsingBlock:^(IMYAOPTableViewInsertBody * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        obj.indexPath = [NSIndexPath indexPathForRow:0 inSection:obj.resultSection];
-    }];
+    ///插入 新数据, 同一个 row 会按数组的顺序 row 进行 递增
     [self.aopUtils insertWithIndexPaths:insertBodys];
-    
+
+    ///调用tableView的reloadData，进行页面刷新
     [self.aopUtils.tableView reloadData];
 }
 
-#pragma mark-AOP Delegate
-- (void)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils numberOfSection:(NSInteger)sectionNumber
-{
-    ///可以获取真实的 sectionNumber 可以在这边进行一些AOP的数据初始化
-}
--(void)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    ///真实的 will display 回调. 有些时候统计需要
-}
+```
 
-#pragma mark- UITableView 回调
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+广告的回调，其实看代码，他们也是继承了TableView Delegate，跟DataSource，保持跟TableView回调的一致性，方便把旧的广告代码迁移过来。
+
+```objective-c
+
+	@protocol IMYAOPTableViewDelegate <UITableViewDelegate>;
+	@protocol IMYAOPTableViewDataSource <UITableViewDataSource>
+```
+
+接下来就是要实现TableView的广告回调了， 其实下面两个回调是不会调用的，就是返回数据源数量的回调，因为这个是由业务模块决定的。但是没实现xcode会有警告，所以也可以顺手写上。
+
+```objective-c
+
+	- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView; 
+	- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section;
+
+```
+
+```objective-c
+
+	-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"ADADAD cellForRowAtIndexPath %ld ,%ld ",indexPath.section,indexPath.row);
-    
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AD"];
-    cell.textLabel.text = [NSString stringWithFormat:@"ADADAD %ld , %ld",indexPath.section,indexPath.row];
-    cell.contentView.backgroundColor = [UIColor grayColor];
+    if(cell.contentView.subviews.count == 0) {
+        CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
+        CGFloat imageHeight = 162 * (screenWidth/320.0f);
+        UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenWidth, imageHeight)];
+        imageView.image = [UIImage imageNamed:@"aop_ad_image.jpeg"];
+        imageView.layer.borderColor = [UIColor blackColor].CGColor;
+        imageView.layer.borderWidth = 1;
+        [cell.contentView addSubview:imageView];
+        
+        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(200, 100, 200, 50)];
+        label.text = @"不要脸的广告!";
+        [cell.contentView addSubview:label];
+    }
     return cell;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 80;
-}
-
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"ADADAD willDisplayCell %ld ,%ld ",indexPath.section,indexPath.row);
+    NSLog(@"插入的cell要显示啦");
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"ADADAD didSelectRowAtIndexPath %ld ,%ld ",indexPath.section,indexPath.row);
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"被点击了> <" message:[NSString stringWithFormat:@"我的位置: %@",indexPath] delegate:nil cancelButtonTitle:@"哦~滚" otherButtonTitles:nil];
+    [alertView show];
 }
-@end
-
+	
 ```
 
 
 效果图:
 
 ![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/aop_tableview_demo.gif)
+
+
+如果有兴趣可以看具体的源码：[传送门](https://github.com/li6185377/IMYAOPTableView.git)

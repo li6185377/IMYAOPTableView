@@ -8,11 +8,14 @@
 
 #import "YYFeedListExample.h"
 #import "YYKit.h"
+#import "IMYAOPDemo.h"
 
 @interface YYFeedListExample ()
 @property (nonatomic, strong) NSMutableArray *titles;
 @property (nonatomic, strong) NSMutableArray *classNames;
 @property (nonatomic, strong) NSMutableArray *images;
+///只是声明，防止提前释放
+@property (nonatomic, strong) IMYAOPDemo* aopDemo;
 @end
 
 @implementation YYFeedListExample
@@ -70,6 +73,13 @@
     Class class = NSClassFromString(className);
     if (class) {
         UIViewController *ctrl = class.new;
+        
+        ///begin 插入3行代码
+        self.aopDemo = [IMYAOPDemo new];
+        UITableView* feedsTableView = [ctrl valueForKey:@"tableView"];
+        self.aopDemo.aopUtils = feedsTableView.aop_utils;
+        ///end
+        
         ctrl.title = _titles[indexPath.row];
         self.title = @" ";
         [self.navigationController pushViewController:ctrl animated:YES];

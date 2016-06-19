@@ -21,10 +21,6 @@
     self.title = @"YYKit Example";
     self.titles = @[].mutableCopy;
     self.classNames = @[].mutableCopy;
-    [self addCell:@"Model" class:@"YYModelExample"];
-    [self addCell:@"Image" class:@"YYImageExample"];
-    [self addCell:@"Text" class:@"YYTextExample"];
-//    [self addCell:@"Utility" class:@"YYUtilityExample"];
     [self addCell:@"Feed List Demo" class:@"YYFeedListExample"];
     [self.tableView reloadData];
     
