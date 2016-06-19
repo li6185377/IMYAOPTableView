@@ -9,9 +9,71 @@
 #import "IMYAOPTableViewUtils+Private.h"
 #import "UITableView+IMYAOPTableView.h"
 #import "IMYAOPTableView.h"
-#import <IMYAsyncBlock/NSObject+IMYAsyncBlock.h>
 #import <objc/message.h>
 #import <objc/runtime.h>
+
+@protocol _AOPAsyncBlockProtocol <NSObject>
+///可取消的 异步调用block
++ (void)imy_asyncBlock:(void (^)(void))block onQueue:(dispatch_queue_t)queue afterSecond:(double)second forKey:(NSString*)key;
+///取消队列中的block
++ (void)imy_cancelBlockForKey:(NSString*)key;
+///是否存在这个异步block
++ (BOOL)imy_hasAsyncBlockForKey:(NSString*)key;
+@end
+
+@implementation NSObject (IMYADTableUtils)
++ (BOOL)imyaop_swizzleMethod:(SEL)origSel_ withMethod:(SEL)altSel_ error:(NSError**)error_
+{
+    Method origMethod = class_getInstanceMethod(self, origSel_);
+    if (!origMethod) {
+        return NO;
+    }
+    Method altMethod = class_getInstanceMethod(self, altSel_);
+    if (!altMethod) {
+        return NO;
+    }
+    
+    class_addMethod(self,
+                    origSel_,
+                    class_getMethodImplementation(self, origSel_),
+                    method_getTypeEncoding(origMethod));
+    class_addMethod(self,
+                    altSel_,
+                    class_getMethodImplementation(self, altSel_),
+                    method_getTypeEncoding(altMethod));
+    
+    method_exchangeImplementations(class_getInstanceMethod(self, origSel_), class_getInstanceMethod(self, altSel_));
+    
+    return YES;
+}
+@end
+
+@implementation UIView (IMYADTableUtils)
++ (void)load
+{
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [NSClassFromString(@"UITableViewWrapperView") imyaop_swizzleMethod:@selector(gestureRecognizerShouldBegin:) withMethod:@selector(imyaop_gestureRecognizerShouldBegin:) error:nil];
+    });
+}
+- (BOOL)imyaop_gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
+{
+    UITableView* tableView = (id)self.superview;
+    while (tableView && ![tableView isKindOfClass:[UITableView class]]) {
+        tableView = (id)tableView.superview;
+    }
+    IMYAOPTableViewUtils* aop_utils = nil;
+    if(tableView.aop_installed) {
+        aop_utils = tableView.aop_utils;
+        if (aop_utils.isUICalling > 0) {
+            aop_utils = nil;
+        }
+    }
+    aop_utils.isUICalling += 1;
+    BOOL shouldBegin = [self imyaop_gestureRecognizerShouldBegin:gestureRecognizer];
+    aop_utils.isUICalling -= 1;
+    return shouldBegin;
+}
+@end
 
 @implementation UITableView (IMYADTableUtils)
 + (SEL)aop_userSelectRowAtPendingSelectionIndexPathSEL
@@ -228,18 +290,28 @@
     double offsetY = self.contentOffset.y;
     NSString* queueKey = [NSString stringWithFormat:@"AOPReloadData_%p", self];
     ///只对下拉刷新 做统一reload处理
-    if (aop_utils.combineReloadData && offsetY < 30) {
-        if ([NSObject imy_hasAsyncBlockForKey:queueKey]) {
+    static Class AOPAsyncBlockClass;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        AOPAsyncBlockClass = [NSObject class];
+        if (![AOPAsyncBlockClass respondsToSelector:@selector(imy_asyncBlock:onQueue:afterSecond:forKey:)] ||
+            ![AOPAsyncBlockClass respondsToSelector:@selector(imy_cancelBlockForKey:)] ||
+            ![AOPAsyncBlockClass respondsToSelector:@selector(imy_hasAsyncBlockForKey:)]) {
+            AOPAsyncBlockClass = NULL;
+        }
+    });
+    if (AOPAsyncBlockClass && aop_utils.combineReloadData && offsetY < 30) {
+        if ([AOPAsyncBlockClass imy_hasAsyncBlockForKey:queueKey]) {
             ///已存在 等它自动刷新就可以了
             return;
         }
         __weak _IMYAOPTableView* wself = self;
-        [NSObject imy_asyncBlock:^{
+        [AOPAsyncBlockClass imy_asyncBlock:^{
             [wself aop_realReloadData];
         } onQueue:dispatch_get_main_queue() afterSecond:0.2 forKey:queueKey];
     }
     else {
-        [NSObject imy_cancelBlockForKey:queueKey];
+        [AOPAsyncBlockClass imy_cancelBlockForKey:queueKey];
         [self aop_realReloadData];
     }
 }
@@ -384,7 +456,7 @@
     NSIndexPath* indexPath = [super indexPathForCell:cell];
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        indexPath = [aop_utils realIndexPathByTable:indexPath];
+        indexPath = [aop_utils realIndexPathByTable:indexPath] ?: indexPath;
     }
     return indexPath;
 }
@@ -410,20 +482,35 @@
     aop_utils.isUICalling -= 1;
     return cell;
 }
-- (NSArray<UITableViewCell*>*)aop_visibleCells
+- (NSArray *)aop_containVisibleCells:(NSInteger)containType
 {
     IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
     aop_utils.isUICalling += 1;
     NSArray<UITableViewCell*>* visibleCells = [super visibleCells];
-    visibleCells = [visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UITableViewCell* evaluatedObject, NSDictionary<NSString *,id>* bindings) {
-        NSIndexPath* indexPath = [super indexPathForCell:evaluatedObject];
+    visibleCells = [visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UITableViewCell* cell, NSDictionary<NSString *,id>* bindings) {
+        if (containType == 2) {
+            ///全部返回
+            return YES;
+        }
+        NSIndexPath* indexPath = [super indexPathForCell:cell];
         if (aop_utils) {
             indexPath = [aop_utils realIndexPathByTable:indexPath];
         }
-        return (indexPath != nil);
+        if (containType == 1) {
+            ///只返回插入的cell
+            return (indexPath == nil);
+        }
+        else {
+            ///只返回原有的cell
+            return (indexPath != nil);
+        }
     }]];
     aop_utils.isUICalling -= 1;
     return visibleCells;
+}
+- (NSArray<UITableViewCell*>*)aop_visibleCells
+{
+    return [self aop_containVisibleCells:0];
 }
 - (NSArray<NSIndexPath*>*)aop_indexPathsForVisibleRows
 {

@@ -182,6 +182,11 @@ static Class kIMYTVAOPClass;
     }];
     self.sectionMap = insertMap;
 }
+- (NSArray<UITableViewCell *> *)visibleInsertCells
+{
+    return [(id)self.tableView aop_containVisibleCells:1];
+}
+#pragma mark- install aop method
 - (Class)makeSubclassWithClass:(Class)origClass
 {
     NSString* className = NSStringFromClass(origClass);
@@ -232,7 +237,8 @@ static Class kIMYTVAOPClass;
     [self addOverriteMethod:@selector(aop_realReloadData) aopClass:aopClass];
     [self addOverriteMethod:@selector(aop_refreshDataSource) aopClass:aopClass];
     [self addOverriteMethod:@selector(aop_refreshDelegate) aopClass:aopClass];
-
+    [self addOverriteMethod:@selector(aop_containVisibleCells:) aopClass:aopClass];
+    
     // Info
     [self addOverriteMethod:@selector(numberOfSections) aopClass:aopClass];
     [self addOverriteMethod:@selector(numberOfRowsInSection:) aopClass:aopClass];
@@ -453,8 +459,7 @@ static const void* kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
 {
     IMYAOPTableViewUtils* aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
     if (!aopUtils) {
-        @synchronized(self)
-        {
+        @synchronized (self) {
             aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
             if (!aopUtils) {
                 aopUtils = [IMYAOPTableViewUtils aopUtilsWithTableView:self];
@@ -464,5 +469,13 @@ static const void* kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
         }
     }
     return aopUtils;
+}
+- (BOOL)aop_installed
+{
+    IMYAOPTableViewUtils* aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
+    if (aopUtils) {
+        return YES;
+    }
+    return NO;
 }
 @end

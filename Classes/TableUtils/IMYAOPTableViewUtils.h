@@ -25,12 +25,21 @@
 - (void)insertWithSections:(NSArray<IMYAOPTableViewInsertBody*>*)sections;
 - (void)insertWithIndexPaths:(NSArray<IMYAOPTableViewInsertBody*>*)indexPaths;
 
-///是否合并刷新, 如果开启会有个0.2的间隔来进行合并刷新  Default:NO
+///获取插入集合内，显示中的cell
+@property (nonatomic, readonly) NSArray<__kindof UITableViewCell *> *visibleInsertCells;
+
+/**
+ *  是否合并刷新, 如果开启会有个0.2的间隔来进行合并刷新  Default:NO
+ *  需要开启这个功能，请在podfile中加入  pod 'IMYAsyncBlock'
+ */
 @property (nonatomic, assign) BOOL combineReloadData;
 
 @end
 
-///Translate IndexPath
+
+
+
+///转换 IndexPath
 @interface IMYAOPTableViewUtils (IndexPath)
 
 ///table的 indexPath 转 逻辑调用的indexPath

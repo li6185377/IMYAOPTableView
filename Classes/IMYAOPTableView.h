@@ -10,5 +10,8 @@
 #import "IMYAOPTableViewUtils.h"
 
 @interface UITableView (IMYAOPTableViewUtils)
+///创建并获取：AOPTableUtils
 @property (nonatomic, readonly) IMYAOPTableViewUtils* aop_utils;
+///是否注入了：AOPTableUtils
+@property (nonatomic, readonly) BOOL aop_installed;
 @end
