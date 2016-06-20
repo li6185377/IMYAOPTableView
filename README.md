@@ -178,7 +178,7 @@ Look ./AOPTableViewDemo
 ```
 
 
-效果图:
+效果图 （GIF , 如不播放，可点击到新页面试试）:
 
 ![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/aop_tableview_demo.gif)
 
