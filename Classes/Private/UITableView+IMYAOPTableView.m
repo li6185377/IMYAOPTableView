@@ -6,11 +6,11 @@
 //  Copyright © 2016年 IMY. All rights reserved.
 //
 
-#import "IMYAOPTableViewUtils+Private.h"
-#import "UITableView+IMYAOPTableView.h"
-#import "IMYAOPTableView.h"
 #import <objc/message.h>
 #import <objc/runtime.h>
+#import "IMYAOPTableView.h"
+#import "IMYAOPTableViewUtils+Private.h"
+#import "UITableView+IMYAOPTableView.h"
 
 @protocol _AOPAsyncBlockProtocol <NSObject>
 ///可取消的 异步调用block
@@ -482,13 +482,13 @@
     aop_utils.isUICalling -= 1;
     return cell;
 }
-- (NSArray *)aop_containVisibleCells:(NSInteger)containType
+- (NSArray *)aop_containVisibleCells:(IMYAOPType)containType
 {
     IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
     aop_utils.isUICalling += 1;
     NSArray<UITableViewCell*>* visibleCells = [super visibleCells];
     visibleCells = [visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UITableViewCell* cell, NSDictionary<NSString *,id>* bindings) {
-        if (containType == 2) {
+        if (containType == IMYAOPTypeAll) {
             ///全部返回
             return YES;
         }
@@ -496,7 +496,7 @@
         if (aop_utils) {
             indexPath = [aop_utils realIndexPathByTable:indexPath];
         }
-        if (containType == 1) {
+        if (containType == IMYAOPTypeInsert) {
             ///只返回插入的cell
             return (indexPath == nil);
         }

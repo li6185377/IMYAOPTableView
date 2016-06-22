@@ -47,7 +47,7 @@
     }
     ///初始化回调
     [self.dataSource aopTableUtils:self numberOfSection:numberOfSection];
-    
+
     ///总number section
     if (numberOfSection > 0) {
         numberOfSection = [self tableSectionByReal:numberOfSection];
@@ -58,13 +58,13 @@
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
-    
+
     NSInteger realSection = [self realSectionByTable:section];
     NSInteger rowCount = 0;
     if (realSection >= 0) {
         section = realSection;
         rowCount = [self.tableDataSource tableView:tableView numberOfRowsInSection:section];
-        
+
         NSIndexPath* tableIndexPath = [self tableIndexPathByReal:[NSIndexPath indexPathForRow:rowCount inSection:section]];
         rowCount = tableIndexPath.row;
     }
@@ -79,7 +79,7 @@
             }
         }
     }
-    
+
     kAOPUICallingResotre;
     return rowCount;
 }
@@ -90,7 +90,6 @@
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     kAOPUICallingSaved;
-    
     kAOPRealIndexPathCode;
     UITableViewCell* cell = nil;
     if ([dataSource respondsToSelector:@selector(tableView:cellForRowAtIndexPath:)]) {
@@ -100,7 +99,7 @@
         cell = [UITableViewCell new];
         NSAssert(NO, @"Cell is Nil");
     }
-    
+
     kAOPUICallingResotre;
     return cell;
 }
@@ -117,7 +116,7 @@
 }
 - (nullable NSString*)tableView:(UITableView*)tableView titleForFooterInSection:(NSInteger)section
 {
-    kAOPUICallingSaved
+    kAOPUICallingSaved;
     kAOPRealSectionCode;
     NSString* title = nil;
     if ([dataSource respondsToSelector:@selector(tableView:titleForFooterInSection:)]) {
@@ -132,7 +131,7 @@
 // Individual rows can opt out of having the -editing property set for them. If not implemented, all rows are assumed to be editable.
 - (BOOL)tableView:(UITableView*)tableView canEditRowAtIndexPath:(NSIndexPath*)indexPath
 {
-    kAOPUICallingSaved
+    kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     BOOL canEditing = NO;
     if ([dataSource respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)]) {

@@ -182,10 +182,6 @@ static Class kIMYTVAOPClass;
     }];
     self.sectionMap = insertMap;
 }
-- (NSArray<UITableViewCell *> *)visibleInsertCells
-{
-    return [(id)self.tableView aop_containVisibleCells:1];
-}
 #pragma mark- install aop method
 - (Class)makeSubclassWithClass:(Class)origClass
 {

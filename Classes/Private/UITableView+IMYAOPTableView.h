@@ -6,8 +6,8 @@
 //  Copyright © 2016年 IMY. All rights reserved.
 //
 
-#import "IMYAOPTableViewUtils.h"
 #import <UIKit/UIKit.h>
+#import "IMYAOPTableViewUtils.h"
 
 @interface UITableView (IMYAOPTableOperation)
 + (SEL)aop_userSelectRowAtPendingSelectionIndexPathSEL;
@@ -24,5 +24,5 @@
 - (void)aop_refreshDelegate;
 - (void)aop_refreshDataSource;
 ///获取显示中的cell containType => 0：原生cell   1：插入的cell   2：全部cell
-- (NSArray*)aop_containVisibleCells:(NSInteger)containType;
+- (NSArray*)aop_containVisibleCells:(IMYAOPType)containType;
 @end
