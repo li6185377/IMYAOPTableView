@@ -9,13 +9,13 @@
 #import "IMYAOPTableViewInsertBody.h"
 
 @implementation IMYAOPTableViewInsertBody
-+(instancetype)insertBodyWithSection:(NSInteger)section
++ (instancetype)insertBodyWithSection:(NSInteger)section
 {
     IMYAOPTableViewInsertBody* body = [self new];
     body.section = section;
     return body;
 }
-+(instancetype)insertBodyWithIndexPath:(NSIndexPath *)indexPath
++ (instancetype)insertBodyWithIndexPath:(NSIndexPath*)indexPath
 {
     IMYAOPTableViewInsertBody* body = [self new];
     body.indexPath = indexPath;

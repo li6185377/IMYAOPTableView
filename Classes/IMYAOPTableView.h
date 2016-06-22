@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "IMYAOPTableViewUtils.h"
+#import "IMYAOPTableViewUtils+Proxy.h"
 
 @interface UITableView (IMYAOPTableViewUtils)
 ///创建并获取：AOPTableUtils

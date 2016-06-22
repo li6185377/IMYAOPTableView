@@ -33,3 +33,13 @@
 + (instancetype) new UNAVAILABLE_ATTRIBUTE;
 + (instancetype)alloc UNAVAILABLE_ATTRIBUTE;
 @end
+
+///数据类型
+typedef NS_ENUM(NSUInteger, IMYAOPType) {
+    ///原始数据
+    IMYAOPTypeRaw,
+    ///插入数据
+    IMYAOPTypeInsert,
+    ///全部数据
+    IMYAOPTypeAll,
+};

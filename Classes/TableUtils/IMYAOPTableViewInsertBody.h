@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface IMYAOPTableViewInsertBody : NSObject
 
 + (instancetype)insertBodyWithSection:(NSInteger)section;
@@ -18,7 +17,6 @@
 @property (nonatomic, assign) NSInteger section;
 ///预期插入的 IndexPath 位置
 @property (nonatomic, copy) NSIndexPath* indexPath;
-
 
 ///最终插入后的section
 @property (nonatomic, assign) NSInteger resultSection;
