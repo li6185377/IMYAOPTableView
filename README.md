@@ -4,14 +4,18 @@ Aspect Oriented Programming For TableView，无业务入侵，无逻辑入侵，
 
 按道理最低应该是支持 iOS 5.0的，但是已经没有iOS7之前的机子测试了。 所以不敢保证没问题。
 
-Requirements
-====================================
+这个框架已经在`美柚`稳定使用半年多了，美柚总用户突破1亿，日活接近千万，代码的稳定性是可以放心的。有需求或者bug可以提issues，我会尽快回复。
+
+![](http://www.meiyou.com/g/images/logo1.png)
+
+
+## 要求
 
 * iOS 7+ 
 * ARC only
-* IMYAsyncBlock(https://github.com/li6185377/IMYAsyncBlock)
+* 可选:IMYAsyncBlock(https://github.com/li6185377/IMYAsyncBlock)
 
-## Adding to your project
+## 集成
 
 If you are using CocoaPods, then, just add this line to your PodFile<br>
 
@@ -19,7 +23,7 @@ If you are using CocoaPods, then, just add this line to your PodFile<br>
 pod 'IMYAOPTableView'
 ```
 
-## Basic usage
+## 用法
 
 ```
 Look ./AOPTableViewDemo
@@ -27,6 +31,7 @@ Look ./AOPTableViewDemo
 
 开始讲故事 《如何优雅的插入广告》
 ====================================
+
 当应用发展到一定阶段，一般都会在feeds流中插入广告，来进行广告的变现，这是每个应用都要进行的过程。 比如微信朋友圈，微博，QQ空间。。。 不列举了，一般有feeds流的都会有广告。
 
 ![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo1.jpg)
@@ -39,7 +44,7 @@ Look ./AOPTableViewDemo
 
 ### 出栏
 
-现在有个新框架来解决这种情况啦，该框架前无古人开源（可能我没搜到），超级一流xxxx（呃，不懂吹啥了，发现不说大一点，都没人敢用，有bug可以提哦。目前公司应用加起来，总用户突破1个亿，日活700W。其实代码的稳定性还是可以放心的。）
+现在这个框架就是出来解决这种情况的！！该框架前无古人开源（可能我没搜到），个人觉得觉得没有比这套更好的解决方案了。
 
 要解决的目标：
 
