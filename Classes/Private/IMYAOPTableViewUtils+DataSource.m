@@ -58,7 +58,6 @@
 - (NSInteger)tableView:(UITableView*)tableView numberOfRowsInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
-
     NSInteger realSection = [self realSectionByTable:section];
     NSInteger rowCount = 0;
     if (realSection >= 0) {
@@ -79,7 +78,6 @@
             }
         }
     }
-
     kAOPUICallingResotre;
     return rowCount;
 }
@@ -95,11 +93,12 @@
     if ([dataSource respondsToSelector:@selector(tableView:cellForRowAtIndexPath:)]) {
         cell = [dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
     }
-    if (!cell) {
+    if (![cell isKindOfClass:[UITableViewCell class]]) {
         cell = [UITableViewCell new];
-        NSAssert(NO, @"Cell is Nil");
+        if (dataSource) {
+            NSAssert(NO, @"Cell is Nil");
+        }
     }
-
     kAOPUICallingResotre;
     return cell;
 }

@@ -42,7 +42,6 @@
 - (void)tableView:(UITableView*)tableView willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath
 {
     kAOPUICallingSaved;
-    
     ///回调给ad manager 虚拟广告位的上报
     [self.delegate aopTableUtils:self willDisplayCell:cell forRowAtIndexPath:indexPath];
     
@@ -104,9 +103,12 @@
 {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
-    CGFloat cellHeight = tableView.rowHeight;
+    CGFloat cellHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
         cellHeight = [delegate tableView:tableView heightForRowAtIndexPath:indexPath];
+    }
+    else if (delegate) {
+        cellHeight = tableView.rowHeight;
     }
     kAOPUICallingResotre;
     return cellHeight;
@@ -118,9 +120,12 @@
     }
     kAOPUICallingSaved;
     kAOPRealSectionCode;
-    CGFloat sectionHeight = tableView.sectionHeaderHeight;
+    CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
         sectionHeight = [delegate tableView:tableView heightForHeaderInSection:section];
+    }
+    else if (delegate) {
+        sectionHeight = tableView.sectionHeaderHeight;
     }
     kAOPUICallingResotre;
     return sectionHeight;
@@ -129,9 +134,12 @@
 {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
-    CGFloat sectionHeight = tableView.sectionFooterHeight;
+    CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
         sectionHeight = [delegate tableView:tableView heightForFooterInSection:section];
+    }
+    else if (delegate) {
+        sectionHeight = tableView.sectionFooterHeight;
     }
     kAOPUICallingResotre;
     return sectionHeight;
@@ -143,9 +151,12 @@
 {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
-    CGFloat cellHeight = tableView.rowHeight;
+    CGFloat cellHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)]) {
         cellHeight = [delegate tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
+    }
+    else if (delegate) {
+        cellHeight = tableView.rowHeight;
     }
     kAOPUICallingResotre;
     return cellHeight;
@@ -154,9 +165,12 @@
 {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
-    CGFloat sectionHeight = tableView.sectionHeaderHeight;
+    CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForHeaderInSection:)]) {
         sectionHeight = [delegate tableView:tableView estimatedHeightForHeaderInSection:section];
+    }
+    else if (delegate) {
+        sectionHeight = tableView.sectionHeaderHeight;
     }
     kAOPUICallingResotre;
     return sectionHeight;
@@ -165,9 +179,12 @@
 {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
-    CGFloat sectionHeight = tableView.sectionFooterHeight;
+    CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForFooterInSection:)]) {
         sectionHeight = [delegate tableView:tableView estimatedHeightForFooterInSection:section];
+    }
+    else if (delegate) {
+        sectionHeight = tableView.sectionFooterHeight;
     }
     kAOPUICallingResotre;
     return sectionHeight;
