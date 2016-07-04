@@ -212,6 +212,7 @@ static Class kIMYTVAOPClass;
     ///UI Calling
     [self addOverriteMethod:@selector(reloadData) aopClass:aopClass];
     [self addOverriteMethod:@selector(layoutSubviews) aopClass:aopClass];
+    [self addOverriteMethod:@selector(setBounds:) aopClass:aopClass];
     [self addOverriteMethod:[UITableView aop_updateRowDataSEL] aopClass:aopClass];
     [self addOverriteMethod:[UITableView aop_updateContentSizeSEL] aopClass:aopClass];
     [self addOverriteMethod:[UITableView aop_rebuildGeometrySEL] aopClass:aopClass];

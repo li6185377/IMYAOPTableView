@@ -367,6 +367,13 @@
     [super endUpdates];
     aop_utils.isUICalling -= 1;
 }
+- (void)aop_setBounds:(CGRect)bounds
+{
+    IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
+    aop_utils.isUICalling += 1;
+    [super setBounds:bounds];
+    aop_utils.isUICalling -= 1;
+}
 // Info
 - (NSInteger)aop_numberOfSections
 {
