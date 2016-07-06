@@ -112,6 +112,15 @@
     });
     return sel;
 }
++ (SEL)aop_updateAnimationDidStopSEL
+{
+    static SEL sel;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_updateAnimationDidStop:", @"finished:context:"]);
+    });
+    return sel;
+}
 - (IMYAOPTableViewUtils*)aop_uiCallingUtils
 {
     IMYAOPTableViewUtils* aop_utils = self.aop_utils;
@@ -275,6 +284,16 @@
     objcSuper.receiver = self;
     objcSuper.super_class = self.aop_utils.tableViewClass;
     ((void (*)(void*, SEL))(void*)objc_msgSendSuper)(&objcSuper, [UITableView aop_updateContentSizeSEL]);
+    aop_utils.isUICalling -= 1;
+}
+- (void)aop__updateAnimationDidStop:(id)arg1 finished:(id)arg2 context:(id)arg3
+{
+    IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
+    aop_utils.isUICalling += 1;
+    struct objc_super objcSuper;
+    objcSuper.receiver = self;
+    objcSuper.super_class = self.aop_utils.tableViewClass;
+    ((void (*)(void*, SEL, id, id, id))(void*)objc_msgSendSuper)(&objcSuper, [UITableView aop_updateAnimationDidStopSEL], arg1, arg2, arg3);
     aop_utils.isUICalling -= 1;
 }
 - (void)aop_layoutSubviews

@@ -216,6 +216,7 @@ static Class kIMYTVAOPClass;
     [self addOverriteMethod:[UITableView aop_updateRowDataSEL] aopClass:aopClass];
     [self addOverriteMethod:[UITableView aop_updateContentSizeSEL] aopClass:aopClass];
     [self addOverriteMethod:[UITableView aop_rebuildGeometrySEL] aopClass:aopClass];
+    [self addOverriteMethod:[UITableView aop_updateAnimationDidStopSEL] aopClass:aopClass];
     [self addOverriteMethod:@selector(beginUpdates) aopClass:aopClass];
     [self addOverriteMethod:@selector(endUpdates) aopClass:aopClass];
     [self addOverriteMethod:@selector(reloadSectionIndexTitles) aopClass:aopClass];
