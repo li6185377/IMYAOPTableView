@@ -14,6 +14,7 @@
 + (SEL)aop_updateRowDataSEL;
 + (SEL)aop_rebuildGeometrySEL;
 + (SEL)aop_updateContentSizeSEL;
++ (SEL)aop_updateAnimationDidStopSEL;
 
 + (Class)imy_aopClass;
 @end
