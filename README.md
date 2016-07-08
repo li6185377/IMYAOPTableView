@@ -13,7 +13,6 @@ Aspect Oriented Programming For TableView，无业务入侵，无逻辑入侵，
 
 * iOS 7+ 
 * ARC only
-* 可选:IMYAsyncBlock(https://github.com/li6185377/IMYAsyncBlock)
 
 ## 集成
 

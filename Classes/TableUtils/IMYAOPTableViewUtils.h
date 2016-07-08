@@ -26,12 +26,6 @@
 - (void)insertWithSections:(NSArray<IMYAOPTableViewInsertBody*>*)sections;
 - (void)insertWithIndexPaths:(NSArray<IMYAOPTableViewInsertBody*>*)indexPaths;
 
-/**
- *  是否合并刷新, 如果开启会有个0.2的间隔来进行合并刷新  Default:NO
- *  需要开启这个功能，请在podfile中加入  pod 'IMYAsyncBlock'
- */
-@property (nonatomic, assign) BOOL combineReloadData;
-
 @end
 
 
@@ -56,3 +50,12 @@
 - (NSIndexSet*)tableSectionsByRealSet:(NSIndexSet*)realSet;
 
 @end
+
+
+@interface IMYAOPTableViewUtils (Deprecated_Nonfunctional)
+/**
+ *   已废弃, 由外部自己做合并
+ */
+@property BOOL combineReloadData __deprecated_msg("Deprecated");
+@end
+

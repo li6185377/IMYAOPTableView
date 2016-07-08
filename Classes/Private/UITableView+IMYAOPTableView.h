@@ -21,7 +21,6 @@
 
 
 @interface _IMYAOPTableView : UITableView
-- (void)aop_realReloadData;
 - (void)aop_refreshDelegate;
 - (void)aop_refreshDataSource;
 ///获取显示中的cell containType => 0：原生cell   1：插入的cell   2：全部cell

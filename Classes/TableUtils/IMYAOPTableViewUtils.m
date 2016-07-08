@@ -232,7 +232,6 @@ static Class kIMYTVAOPClass;
     [self addOverriteMethod:@selector(dequeueReusableCellWithIdentifier:) aopClass:aopClass];
     [self addOverriteMethod:@selector(gestureRecognizerShouldBegin:) aopClass:aopClass];
     ///add real reload function
-    [self addOverriteMethod:@selector(aop_realReloadData) aopClass:aopClass];
     [self addOverriteMethod:@selector(aop_refreshDataSource) aopClass:aopClass];
     [self addOverriteMethod:@selector(aop_refreshDelegate) aopClass:aopClass];
     [self addOverriteMethod:@selector(aop_containVisibleCells:) aopClass:aopClass];
@@ -474,6 +473,16 @@ static const void* kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
     if (aopUtils) {
         return YES;
     }
+    return NO;
+}
+@end
+
+@implementation IMYAOPTableViewUtils (Deprecated_Nonfunctional)
+- (void)setCombineReloadData:(BOOL)combineReloadData
+{
+}
+- (BOOL)combineReloadData
+{
     return NO;
 }
 @end
