@@ -306,33 +306,9 @@
 - (void)aop_reloadData
 {
     IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
-    double offsetY = self.contentOffset.y;
-    NSString* queueKey = [NSString stringWithFormat:@"AOPReloadData_%p", self];
-    ///只对下拉刷新 做统一reload处理
-    static Class AOPAsyncBlockClass;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        AOPAsyncBlockClass = [NSObject class];
-        if (![AOPAsyncBlockClass respondsToSelector:@selector(imy_asyncBlock:onQueue:afterSecond:forKey:)] ||
-            ![AOPAsyncBlockClass respondsToSelector:@selector(imy_cancelBlockForKey:)] ||
-            ![AOPAsyncBlockClass respondsToSelector:@selector(imy_hasAsyncBlockForKey:)]) {
-            AOPAsyncBlockClass = NULL;
-        }
-    });
-    if (AOPAsyncBlockClass && aop_utils.combineReloadData && offsetY < 30) {
-        if ([AOPAsyncBlockClass imy_hasAsyncBlockForKey:queueKey]) {
-            ///已存在 等它自动刷新就可以了
-            return;
-        }
-        __weak _IMYAOPTableView* wself = self;
-        [AOPAsyncBlockClass imy_asyncBlock:^{
-            [wself aop_realReloadData];
-        } onQueue:dispatch_get_main_queue() afterSecond:0.2 forKey:queueKey];
-    }
-    else {
-        [AOPAsyncBlockClass imy_cancelBlockForKey:queueKey];
-        [self aop_realReloadData];
-    }
+    aop_utils.isUICalling += 1;
+    [super reloadData];
+    aop_utils.isUICalling -= 1;
 }
 - (void)aop_refreshDelegate
 {
@@ -357,13 +333,6 @@
     [super setDataSource:nil];
     [super setDataSource:(id)aop_utils];
     uiAopUtils.isUICalling -= 1;
-}
-- (void)aop_realReloadData
-{
-    IMYAOPTableViewUtils* aop_utils = [self aop_uiCallingUtils];
-    aop_utils.isUICalling += 1;
-    [super reloadData];
-    aop_utils.isUICalling -= 1;
 }
 - (void)aop_reloadSectionIndexTitles
 {
