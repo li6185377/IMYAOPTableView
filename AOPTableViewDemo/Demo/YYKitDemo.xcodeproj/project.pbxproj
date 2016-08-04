@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		367F27791D16E87A00C8BD36 /* IMYAOPDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 367F27781D16E87A00C8BD36 /* IMYAOPDemo.m */; };
 		367F277B1D16EC0C00C8BD36 /* aop_ad_image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 367F277A1D16EC0C00C8BD36 /* aop_ad_image.jpeg */; };
+		89304E1AD58C9AC82AA55841 /* libPods-YYKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEE686F30B81E51CF45B8E7 /* libPods-YYKitDemo.a */; };
 		D9067E001B9879E300F346EB /* YYFPSLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067DFF1B9879E300F346EB /* YYFPSLabel.m */; };
 		D9067E071B98A3B200F346EB /* YYFeedListExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067E061B98A3B200F346EB /* YYFeedListExample.m */; };
 		D9067E0A1B98AAA000F346EB /* WBStatusTimelineViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067E091B98AAA000F346EB /* WBStatusTimelineViewController.m */; };
@@ -172,7 +173,6 @@
 		D9CC99F91B8B568B00A9466D /* mew_interlaced.gif in Resources */ = {isa = PBXBuildFile; fileRef = D9CC99F31B8B568B00A9466D /* mew_interlaced.gif */; };
 		D9CC99FA1B8B568B00A9466D /* mew_interlaced.png in Resources */ = {isa = PBXBuildFile; fileRef = D9CC99F41B8B568B00A9466D /* mew_interlaced.png */; };
 		D9CC99FB1B8B568B00A9466D /* mew_baseline.png in Resources */ = {isa = PBXBuildFile; fileRef = D9CC99F51B8B568B00A9466D /* mew_baseline.png */; };
-		E89083BBDD01E9D6934E6F0B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C27E6EBECEBE7829B633BCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -181,7 +181,10 @@
 		367F27771D16E87A00C8BD36 /* IMYAOPDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMYAOPDemo.h; sourceTree = "<group>"; };
 		367F27781D16E87A00C8BD36 /* IMYAOPDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMYAOPDemo.m; sourceTree = "<group>"; };
 		367F277A1D16EC0C00C8BD36 /* aop_ad_image.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = aop_ad_image.jpeg; sourceTree = SOURCE_ROOT; };
+		4FEE686F30B81E51CF45B8E7 /* libPods-YYKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YYKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		76D1CF3EA9E8F68161517CAD /* Pods-YYKitDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYKitDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YYKitDemo/Pods-YYKitDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		8C27E6EBECEBE7829B633BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E626BAE1EADBF0E69979734 /* Pods-YYKitDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYKitDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-YYKitDemo/Pods-YYKitDemo.release.xcconfig"; sourceTree = "<group>"; };
 		D9067DFE1B9879E300F346EB /* YYFPSLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFPSLabel.h; sourceTree = "<group>"; };
 		D9067DFF1B9879E300F346EB /* YYFPSLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YYFPSLabel.m; sourceTree = "<group>"; };
 		D9067E051B98A3B200F346EB /* YYFeedListExample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYFeedListExample.h; sourceTree = "<group>"; };
@@ -476,7 +479,7 @@
 				D9C786401AB7C69E001317AD /* Accelerate.framework in Frameworks */,
 				D9B263B91BEF66010038C00A /* MobileCoreServices.framework in Frameworks */,
 				D9C786441AB7C6D8001317AD /* SystemConfiguration.framework in Frameworks */,
-				E89083BBDD01E9D6934E6F0B /* libPods.a in Frameworks */,
+				89304E1AD58C9AC82AA55841 /* libPods-YYKitDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -707,6 +710,7 @@
 				D974851719CAB38D00F46DE1 /* Foundation.framework */,
 				D974851519CAB38900F46DE1 /* UIKit.framework */,
 				8C27E6EBECEBE7829B633BCD /* libPods.a */,
+				4FEE686F30B81E51CF45B8E7 /* libPods-YYKitDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -995,6 +999,8 @@
 			children = (
 				236E9F42F58BFA3D81E8DB13 /* Pods.debug.xcconfig */,
 				28B61FD692662CF67C5F1EE4 /* Pods.release.xcconfig */,
+				76D1CF3EA9E8F68161517CAD /* Pods-YYKitDemo.debug.xcconfig */,
+				8E626BAE1EADBF0E69979734 /* Pods-YYKitDemo.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1006,12 +1012,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D97484F319CAAD2900F46DE1 /* Build configuration list for PBXNativeTarget "YYKitDemo" */;
 			buildPhases = (
-				167E01B05C61C13207FF076A /* Check Pods Manifest.lock */,
+				167E01B05C61C13207FF076A /* [CP] Check Pods Manifest.lock */,
 				D97484CC19CAAD2900F46DE1 /* Sources */,
 				D97484CD19CAAD2900F46DE1 /* Frameworks */,
 				D97484CE19CAAD2900F46DE1 /* Resources */,
-				49A8813043BA8D86E22F9731 /* Embed Pods Frameworks */,
-				8B985B5DDE7ED36B121E0540 /* Copy Pods Resources */,
+				49A8813043BA8D86E22F9731 /* [CP] Embed Pods Frameworks */,
+				8B985B5DDE7ED36B121E0540 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1109,14 +1115,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		167E01B05C61C13207FF076A /* Check Pods Manifest.lock */ = {
+		167E01B05C61C13207FF076A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1124,34 +1130,34 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		49A8813043BA8D86E22F9731 /* Embed Pods Frameworks */ = {
+		49A8813043BA8D86E22F9731 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YYKitDemo/Pods-YYKitDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8B985B5DDE7ED36B121E0540 /* Copy Pods Resources */ = {
+		8B985B5DDE7ED36B121E0540 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YYKitDemo/Pods-YYKitDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1364,7 +1370,7 @@
 		};
 		D97484F419CAAD2900F46DE1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 236E9F42F58BFA3D81E8DB13 /* Pods.debug.xcconfig */;
+			baseConfigurationReference = 76D1CF3EA9E8F68161517CAD /* Pods-YYKitDemo.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1402,7 +1408,7 @@
 		};
 		D97484F519CAAD2900F46DE1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 28B61FD692662CF67C5F1EE4 /* Pods.release.xcconfig */;
+			baseConfigurationReference = 8E626BAE1EADBF0E69979734 /* Pods-YYKitDemo.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
 				CODE_SIGN_IDENTITY = "";

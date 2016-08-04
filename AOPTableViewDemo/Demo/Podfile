@@ -1,2 +1,4 @@
 platform :ios, 7.0
+target 'YYKitDemo' do
 pod 'IMYAOPTableView'
+end
