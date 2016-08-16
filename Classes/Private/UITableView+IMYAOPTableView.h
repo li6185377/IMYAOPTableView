@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "IMYAOPTableViewUtils.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UITableView (IMYAOPTableOperation)
 + (SEL)aop_userSelectRowAtPendingSelectionIndexPathSEL;
 + (SEL)aop_updateRowDataSEL;
@@ -21,8 +23,11 @@
 
 
 @interface _IMYAOPTableView : UITableView
++ (void)aop_setupConfigs;
 - (void)aop_refreshDelegate;
 - (void)aop_refreshDataSource;
 ///获取显示中的cell containType => 0：原生cell   1：插入的cell   2：全部cell
-- (NSArray*)aop_containVisibleCells:(IMYAOPType)containType;
+- (NSArray *)aop_containVisibleCells:(IMYAOPType)containType;
 @end
+
+NS_ASSUME_NONNULL_END

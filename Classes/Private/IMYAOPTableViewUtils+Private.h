@@ -8,15 +8,17 @@
 
 #import "IMYAOPTableViewUtils.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol IADTableViewUtilsPrivate
 
-@property (nonatomic, weak) id<UITableViewDelegate> tableDelegate;
-@property (nonatomic, weak) id<UITableViewDataSource> tableDataSource;
+@property (nullable, nonatomic, weak) id<UITableViewDelegate> tableDelegate;
+@property (nullable, nonatomic, weak) id<UITableViewDataSource> tableDataSource;
 
-@property (nonatomic, strong) NSMutableArray<NSNumber*>* sections;
-@property (nonatomic, strong) NSMutableDictionary* sectionMap;
+@property (nullable, nonatomic, strong) NSMutableIndexSet *sections;
+@property (nullable, nonatomic, strong) NSMutableDictionary *sectionMap;
 
-@property (nonatomic) Class tableViewClass;
+@property (nullable, nonatomic, strong) Class tableViewClass;
 
 ///是否由UI 进行调用
 @property (nonatomic, assign) NSInteger isUICalling;
@@ -26,3 +28,5 @@
 @interface IMYAOPTableViewUtils (Private) <IADTableViewUtilsPrivate>
 
 @end
+
+NS_ASSUME_NONNULL_END

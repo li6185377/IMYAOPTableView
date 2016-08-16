@@ -10,9 +10,13 @@
 #import "IMYAOPTableViewUtils.h"
 #import "IMYAOPTableViewUtils+Proxy.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface UITableView (IMYAOPTableViewUtils)
 ///创建并获取：AOPTableUtils
-@property (nonatomic, readonly) IMYAOPTableViewUtils* aop_utils;
+@property (nonatomic, readonly, strong) IMYAOPTableViewUtils *aop_utils;
 ///是否注入了：AOPTableUtils
-@property (nonatomic, readonly) BOOL aop_installed;
+@property (nonatomic, readonly, assign) BOOL aop_installed;
 @end
+
+NS_ASSUME_NONNULL_END

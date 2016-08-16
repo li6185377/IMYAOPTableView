@@ -12,6 +12,11 @@
 
 @end
 @implementation IMYAOPDemo
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    ///只是为了不警告  该回调是不会被调用的
+    return 0;
+}
 - (void)setAopUtils:(IMYAOPTableViewUtils *)aopUtils
 {
     _aopUtils = aopUtils;

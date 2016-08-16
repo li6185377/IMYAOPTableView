@@ -8,23 +8,27 @@
 
 #import "IMYAOPTableViewUtils.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface IMYAOPTableViewUtils (InsertedProxy)
 ///获取插入集合内，显示中的cell
-@property (nonatomic, readonly) NSArray<__kindof UITableViewCell*>* visibleInsertCells;
+@property (nonatomic, readonly) NSArray<__kindof UITableViewCell *> *visibleInsertCells;
 ///获取显示中的cell
-- (NSArray<__kindof UITableViewCell*>*)visibleCellsWithType:(IMYAOPType)type;
+- (NSArray<__kindof UITableViewCell *> *)visibleCellsWithType:(IMYAOPType)type;
 @end
 
 ///对TableView执行原始数据的操作, 不进行AOP的处理
 @interface IMYAOPTableViewUtils (TableViewProxy)
 
-- (CGRect)rectForRowAtIndexPath:(NSIndexPath*)indexPath;
+- (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath;
 
-- (NSIndexPath*)indexPathForCell:(UITableViewCell*)cell;
+- (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell;
 
-- (__kindof UITableViewCell*)cellForRowAtIndexPath:(NSIndexPath*)indexPath;
+- (__kindof UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 ///more... 可直接使用这个tableView进行方法调用,不经过AOP处理
-- (UITableView*)proxyRawTableView;
+- (nullable UITableView *)proxyRawTableView;
 
 @end
+
+NS_ASSUME_NONNULL_END
