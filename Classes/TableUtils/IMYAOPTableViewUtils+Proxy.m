@@ -18,19 +18,19 @@
 @end
 
 @implementation IMYAOPTableViewUtils (InsertedProxy)
-- (NSArray<UITableViewCell*>*)visibleInsertCells
+- (NSArray<UITableViewCell *> *)visibleInsertCells
 {
     return [self visibleCellsWithType:IMYAOPTypeInsert];
 }
-- (NSArray<UITableViewCell*>*)visibleCellsWithType:(IMYAOPType)type
+- (NSArray<UITableViewCell *> *)visibleCellsWithType:(IMYAOPType)type
 {
     return [(id)self.tableView aop_containVisibleCells:type];
 }
 @end
 
-static const void* kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
+static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
 @implementation IMYAOPTableViewUtils (TableViewProxy)
-- (UITableView*)proxyRawTableView
+- (UITableView *)proxyRawTableView
 {
     id tableView = objc_getAssociatedObject(self, kIMYAOPProxyRawTableViewKey);
     if (!tableView) {
@@ -39,36 +39,36 @@ static const void* kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
     }
     return tableView;
 }
-- (CGRect)rectForRowAtIndexPath:(NSIndexPath*)indexPath
+- (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [[self proxyRawTableView] rectForRowAtIndexPath:indexPath];
 }
-- (UITableViewCell*)cellForRowAtIndexPath:(NSIndexPath*)indexPath
+- (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [[self proxyRawTableView] cellForRowAtIndexPath:indexPath];
 }
-- (NSIndexPath*)indexPathForCell:(UITableViewCell*)cell
+- (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell
 {
     return [[self proxyRawTableView] indexPathForCell:cell];
 }
 @end
 
 @implementation _IMYAOPCallProxy
-- (NSMethodSignature*)methodSignatureForSelector:(SEL)selector
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
     return [self.target methodSignatureForSelector:selector];
 }
-- (void)forwardInvocation:(NSInvocation*)invocation
+- (void)forwardInvocation:(NSInvocation *)invocation
 {
     if (self.target == nil) {
         return;
     }
     Class invokeClass = self.invokeClass;
 
-    NSString* selectorName = NSStringFromSelector(invocation.selector);
-    NSString* superSelectorName = [NSString stringWithFormat:@"IMYSuper_%@_%@", NSStringFromClass(invokeClass), selectorName];
+    NSString *selectorName = NSStringFromSelector(invocation.selector);
+    NSString *superSelectorName = [NSString stringWithFormat:@"IMYSuper_%@_%@", NSStringFromClass(invokeClass), selectorName];
     SEL superSelector = NSSelectorFromString(superSelectorName);
-
+    
     if ([invokeClass instancesRespondToSelector:superSelector] == NO) {
         Method superMethod = class_getInstanceMethod(invokeClass, invocation.selector);
         if (superMethod == NULL) {
@@ -78,15 +78,14 @@ static const void* kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
         IMP superIMP = method_getImplementation(superMethod);
         class_addMethod(invokeClass, superSelector, superIMP, method_getTypeEncoding(superMethod));
     }
-
     invocation.selector = superSelector;
     [invocation invokeWithTarget:self.target];
 }
-- (NSString*)description
+- (NSString *)description
 {
     return [self.target description];
 }
-- (NSString*)debugDescription
+- (NSString *)debugDescription
 {
     return [self.target debugDescription];
 }
@@ -101,7 +100,7 @@ static const void* kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
 + (id)callSuper:(id)obj
 {
     Class clazz = object_getClass(obj);
-    NSString* className = NSStringFromClass(clazz);
+    NSString *className = NSStringFromClass(clazz);
     if ([className hasPrefix:@"NSKVONotifying_"]) {
         clazz = class_getSuperclass(clazz);
     }
@@ -114,7 +113,7 @@ static const void* kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
         return obj;
     }
 
-    _IMYAOPCallProxy* proxy = [_IMYAOPCallProxy alloc];
+    _IMYAOPCallProxy *proxy = [_IMYAOPCallProxy alloc];
     proxy.target = obj;
     proxy.invokeClass = superClass;
     return (id)proxy;

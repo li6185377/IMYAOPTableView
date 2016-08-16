@@ -8,6 +8,10 @@
 
 #import "IMYAOPTableViewUtils.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface IMYAOPTableViewUtils (UITableViewDelegate) <UITableViewDelegate>
 
 @end
+
+NS_ASSUME_NONNULL_END

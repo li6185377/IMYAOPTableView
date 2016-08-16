@@ -8,22 +8,24 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class IMYAOPTableViewInsertBody, IMYAOPTableViewUtils;
 @protocol IMYAOPTableViewDelegate <UITableViewDelegate>
 
 @required
-- (void)aopTableUtils:(IMYAOPTableViewUtils*)tableUtils willDisplayCell:(UITableViewCell*)cell forRowAtIndexPath:(NSIndexPath*)indexPath;
+- (void)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @optional
 ///实现了这个方法 将不会再走原有的 获取 height 的方法  帖子列表置顶广告使用
-- (CGFloat)aopTableUtils:(IMYAOPTableViewUtils*)tableUtils heightForHeaderInSection:(NSInteger)section;
+- (CGFloat)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils heightForHeaderInSection:(NSInteger)section;
 
 @end
 
 @protocol IMYAOPTableViewDataSource <UITableViewDataSource>
 
 @required
-- (void)aopTableUtils:(IMYAOPTableViewUtils*)tableUtils numberOfSection:(NSInteger)sectionNumber;
+- (void)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils numberOfSection:(NSInteger)sectionNumber;
 
 @end
 
@@ -43,3 +45,5 @@ typedef NS_ENUM(NSUInteger, IMYAOPType) {
     ///全部数据
     IMYAOPTypeAll,
 };
+
+NS_ASSUME_NONNULL_END

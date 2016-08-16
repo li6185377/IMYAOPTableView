@@ -20,28 +20,28 @@ static Class kIMYTVAOPClass;
 
 @interface IMYAOPTableViewUtils ()
 
-@property (nonatomic, weak) id<UITableViewDelegate> tableDelegate;
-@property (nonatomic, weak) id<UITableViewDataSource> tableDataSource;
+@property (nullable, nonatomic, weak) id<UITableViewDelegate> tableDelegate;
+@property (nullable, nonatomic, weak) id<UITableViewDataSource> tableDataSource;
 
-@property (nonatomic, weak) UITableView* tableView;
+@property (nullable, nonatomic, weak) UITableView *tableView;
 
-@property (nonatomic, strong) NSMutableIndexSet* sections;
-@property (nonatomic, strong) NSMutableDictionary* sectionMap;
+@property (nullable, nonatomic, strong) NSMutableIndexSet *sections;
+@property (nullable, nonatomic, strong) NSMutableDictionary *sectionMap;
 
 ///tableView Class
-@property (nonatomic, assign) Class tableViewClass;
+@property (nullable, nonatomic, strong) Class tableViewClass;
 ///是否由UI 进行调用
 @property (nonatomic, assign) NSInteger isUICalling;
 
-+ (instancetype)aopUtilsWithTableView:(UITableView*)tableView;
++ (instancetype)aopUtilsWithTableView:(UITableView *)tableView;
 - (void)injectTableView;
 
 @end
 
 @implementation IMYAOPTableViewUtils
-+ (instancetype)aopUtilsWithTableView:(UITableView*)tableView
++ (instancetype)aopUtilsWithTableView:(UITableView *)tableView
 {
-    IMYAOPTableViewUtils* aopUtils = [super new];
+    IMYAOPTableViewUtils *aopUtils = [super new];
     [aopUtils setTableView:tableView];
     return aopUtils;
 }
@@ -79,7 +79,7 @@ static Class kIMYTVAOPClass;
 }
 - (void)injectTableView
 {
-    UITableView* tableView = self.tableView;
+    UITableView *tableView = self.tableView;
 
     _tableDataSource = tableView.dataSource;
     _tableDelegate = tableView.delegate;
@@ -93,13 +93,13 @@ static Class kIMYTVAOPClass;
         [self bindingTableView:tableView aopClass:aopClass];
     }
 }
-- (void)bindingTableView:(UITableView*)tableView aopClass:(Class)aopClass
+- (void)bindingTableView:(UITableView *)tableView aopClass:(Class)aopClass
 {
     id observationInfo = [tableView observationInfo];
-    NSArray* observances = [observationInfo valueForKey:@"_observances"];
+    NSArray *observanceArray = [observationInfo valueForKey:@"_observances"];
     ///移除旧的KVO
-    for (id observance in observances) {
-        NSString* keyPath = [observance valueForKeyPath:@"_property._keyPath"];
+    for (id observance in observanceArray) {
+        NSString *keyPath = [observance valueForKeyPath:@"_property._keyPath"];
         id observer = [observance valueForKey:@"_observer"];
         if (keyPath && observer) {
             [tableView removeObserver:observer forKeyPath:keyPath];
@@ -107,8 +107,8 @@ static Class kIMYTVAOPClass;
     }
     object_setClass(tableView, aopClass);
     ///添加新的KVO
-    for (id observance in observances) {
-        NSString* keyPath = [observance valueForKeyPath:@"_property._keyPath"];
+    for (id observance in observanceArray) {
+        NSString *keyPath = [observance valueForKeyPath:@"_property._keyPath"];
         id observer = [observance valueForKey:@"_observer"];
         if (observer && keyPath) {
             NSKeyValueObservingOptions options = [[observance valueForKey:@"_options"] unsignedIntegerValue];
@@ -119,19 +119,19 @@ static Class kIMYTVAOPClass;
         }
     }
 }
-- (void)insertWithSections:(NSArray<IMYAOPTableViewInsertBody*>*)insertSections
+- (void)insertWithSections:(NSArray<IMYAOPTableViewInsertBody *> *)insertSections
 {
-    NSArray<IMYAOPTableViewInsertBody*>* array = [insertSections sortedArrayUsingComparator:^NSComparisonResult(IMYAOPTableViewInsertBody* _Nonnull obj1, IMYAOPTableViewInsertBody* _Nonnull obj2) {
+    NSArray<IMYAOPTableViewInsertBody *> *array = [insertSections sortedArrayUsingComparator:^NSComparisonResult(IMYAOPTableViewInsertBody * _Nonnull obj1, IMYAOPTableViewInsertBody * _Nonnull obj2) {
         if (obj1.section > obj2.section) {
             return NSOrderedDescending;
         }
         return NSOrderedAscending;
     }];
-
-    NSMutableIndexSet* insertArray = [NSMutableIndexSet indexSet];
-    [array enumerateObjectsUsingBlock:^(IMYAOPTableViewInsertBody* _Nonnull obj, NSUInteger idx, BOOL* _Nonnull stop) {
+    
+    NSMutableIndexSet *insertArray = [NSMutableIndexSet indexSet];
+    [array enumerateObjectsUsingBlock:^(IMYAOPTableViewInsertBody * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSInteger section = obj.section;
-        while (1) {
+        while (YES) {
             BOOL hasEqual = NO;
             if ([insertArray containsIndex:section]) {
                 section++;
@@ -147,25 +147,24 @@ static Class kIMYTVAOPClass;
     }];
     self.sections = insertArray;
 }
-- (void)insertWithIndexPaths:(NSArray<IMYAOPTableViewInsertBody*>*)indexPaths
+- (void)insertWithIndexPaths:(NSArray<IMYAOPTableViewInsertBody *> *)indexPaths
 {
-    NSArray<IMYAOPTableViewInsertBody*>* array = [indexPaths sortedArrayUsingComparator:^NSComparisonResult(IMYAOPTableViewInsertBody* _Nonnull obj1, IMYAOPTableViewInsertBody* _Nonnull obj2) {
+    NSArray<IMYAOPTableViewInsertBody *> *array = [indexPaths sortedArrayUsingComparator:^NSComparisonResult(IMYAOPTableViewInsertBody * _Nonnull obj1, IMYAOPTableViewInsertBody * _Nonnull obj2) {
         return [obj1.indexPath compare:obj2.indexPath];
     }];
 
     NSMutableDictionary* insertMap = [NSMutableDictionary dictionary];
-
-    [array enumerateObjectsUsingBlock:^(IMYAOPTableViewInsertBody* _Nonnull obj, NSUInteger idx, BOOL* _Nonnull stop) {
+    [array enumerateObjectsUsingBlock:^(IMYAOPTableViewInsertBody * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         NSInteger section = obj.indexPath.section;
         NSInteger row = obj.indexPath.row;
-        NSMutableArray* rowArray = insertMap[@(section)];
+        NSMutableArray *rowArray = insertMap[@(section)];
         if (!rowArray) {
             rowArray = [NSMutableArray array];
             [insertMap setObject:rowArray forKey:@(section)];
         }
-        while (1) {
+        while (YES) {
             BOOL hasEqual = NO;
-            for (NSIndexPath* inserted in rowArray) {
+            for (NSIndexPath *inserted in rowArray) {
                 if (inserted.row == row) {
                     row++;
                     hasEqual = YES;
@@ -176,7 +175,7 @@ static Class kIMYTVAOPClass;
                 break;
             }
         }
-        NSIndexPath* insertPath = [NSIndexPath indexPathForRow:row inSection:section];
+        NSIndexPath *insertPath = [NSIndexPath indexPathForRow:row inSection:section];
         [rowArray addObject:insertPath];
         obj.resultIndexPath = insertPath;
     }];
@@ -185,8 +184,8 @@ static Class kIMYTVAOPClass;
 #pragma mark- install aop method
 - (Class)makeSubclassWithClass:(Class)origClass
 {
-    NSString* className = NSStringFromClass(origClass);
-    NSString* aopClassName = [kAOPTableViewPrefix stringByAppendingString:className];
+    NSString *className = NSStringFromClass(origClass);
+    NSString *aopClassName = [kAOPTableViewPrefix stringByAppendingString:className];
     Class aopClass = NSClassFromString(aopClassName);
 
     if (aopClass) {
@@ -274,8 +273,8 @@ static Class kIMYTVAOPClass;
 }
 - (void)addOverriteMethod:(SEL)seletor aopClass:(Class)aopClass
 {
-    NSString* seletorString = NSStringFromSelector(seletor);
-    NSString* aopSeletorString = [NSString stringWithFormat:@"aop_%@", seletorString];
+    NSString *seletorString = NSStringFromSelector(seletor);
+    NSString *aopSeletorString = [NSString stringWithFormat:@"aop_%@", seletorString];
     SEL aopMethod = NSSelectorFromString(aopSeletorString);
     [self addOverriteMethod:seletor toMethod:aopMethod class:aopClass];
 }
@@ -284,7 +283,7 @@ static Class kIMYTVAOPClass;
     if (method == NULL) {
         method = class_getInstanceMethod(kIMYTVAOPClass, seletor);
     }
-    const char* types = method_getTypeEncoding(method);
+    const char *types = method_getTypeEncoding(method);
     IMP imp = method_getImplementation(method);
     class_addMethod(clazz, seletor, imp, types);
 }
@@ -307,7 +306,7 @@ static Class kIMYTVAOPClass;
     }
     return nil;
 }
-- (void)forwardInvocation:(NSInvocation*)invocation
+- (void)forwardInvocation:(NSInvocation *)invocation
 {
     if (self.tableDelegate || self.tableDataSource) {
         NSAssert(NO, @"未实现该方法");
@@ -320,17 +319,17 @@ static Class kIMYTVAOPClass;
 @end
 
 @implementation IMYAOPTableViewUtils (IndexPath)
-- (NSIndexPath*)realIndexPathByTable:(NSIndexPath*)tableIndexPath
+- (NSIndexPath *)realIndexPathByTable:(NSIndexPath *)tableIndexPath
 {
-    if (tableIndexPath == nil) {
+    if (!tableIndexPath) {
         return nil;
     }
     NSInteger section = tableIndexPath.section;
     NSInteger row = tableIndexPath.row;
 
-    NSMutableArray<NSIndexPath*>* array = self.sectionMap[@(section)];
+    NSMutableArray<NSIndexPath *> *array = self.sectionMap[@(section)];
     NSInteger cutCount = 0;
-    for (NSIndexPath* obj in array) {
+    for (NSIndexPath *obj in array) {
         if (obj.row == row) {
             cutCount = -1;
             break;
@@ -347,10 +346,10 @@ static Class kIMYTVAOPClass;
     }
     ///如果该位置不是广告， 则转为逻辑index
     section = [self realSectionByTable:section];
-    NSIndexPath* realIndexPath = [NSIndexPath indexPathForRow:row - cutCount inSection:section];
+    NSIndexPath *realIndexPath = [NSIndexPath indexPathForRow:row - cutCount inSection:section];
     return realIndexPath;
 }
-- (NSIndexPath*)tableIndexPathByReal:(NSIndexPath*)realIndexPath
+- (NSIndexPath *)tableIndexPathByReal:(NSIndexPath *)realIndexPath
 {
     if (realIndexPath == nil) {
         return nil;
@@ -361,8 +360,8 @@ static Class kIMYTVAOPClass;
     ///转为table section
     section = [self tableSectionByReal:section];
 
-    NSMutableArray<NSIndexPath*>* array = self.sectionMap[@(section)];
-    for (NSIndexPath* obj in array) {
+    NSMutableArray<NSIndexPath *> *array = self.sectionMap[@(section)];
+    for (NSIndexPath *obj in array) {
         if (obj.row <= row) {
             row += 1;
         }
@@ -370,25 +369,25 @@ static Class kIMYTVAOPClass;
             break;
         }
     }
-    NSIndexPath* tableIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    NSIndexPath *tableIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
     return tableIndexPath;
 }
-- (NSArray<NSIndexPath*>*)realIndexPathsByTableIndexPaths:(NSArray<NSIndexPath*>*)tableIndexPaths
+- (NSArray<NSIndexPath *> *)realIndexPathsByTableIndexPaths:(NSArray<NSIndexPath *> *)tableIndexPaths
 {
-    NSMutableArray* toArray = [NSMutableArray array];
-    [tableIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath* _Nonnull obj, NSUInteger idx, BOOL* _Nonnull stop) {
-        NSIndexPath* realIndexPath = [self realIndexPathByTable:obj];
+    NSMutableArray *toArray = [NSMutableArray array];
+    [tableIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSIndexPath *realIndexPath = [self realIndexPathByTable:obj];
         if (realIndexPath) {
             [toArray addObject:realIndexPath];
         }
     }];
     return toArray;
 }
-- (NSArray<NSIndexPath*>*)tableIndexPathsByRealIndexPaths:(NSArray<NSIndexPath*>*)realIndexPaths
+- (NSArray<NSIndexPath *> *)tableIndexPathsByRealIndexPaths:(NSArray<NSIndexPath *> *)realIndexPaths
 {
-    NSMutableArray* toArray = [NSMutableArray array];
-    [realIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath* _Nonnull obj, NSUInteger idx, BOOL* _Nonnull stop) {
-        NSIndexPath* tableIndexPath = [self tableIndexPathByReal:obj];
+    NSMutableArray *toArray = [NSMutableArray array];
+    [realIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSIndexPath *tableIndexPath = [self tableIndexPathByReal:obj];
         if (tableIndexPath) {
             [toArray addObject:tableIndexPath];
         }
@@ -398,7 +397,7 @@ static Class kIMYTVAOPClass;
 - (NSInteger)tableSectionByReal:(NSInteger)realSection
 {
     __block NSInteger section = realSection;
-    [self.sections enumerateIndexesUsingBlock:^(NSUInteger insertSection, BOOL* _Nonnull stop) {
+    [self.sections enumerateIndexesUsingBlock:^(NSUInteger insertSection, BOOL * _Nonnull stop) {
         if (insertSection <= section) {
             section += 1;
         }
@@ -411,7 +410,7 @@ static Class kIMYTVAOPClass;
 - (NSInteger)realSectionByTable:(NSInteger)tableSection
 {
     __block NSInteger cutCount = 0;
-    [self.sections enumerateIndexesUsingBlock:^(NSUInteger insertSection, BOOL* _Nonnull stop) {
+    [self.sections enumerateIndexesUsingBlock:^(NSUInteger insertSection, BOOL * _Nonnull stop) {
         if (insertSection == tableSection) {
             cutCount = -1;
             *stop = YES;
@@ -426,21 +425,21 @@ static Class kIMYTVAOPClass;
     }
     return -1;
 }
-- (NSIndexSet*)tableSectionsByRealSet:(NSIndexSet*)realSet
+- (NSIndexSet *)tableSectionsByRealSet:(NSIndexSet *)realSet
 {
-    NSMutableIndexSet* sections = [NSMutableIndexSet indexSet];
-    [realSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL* _Nonnull stop) {
-        NSInteger section = [self tableSectionByReal:idx];
+    NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
+    [realSet enumerateIndexesUsingBlock:^(NSUInteger realIndex, BOOL * _Nonnull stop) {
+        NSInteger section = [self tableSectionByReal:realIndex];
         if (section >= 0) {
             [sections addIndex:section];
         }
     }];
     return sections;
 }
-- (NSIndexSet*)realSectionsByTableSet:(NSIndexSet*)tableSet
+- (NSIndexSet *)realSectionsByTableSet:(NSIndexSet *)tableSet
 {
-    NSMutableIndexSet* sections = [NSMutableIndexSet indexSet];
-    [tableSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL* _Nonnull stop) {
+    NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
+    [tableSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL * _Nonnull stop) {
         NSInteger section = [self realSectionByTable:idx];
         if (section >= 0) {
             [sections addIndex:section];
@@ -450,15 +449,18 @@ static Class kIMYTVAOPClass;
 }
 @end
 
-static const void* kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
+static const void *kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
 @implementation UITableView (AOPTableViewUtils)
-- (IMYAOPTableViewUtils*)aop_utils
+- (IMYAOPTableViewUtils *)aop_utils
 {
-    IMYAOPTableViewUtils* aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
+    IMYAOPTableViewUtils *aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
     if (!aopUtils) {
         @synchronized (self) {
             aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
             if (!aopUtils) {
+                ///初始化部分配置
+                [_IMYAOPTableView aop_setupConfigs];
+                ///获取aop utils
                 aopUtils = [IMYAOPTableViewUtils aopUtilsWithTableView:self];
                 objc_setAssociatedObject(self, kIMYAOPTableUtilsKey, aopUtils, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
                 [aopUtils injectTableView];
@@ -469,7 +471,7 @@ static const void* kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
 }
 - (BOOL)aop_installed
 {
-    IMYAOPTableViewUtils* aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
+    IMYAOPTableViewUtils *aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
     if (aopUtils) {
         return YES;
     }

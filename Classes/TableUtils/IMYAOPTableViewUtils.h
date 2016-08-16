@@ -10,21 +10,23 @@
 #import "IMYAOPTableViewUtilsDefine.h"
 #import "IMYAOPTableViewInsertBody.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 /**
  *  请通过TableView 的 aop_utils 方法，获取该实例, 禁止独立初始化
  *  原来所有的TableView方法将会被hook，如果需要调用原有方法请看 IMYAOPTableViewUtils+Proxy.h
  */
 @interface IMYAOPTableViewUtils : NSObject <IMY_UNAVAILABLE_ATTRIBUTE_ALLOC>
 
-@property (nonatomic, readonly, weak) UITableView* tableView;
+@property (nullable, nonatomic, readonly, weak) UITableView *tableView;
 
 ///AOP TableView 的回调
-@property (nonatomic, weak) id<IMYAOPTableViewDelegate> delegate;
-@property (nonatomic, weak) id<IMYAOPTableViewDataSource> dataSource;
+@property (nullable, nonatomic, weak) id<IMYAOPTableViewDelegate> delegate;
+@property (nullable, nonatomic, weak) id<IMYAOPTableViewDataSource> dataSource;
 
 ///插入sections 跟 indexPaths
-- (void)insertWithSections:(NSArray<IMYAOPTableViewInsertBody*>*)sections;
-- (void)insertWithIndexPaths:(NSArray<IMYAOPTableViewInsertBody*>*)indexPaths;
+- (void)insertWithSections:(nullable NSArray<IMYAOPTableViewInsertBody *> *)sections;
+- (void)insertWithIndexPaths:(nullable NSArray<IMYAOPTableViewInsertBody *> *)indexPaths;
 
 @end
 
@@ -33,9 +35,9 @@
 @interface IMYAOPTableViewUtils (IndexPath)
 
 ///table的 indexPath 转 逻辑调用的indexPath
-- (NSIndexPath*)realIndexPathByTable:(NSIndexPath*)tableIndexPath;
+- (nullable NSIndexPath *)realIndexPathByTable:(nullable NSIndexPath *)tableIndexPath;
 ///逻辑indexPath 转 table 使用的indexPath
-- (NSIndexPath*)tableIndexPathByReal:(NSIndexPath*)realIndexPath;
+- (nullable NSIndexPath *)tableIndexPathByReal:(nullable NSIndexPath *)realIndexPath;
 
 ///table的section 转 逻辑调用的section
 - (NSInteger)realSectionByTable:(NSInteger)tableSection;
@@ -43,11 +45,11 @@
 - (NSInteger)tableSectionByReal:(NSInteger)realSection;
 
 /// 数组转换, 效果跟上面一样
-- (NSArray<NSIndexPath*>*)realIndexPathsByTableIndexPaths:(NSArray<NSIndexPath*>*)tableIndexPaths;
-- (NSArray<NSIndexPath*>*)tableIndexPathsByRealIndexPaths:(NSArray<NSIndexPath*>*)realIndexPaths;
+- (NSArray<NSIndexPath *> *)realIndexPathsByTableIndexPaths:(nullable NSArray<NSIndexPath *> *)tableIndexPaths;
+- (NSArray<NSIndexPath *> *)tableIndexPathsByRealIndexPaths:(nullable NSArray<NSIndexPath *> *)realIndexPaths;
 
-- (NSIndexSet*)realSectionsByTableSet:(NSIndexSet*)tableSet;
-- (NSIndexSet*)tableSectionsByRealSet:(NSIndexSet*)realSet;
+- (NSIndexSet *)realSectionsByTableSet:(nullable NSIndexSet *)tableSet;
+- (NSIndexSet *)tableSectionsByRealSet:(nullable NSIndexSet *)realSet;
 
 @end
 
@@ -59,3 +61,4 @@
 @property BOOL combineReloadData __deprecated_msg("Deprecated");
 @end
 
+NS_ASSUME_NONNULL_END

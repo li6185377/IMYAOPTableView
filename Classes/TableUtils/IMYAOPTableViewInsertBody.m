@@ -11,13 +11,13 @@
 @implementation IMYAOPTableViewInsertBody
 + (instancetype)insertBodyWithSection:(NSInteger)section
 {
-    IMYAOPTableViewInsertBody* body = [self new];
+    IMYAOPTableViewInsertBody* body = [[self alloc] init];
     body.section = section;
     return body;
 }
 + (instancetype)insertBodyWithIndexPath:(NSIndexPath*)indexPath
 {
-    IMYAOPTableViewInsertBody* body = [self new];
+    IMYAOPTableViewInsertBody* body = [[self alloc] init];
     body.indexPath = indexPath;
     return body;
 }
