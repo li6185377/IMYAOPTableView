@@ -85,6 +85,10 @@
 {
     ///真实的 will display 回调. 有些时候统计需要
 }
+- (void)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    ///真实的 did end display 回调. 有些时候统计需要
+}
 
 #pragma mark- UITableView 回调
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

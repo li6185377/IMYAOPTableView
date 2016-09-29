@@ -43,7 +43,9 @@
 {
     kAOPUICallingSaved;
     ///回调给ad manager 虚拟广告位的上报
-    [self.delegate aopTableUtils:self willDisplayCell:cell forRowAtIndexPath:indexPath];
+    if ([self.delegate respondsToSelector:@selector(aopTableUtils:willDisplayCell:forRowAtIndexPath:)]) {
+        [self.delegate aopTableUtils:self willDisplayCell:cell forRowAtIndexPath:indexPath];
+    }
     
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]) {
@@ -72,6 +74,11 @@
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
+    ///回调给ad manager 虚拟广告位的上报
+    if ([self.delegate respondsToSelector:@selector(aopTableUtils:didEndDisplayingCell:forRowAtIndexPath:)]) {
+        [self.delegate aopTableUtils:self didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
+    }
+    
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]) {
         [delegate tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
