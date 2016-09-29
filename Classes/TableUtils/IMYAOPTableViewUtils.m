@@ -294,6 +294,9 @@ static Class kIMYTVAOPClass;
     if (!responds) {
         responds = ([self.delegate respondsToSelector:aSelector] || [self.dataSource respondsToSelector:aSelector]);
     }
+    if (!responds) {
+        responds = (aSelector == @selector(tableView:willDisplayCell:forRowAtIndexPath:) || aSelector == @selector(tableView:didEndDisplayingCell:forRowAtIndexPath:));
+    }
     return responds;
 }
 - (id)forwardingTargetForSelector:(SEL)aSelector

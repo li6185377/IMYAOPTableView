@@ -12,11 +12,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class IMYAOPTableViewInsertBody, IMYAOPTableViewUtils;
 @protocol IMYAOPTableViewDelegate <UITableViewDelegate>
-
-@required
-- (void)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
-
 @optional
+
+- (void)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+- (void)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
+
 ///实现了这个方法 将不会再走原有的 获取 height 的方法  帖子列表置顶广告使用
 - (CGFloat)aopTableUtils:(IMYAOPTableViewUtils *)tableUtils heightForHeaderInSection:(NSInteger)section;
 
