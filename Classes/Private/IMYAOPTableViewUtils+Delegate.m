@@ -15,8 +15,7 @@
     if (realIndexPath) {                                                \
         delegate = self.tableDelegate;                                  \
         indexPath = realIndexPath;                                      \
-    }                                                                   \
-    else {                                                              \
+    } else {                                                            \
         delegate = self.delegate;                                       \
     }
 
@@ -26,8 +25,7 @@
     if (realSection >= 0) {                                    \
         delegate = self.tableDelegate;                         \
         section = realSection;                                 \
-    }                                                          \
-    else {                                                     \
+    } else {                                                   \
         delegate = self.delegate;                              \
     }
 
@@ -38,6 +36,7 @@
     self.isUICalling += 1;
 
 @implementation IMYAOPTableViewUtils (UITableViewDelegate)
+
 // Display customization
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -46,13 +45,14 @@
     if ([self.delegate respondsToSelector:@selector(aopTableUtils:willDisplayCell:forRowAtIndexPath:)]) {
         [self.delegate aopTableUtils:self willDisplayCell:cell forRowAtIndexPath:indexPath];
     }
-    
+
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]) {
         [delegate tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
     }
     kAOPUICallingResotre;
 }
+
 - (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -62,6 +62,7 @@
     }
     kAOPUICallingResotre;
 }
+
 - (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -71,6 +72,7 @@
     }
     kAOPUICallingResotre;
 }
+
 - (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
@@ -78,13 +80,14 @@
     if ([self.delegate respondsToSelector:@selector(aopTableUtils:didEndDisplayingCell:forRowAtIndexPath:)]) {
         [self.delegate aopTableUtils:self didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
     }
-    
+
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]) {
         [delegate tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
     }
     kAOPUICallingResotre;
 }
+
 - (void)tableView:(UITableView *)tableView didEndDisplayingHeaderView:(UIView *)view forSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -94,6 +97,7 @@
     }
     kAOPUICallingResotre;
 }
+
 - (void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(UIView *)view forSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -113,13 +117,13 @@
     CGFloat cellHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
         cellHeight = [delegate tableView:tableView heightForRowAtIndexPath:indexPath];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         cellHeight = tableView.rowHeight;
     }
     kAOPUICallingResotre;
     return cellHeight;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     if ([self.delegate respondsToSelector:@selector(aopTableUtils:heightForHeaderInSection:)]) {
@@ -130,13 +134,13 @@
     CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
         sectionHeight = [delegate tableView:tableView heightForHeaderInSection:section];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         sectionHeight = tableView.sectionHeaderHeight;
     }
     kAOPUICallingResotre;
     return sectionHeight;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -144,8 +148,7 @@
     CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
         sectionHeight = [delegate tableView:tableView heightForFooterInSection:section];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         sectionHeight = tableView.sectionFooterHeight;
     }
     kAOPUICallingResotre;
@@ -161,13 +164,13 @@
     CGFloat cellHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)]) {
         cellHeight = [delegate tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         cellHeight = tableView.rowHeight;
     }
     kAOPUICallingResotre;
     return cellHeight;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -175,13 +178,13 @@
     CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForHeaderInSection:)]) {
         sectionHeight = [delegate tableView:tableView estimatedHeightForHeaderInSection:section];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         sectionHeight = tableView.sectionHeaderHeight;
     }
     kAOPUICallingResotre;
     return sectionHeight;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -189,8 +192,7 @@
     CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForFooterInSection:)]) {
         sectionHeight = [delegate tableView:tableView estimatedHeightForFooterInSection:section];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         sectionHeight = tableView.sectionFooterHeight;
     }
     kAOPUICallingResotre;
@@ -210,6 +212,7 @@
     kAOPUICallingResotre;
     return headerView;
 }
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -221,6 +224,7 @@
     kAOPUICallingResotre;
     return headerView;
 }
+
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
@@ -246,6 +250,7 @@
     kAOPUICallingResotre;
     return canHighlight;
 }
+
 - (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
@@ -255,6 +260,7 @@
     }
     kAOPUICallingResotre;
 }
+
 - (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
@@ -276,6 +282,7 @@
     kAOPUICallingResotre;
     return indexPath;
 }
+
 - (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
@@ -297,6 +304,7 @@
     }
     kAOPUICallingResotre;
 }
+
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
@@ -321,6 +329,7 @@
     kAOPUICallingResotre;
     return editStyle;
 }
+
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
@@ -332,6 +341,7 @@
     kAOPUICallingResotre;
     return title;
 }
+
 - (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
@@ -367,6 +377,7 @@
     }
     kAOPUICallingResotre;
 }
+
 - (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
 {
     kAOPUICallingSaved;
@@ -424,6 +435,7 @@
     kAOPUICallingResotre;
     return shouldShow;
 }
+
 - (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
 {
     kAOPUICallingSaved;
@@ -435,6 +447,7 @@
     kAOPUICallingResotre;
     return canPerform;
 }
+
 - (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
 {
     kAOPUICallingSaved;
@@ -458,6 +471,7 @@
     kAOPUICallingResotre;
     return canFocus;
 }
+
 - (NSIndexPath *)indexPathForPreferredFocusedViewInTableView:(UITableView *)tableView
 {
     kAOPUICallingSaved;
@@ -471,4 +485,5 @@
     kAOPUICallingResotre;
     return indexPath;
 }
+
 @end

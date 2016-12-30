@@ -15,8 +15,7 @@
     if (realIndexPath) {                                                \
         dataSource = self.tableDataSource;                              \
         indexPath = realIndexPath;                                      \
-    }                                                                   \
-    else {                                                              \
+    } else {                                                            \
         dataSource = self.dataSource;                                   \
     }
 
@@ -26,8 +25,7 @@
     if (realSection >= 0) {                                    \
         dataSource = self.tableDataSource;                     \
         section = realSection;                                 \
-    }                                                          \
-    else {                                                     \
+    } else {                                                   \
         dataSource = self.dataSource;                          \
     }
 
@@ -38,6 +36,7 @@
     self.isUICalling += 1;
 
 @implementation IMYAOPTableViewUtils (UITableViewDataSource)
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     kAOPUICallingSaved;
@@ -55,6 +54,7 @@
     kAOPUICallingResotre;
     return numberOfSection;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -66,14 +66,12 @@
 
         NSIndexPath *tableIndexPath = [self tableIndexPathByReal:[NSIndexPath indexPathForRow:rowCount inSection:section]];
         rowCount = tableIndexPath.row;
-    }
-    else {
+    } else {
         NSMutableArray<NSIndexPath *> *array = self.sectionMap[@(section)];
         for (NSIndexPath *obj in array) {
             if (obj.row <= rowCount) {
                 rowCount += 1;
-            }
-            else {
+            } else {
                 break;
             }
         }
@@ -102,6 +100,7 @@
     kAOPUICallingResotre;
     return cell;
 }
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -113,6 +112,7 @@
     kAOPUICallingResotre;
     return title;
 }
+
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -162,6 +162,7 @@
     NSAssert(NO, @"NO Impl");
     return nil;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index __TVOS_PROHIBITED // tell table which section corresponds to section title/index (e.g. "B",1))
 {
     NSAssert(NO, @"NO Impl");
@@ -194,4 +195,5 @@
     }
     kAOPUICallingResotre;
 }
+
 @end

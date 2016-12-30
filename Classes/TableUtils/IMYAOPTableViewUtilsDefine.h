@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @class IMYAOPTableViewInsertBody, IMYAOPTableViewUtils;
+
 @protocol IMYAOPTableViewDelegate <UITableViewDelegate>
 @optional
 
@@ -31,9 +32,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///禁止独立初始化
 @protocol IMY_UNAVAILABLE_ATTRIBUTE_ALLOC
+
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
-+ (instancetype) new UNAVAILABLE_ATTRIBUTE;
+
++ (instancetype)new  UNAVAILABLE_ATTRIBUTE;
+
 + (instancetype)alloc UNAVAILABLE_ATTRIBUTE;
+
 @end
 
 ///数据类型
@@ -45,5 +50,15 @@ typedef NS_ENUM(NSUInteger, IMYAOPType) {
     ///全部数据
     IMYAOPTypeAll,
 };
+
+#ifndef IMYLog
+
+#ifdef DEBUG
+#define IMYLog(s, ...) NSLog(@"<%@:(%d)> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
+#else
+#define IMYLog(...)
+#endif
+
+#endif
 
 NS_ASSUME_NONNULL_END

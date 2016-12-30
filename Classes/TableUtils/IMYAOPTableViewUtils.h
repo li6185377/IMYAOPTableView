@@ -6,9 +6,8 @@
 //  Copyright © 2016年 IMY. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "IMYAOPTableViewUtilsDefine.h"
 #import "IMYAOPTableViewInsertBody.h"
+#import "IMYAOPTableViewUtilsDefine.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -55,10 +54,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 @interface IMYAOPTableViewUtils (Deprecated_Nonfunctional)
+
 /**
  *   已废弃, 由外部自己做合并
  */
 @property BOOL combineReloadData __deprecated_msg("Deprecated");
+
 @end
 
 NS_ASSUME_NONNULL_END
