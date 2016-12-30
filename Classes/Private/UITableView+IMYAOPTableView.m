@@ -41,6 +41,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
 }
 
 @implementation UIView (IMYADTableUtils)
+
 - (BOOL)imyaop_gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     UITableView *tableView = (id)self.superview;
@@ -59,9 +60,11 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return shouldBegin;
 }
+
 @end
 
 @implementation UITableView (IMYADTableUtils)
+
 + (SEL)aop_userSelectRowAtPendingSelectionIndexPathSEL
 {
     static SEL sel;
@@ -71,6 +74,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     });
     return sel;
 }
+
 + (SEL)aop_updateRowDataSEL
 {
     static SEL sel;
@@ -80,6 +84,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     });
     return sel;
 }
+
 + (SEL)aop_rebuildGeometrySEL
 {
     static SEL sel;
@@ -89,6 +94,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     });
     return sel;
 }
+
 + (SEL)aop_updateContentSizeSEL
 {
     static SEL sel;
@@ -98,6 +104,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     });
     return sel;
 }
+
 + (SEL)aop_updateAnimationDidStopSEL
 {
     static SEL sel;
@@ -107,6 +114,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     });
     return sel;
 }
+
 - (IMYAOPTableViewUtils *)aop_uiCallingUtils
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
@@ -115,13 +123,16 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
     return aop_utils;
 }
+
 + (Class)imy_aopClass
 {
     return [_IMYAOPTableView class];
 }
+
 @end
 
 @implementation _IMYAOPTableView
+
 + (void)aop_setupConfigs
 {
     static dispatch_once_t onceToken;
@@ -129,6 +140,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         imyaop_swizzleMethod(NSClassFromString(@"UITableViewWrapperView"), @selector(gestureRecognizerShouldBegin:), @selector(imyaop_gestureRecognizerShouldBegin:));
     });
 }
+
 - (void)aop_setDelegate:(id<UITableViewDelegate>)delegate
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
@@ -138,6 +150,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         [super setDelegate:delegate];
     }
 }
+
 - (id<UITableViewDelegate>)aop_delegate
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -147,6 +160,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         return [super delegate];
     }
 }
+
 - (void)aop_setDataSource:(id<UITableViewDataSource>)dataSource
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
@@ -156,6 +170,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         [super setDataSource:dataSource];
     }
 }
+
 - (id<UITableViewDataSource>)aop_dataSource
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -165,6 +180,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         return [super dataSource];
     }
 }
+
 - (Class)aop_class
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
@@ -174,6 +190,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         return [super class];
     }
 }
+
 ///AOP
 - (void)aop_touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
@@ -182,6 +199,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super touchesBegan:touches withEvent:event];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -189,6 +207,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super touchesMoved:touches withEvent:event];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_touchesEstimatedPropertiesUpdated:(NSSet *)touches
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -196,6 +215,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super touchesEstimatedPropertiesUpdated:touches];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop__userSelectRowAtPendingSelectionIndexPath:(NSIndexPath *)indexPath
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -206,6 +226,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     ((void (*)(void *, SEL, NSIndexPath *))(void *)objc_msgSendSuper)(&objcSuper, [UITableView aop_userSelectRowAtPendingSelectionIndexPathSEL], indexPath);
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -213,6 +234,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super touchesEnded:touches withEvent:event];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -220,6 +242,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super touchesCancelled:touches withEvent:event];
     aop_utils.isUICalling -= 1;
 }
+
 - (BOOL)aop_touchesShouldCancelInContentView:(UIView *)view
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -228,6 +251,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return should;
 }
+
 - (BOOL)aop_touchesShouldBegin:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event inContentView:(UIView *)view
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -236,6 +260,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return should;
 }
+
 - (BOOL)aop_gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -244,6 +269,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return should;
 }
+
 - (void)aop__rebuildGeometry
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -254,6 +280,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     ((void (*)(void *, SEL))(void *)objc_msgSendSuper)(&objcSuper, [UITableView aop_rebuildGeometrySEL]);
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop__updateRowData
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -264,6 +291,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     ((void (*)(void *, SEL))(void *)objc_msgSendSuper)(&objcSuper, [UITableView aop_updateRowDataSEL]);
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop__updateContentSize
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -274,6 +302,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     ((void (*)(void *, SEL))(void *)objc_msgSendSuper)(&objcSuper, [UITableView aop_updateContentSizeSEL]);
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop__updateAnimationDidStop:(id)arg1 finished:(id)arg2 context:(id)arg3
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -284,6 +313,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     ((void (*)(void *, SEL, id, id, id))(void *)objc_msgSendSuper)(&objcSuper, [UITableView aop_updateAnimationDidStopSEL], arg1, arg2, arg3);
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_layoutSubviews
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -291,6 +321,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super layoutSubviews];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_reloadData
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -298,6 +329,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super reloadData];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_refreshDelegate
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
@@ -310,6 +342,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super setDelegate:(id)aop_utils];
     uiAopUtils.isUICalling -= 1;
 }
+
 - (void)aop_refreshDataSource
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
@@ -322,6 +355,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super setDataSource:(id)aop_utils];
     uiAopUtils.isUICalling -= 1;
 }
+
 - (void)aop_reloadSectionIndexTitles
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -329,6 +363,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super reloadSectionIndexTitles];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_beginUpdates
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -336,6 +371,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super beginUpdates];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_endUpdates
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -343,6 +379,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super endUpdates];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_setBounds:(CGRect)bounds
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -350,6 +387,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super setBounds:bounds];
     aop_utils.isUICalling -= 1;
 }
+
 // Info
 - (NSInteger)aop_numberOfSections
 {
@@ -362,6 +400,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
     return number;
 }
+
 - (NSInteger)aop_numberOfRowsInSection:(NSInteger)section
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -388,6 +427,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return rect;
 }
+
 - (CGRect)aop_rectForHeaderInSection:(NSInteger)section
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -399,6 +439,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return rect;
 }
+
 - (CGRect)aop_rectForFooterInSection:(NSInteger)section
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -410,6 +451,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return rect;
 }
+
 - (CGRect)aop_rectForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -421,6 +463,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return rect;
 }
+
 - (NSIndexPath *)aop_indexPathForRowAtPoint:(CGPoint)point
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -432,6 +475,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
     return indexPath;
 }
+
 - (NSIndexPath *)aop_indexPathForCell:(UITableViewCell *)cell
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -443,6 +487,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
     return indexPath;
 }
+
 - (NSArray<NSIndexPath *> *)aop_indexPathsForRowsInRect:(CGRect)rect
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -454,6 +499,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
     return indexPaths;
 }
+
 - (UITableViewCell *)aop_cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -465,35 +511,38 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return cell;
 }
-- (NSArray *)aop_containVisibleCells:(IMYAOPType)containType
+
+- (NSArray *)aop_containVisibleCells:(const IMYAOPType)containType
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
     aop_utils.isUICalling += 1;
     NSArray<UITableViewCell *> *visibleCells = [super visibleCells];
     visibleCells = [visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UITableViewCell *cell, NSDictionary<NSString *, id> *bindings) {
-                                     if (containType == IMYAOPTypeAll) {
-                                         ///全部返回
-                                         return YES;
-                                     }
-                                     NSIndexPath *indexPath = [super indexPathForCell:cell];
-                                     if (aop_utils) {
-                                         indexPath = [aop_utils realIndexPathByTable:indexPath];
-                                     }
-                                     if (containType == IMYAOPTypeInsert) {
-                                         ///只返回插入的cell
-                                         return (indexPath == nil);
-                                     } else {
-                                         ///只返回原有的cell
-                                         return (indexPath != nil);
-                                     }
-                                 }]];
+        if (containType == IMYAOPTypeAll) {
+            ///全部返回
+            return YES;
+        }
+        NSIndexPath *indexPath = [super indexPathForCell:cell];
+        if (aop_utils) {
+            indexPath = [aop_utils realIndexPathByTable:indexPath];
+        }
+        if (containType == IMYAOPTypeInsert) {
+            ///只返回插入的cell
+            return (indexPath == nil);
+        } else {
+            ///只返回原有的cell
+            return (indexPath != nil);
+        }
+    }]];
     aop_utils.isUICalling -= 1;
     return visibleCells;
 }
+
 - (NSArray<UITableViewCell *> *)aop_visibleCells
 {
     return [self aop_containVisibleCells:0];
 }
+
 - (NSArray<NSIndexPath *> *)aop_indexPathsForVisibleRows
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -505,6 +554,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return array;
 }
+
 - (UITableViewHeaderFooterView *)aop_headerViewForSection:(NSInteger)section
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -516,6 +566,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return headerView;
 }
+
 - (UITableViewHeaderFooterView *)aop_footerViewForSection:(NSInteger)section
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -550,6 +601,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super insertSections:sections withRowAnimation:animation];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -560,6 +612,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super deleteSections:sections withRowAnimation:animation];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -570,6 +623,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super reloadSections:sections withRowAnimation:animation];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_moveSection:(NSInteger)section toSection:(NSInteger)newSection
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -581,6 +635,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super moveSection:section toSection:newSection];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -591,6 +646,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super insertRowsAtIndexPaths:indexPaths withRowAnimation:animation];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -601,6 +657,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super deleteRowsAtIndexPaths:indexPaths withRowAnimation:animation];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_reloadRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -611,6 +668,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super reloadRowsAtIndexPaths:indexPaths withRowAnimation:animation];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -635,6 +693,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
     return indexPath;
 }
+
 - (NSArray<NSIndexPath *> *)aop_indexPathsForSelectedRows
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -646,6 +705,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
     return indexPaths;
 }
+
 - (void)aop_selectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UITableViewScrollPosition)scrollPosition
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -656,6 +716,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     [super selectRowAtIndexPath:indexPath animated:animated scrollPosition:scrollPosition];
     aop_utils.isUICalling -= 1;
 }
+
 - (void)aop_deselectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -677,6 +738,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return dequeueCell;
 }
+
 - (UITableViewHeaderFooterView *)aop_dequeueReusableHeaderFooterViewWithIdentifier:(NSString *)identifier
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -685,6 +747,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return reuseView;
 }
+
 - (UITableViewCell *)aop_dequeueReusableCellWithIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
@@ -696,4 +759,5 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     aop_utils.isUICalling -= 1;
     return dequeueCell;
 }
+
 @end

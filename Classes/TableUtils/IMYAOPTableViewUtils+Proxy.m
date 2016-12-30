@@ -12,24 +12,31 @@
 #import <objc/runtime.h>
 
 @interface _IMYAOPCallProxy : NSProxy
+
 @property (nonatomic, weak) id target;
 @property (nonatomic, strong) Class invokeClass;
+
 + (id)callWithSuperClass:(Class)superClass object:(id)obj;
+
 @end
 
 @implementation IMYAOPTableViewUtils (InsertedProxy)
+
 - (NSArray<UITableViewCell *> *)visibleInsertCells
 {
     return [self visibleCellsWithType:IMYAOPTypeInsert];
 }
+
 - (NSArray<UITableViewCell *> *)visibleCellsWithType:(IMYAOPType)type
 {
     return [(id)self.tableView aop_containVisibleCells:type];
 }
+
 @end
 
 static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
 @implementation IMYAOPTableViewUtils (TableViewProxy)
+
 - (UITableView *)proxyRawTableView
 {
     id tableView = objc_getAssociatedObject(self, kIMYAOPProxyRawTableViewKey);
@@ -39,25 +46,31 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
     }
     return tableView;
 }
+
 - (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [[self proxyRawTableView] rectForRowAtIndexPath:indexPath];
 }
+
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return [[self proxyRawTableView] cellForRowAtIndexPath:indexPath];
 }
+
 - (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell
 {
     return [[self proxyRawTableView] indexPathForCell:cell];
 }
+
 @end
 
 @implementation _IMYAOPCallProxy
+
 - (NSMethodSignature *)methodSignatureForSelector:(SEL)selector
 {
     return [self.target methodSignatureForSelector:selector];
 }
+
 - (void)forwardInvocation:(NSInvocation *)invocation
 {
     if (self.target == nil) {
@@ -81,22 +94,27 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
     invocation.selector = superSelector;
     [invocation invokeWithTarget:self.target];
 }
+
 - (NSString *)description
 {
     return [self.target description];
 }
+
 - (NSString *)debugDescription
 {
     return [self.target debugDescription];
 }
+
 - (Class)superclass
 {
     return [self.target superclass];
 }
+
 - (Class)class
 {
     return [self.target class];
 }
+
 + (id)callSuper:(id)obj
 {
     Class clazz = object_getClass(obj);
@@ -107,6 +125,7 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
     Class superclass = class_getSuperclass(clazz);
     return [self callWithSuperClass:superclass object:obj];
 }
+
 + (id)callWithSuperClass:(Class)superClass object:(id)obj
 {
     if (object_getClass(obj) == superClass || superClass == nil || [obj isKindOfClass:superClass] == NO) {
@@ -118,4 +137,5 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
     proxy.invokeClass = superClass;
     return (id)proxy;
 }
+
 @end

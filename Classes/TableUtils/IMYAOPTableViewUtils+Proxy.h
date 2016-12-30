@@ -11,10 +11,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface IMYAOPTableViewUtils (InsertedProxy)
+
 ///获取插入集合内，显示中的cell
 @property (nonatomic, readonly) NSArray<__kindof UITableViewCell *> *visibleInsertCells;
 ///获取显示中的cell
 - (NSArray<__kindof UITableViewCell *> *)visibleCellsWithType:(IMYAOPType)type;
+
 @end
 
 ///对TableView执行原始数据的操作, 不进行AOP的处理

@@ -36,6 +36,7 @@
     self.isUICalling += 1;
 
 @implementation IMYAOPTableViewUtils (UITableViewDataSource)
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     kAOPUICallingSaved;
@@ -53,6 +54,7 @@
     kAOPUICallingResotre;
     return numberOfSection;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -98,6 +100,7 @@
     kAOPUICallingResotre;
     return cell;
 }
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -109,6 +112,7 @@
     kAOPUICallingResotre;
     return title;
 }
+
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     kAOPUICallingSaved;
@@ -158,6 +162,7 @@
     NSAssert(NO, @"NO Impl");
     return nil;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index __TVOS_PROHIBITED // tell table which section corresponds to section title/index (e.g. "B",1))
 {
     NSAssert(NO, @"NO Impl");
@@ -190,4 +195,5 @@
     }
     kAOPUICallingResotre;
 }
+
 @end
