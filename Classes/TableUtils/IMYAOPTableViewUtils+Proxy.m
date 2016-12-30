@@ -6,8 +6,8 @@
 //
 //
 
-#import "IMYAOPTableViewUtils+Proxy.h"
 #import "IMYAOPTableViewUtils+Private.h"
+#import "IMYAOPTableViewUtils+Proxy.h"
 #import "UITableView+IMYAOPTableView.h"
 #import <objc/runtime.h>
 
@@ -68,11 +68,11 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
     NSString *selectorName = NSStringFromSelector(invocation.selector);
     NSString *superSelectorName = [NSString stringWithFormat:@"IMYSuper_%@_%@", NSStringFromClass(invokeClass), selectorName];
     SEL superSelector = NSSelectorFromString(superSelectorName);
-    
+
     if ([invokeClass instancesRespondToSelector:superSelector] == NO) {
         Method superMethod = class_getInstanceMethod(invokeClass, invocation.selector);
         if (superMethod == NULL) {
-            NSLog(@"class:%@ undefine funcation: %@ ", NSStringFromClass(invokeClass), selectorName);
+            IMYLog(@"class:%@ undefine funcation: %@ ", NSStringFromClass(invokeClass), selectorName);
             return;
         }
         IMP superIMP = method_getImplementation(superMethod);

@@ -15,8 +15,7 @@
     if (realIndexPath) {                                                \
         dataSource = self.tableDataSource;                              \
         indexPath = realIndexPath;                                      \
-    }                                                                   \
-    else {                                                              \
+    } else {                                                            \
         dataSource = self.dataSource;                                   \
     }
 
@@ -26,8 +25,7 @@
     if (realSection >= 0) {                                    \
         dataSource = self.tableDataSource;                     \
         section = realSection;                                 \
-    }                                                          \
-    else {                                                     \
+    } else {                                                   \
         dataSource = self.dataSource;                          \
     }
 
@@ -66,14 +64,12 @@
 
         NSIndexPath *tableIndexPath = [self tableIndexPathByReal:[NSIndexPath indexPathForRow:rowCount inSection:section]];
         rowCount = tableIndexPath.row;
-    }
-    else {
+    } else {
         NSMutableArray<NSIndexPath *> *array = self.sectionMap[@(section)];
         for (NSIndexPath *obj in array) {
             if (obj.row <= rowCount) {
                 rowCount += 1;
-            }
-            else {
+            } else {
                 break;
             }
         }

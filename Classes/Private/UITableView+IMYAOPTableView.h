@@ -6,7 +6,6 @@
 //  Copyright © 2016年 IMY. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "IMYAOPTableViewUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN

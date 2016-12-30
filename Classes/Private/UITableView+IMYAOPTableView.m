@@ -6,11 +6,11 @@
 //  Copyright © 2016年 IMY. All rights reserved.
 //
 
-#import <objc/message.h>
-#import <objc/runtime.h>
 #import "IMYAOPTableView.h"
 #import "IMYAOPTableViewUtils+Private.h"
 #import "UITableView+IMYAOPTableView.h"
+#import <objc/message.h>
+#import <objc/runtime.h>
 
 static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
 {
@@ -27,13 +27,13 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
 
     class_addMethod(clazz,
-        origSel_,
-        class_getMethodImplementation(clazz, origSel_),
-        method_getTypeEncoding(origMethod));
+                    origSel_,
+                    class_getMethodImplementation(clazz, origSel_),
+                    method_getTypeEncoding(origMethod));
     class_addMethod(clazz,
-        altSel_,
-        class_getMethodImplementation(clazz, altSel_),
-        method_getTypeEncoding(altMethod));
+                    altSel_,
+                    class_getMethodImplementation(clazz, altSel_),
+                    method_getTypeEncoding(altMethod));
 
     method_exchangeImplementations(class_getInstanceMethod(clazz, origSel_), class_getInstanceMethod(clazz, altSel_));
 
@@ -48,7 +48,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         tableView = (id)tableView.superview;
     }
     IMYAOPTableViewUtils *aop_utils = nil;
-    if(tableView.aop_installed) {
+    if (tableView.aop_installed) {
         aop_utils = tableView.aop_utils;
         if (aop_utils.isUICalling > 0) {
             aop_utils = nil;
@@ -134,8 +134,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
         aop_utils.tableDelegate = delegate;
-    }
-    else {
+    } else {
         [super setDelegate:delegate];
     }
 }
@@ -144,8 +143,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
     if (aop_utils) {
         return aop_utils.tableDelegate;
-    }
-    else {
+    } else {
         return [super delegate];
     }
 }
@@ -154,8 +152,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
         aop_utils.tableDataSource = dataSource;
-    }
-    else {
+    } else {
         [super setDataSource:dataSource];
     }
 }
@@ -164,8 +161,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
     if (aop_utils) {
         return aop_utils.tableDataSource;
-    }
-    else {
+    } else {
         return [super dataSource];
     }
 }
@@ -174,8 +170,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
         return aop_utils.tableViewClass;
-    }
-    else {
+    } else {
         return [super class];
     }
 }
@@ -306,7 +301,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
 - (void)aop_refreshDelegate
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
-    IMYAOPTableViewUtils* uiAopUtils = nil;
+    IMYAOPTableViewUtils *uiAopUtils = nil;
     if (aop_utils.isUICalling <= 0) {
         uiAopUtils = aop_utils;
     }
@@ -475,24 +470,23 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
     aop_utils.isUICalling += 1;
     NSArray<UITableViewCell *> *visibleCells = [super visibleCells];
-    visibleCells = [visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UITableViewCell *cell, NSDictionary<NSString *,id> *bindings) {
-        if (containType == IMYAOPTypeAll) {
-            ///全部返回
-            return YES;
-        }
-        NSIndexPath *indexPath = [super indexPathForCell:cell];
-        if (aop_utils) {
-            indexPath = [aop_utils realIndexPathByTable:indexPath];
-        }
-        if (containType == IMYAOPTypeInsert) {
-            ///只返回插入的cell
-            return (indexPath == nil);
-        }
-        else {
-            ///只返回原有的cell
-            return (indexPath != nil);
-        }
-    }]];
+    visibleCells = [visibleCells filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(UITableViewCell *cell, NSDictionary<NSString *, id> *bindings) {
+                                     if (containType == IMYAOPTypeAll) {
+                                         ///全部返回
+                                         return YES;
+                                     }
+                                     NSIndexPath *indexPath = [super indexPathForCell:cell];
+                                     if (aop_utils) {
+                                         indexPath = [aop_utils realIndexPathByTable:indexPath];
+                                     }
+                                     if (containType == IMYAOPTypeInsert) {
+                                         ///只返回插入的cell
+                                         return (indexPath == nil);
+                                     } else {
+                                         ///只返回原有的cell
+                                         return (indexPath != nil);
+                                     }
+                                 }]];
     aop_utils.isUICalling -= 1;
     return visibleCells;
 }
@@ -698,7 +692,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         indexPath = [aop_utils tableIndexPathByReal:indexPath];
     }
     aop_utils.isUICalling += 1;
-    UITableViewCell* dequeueCell = [super dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
+    UITableViewCell *dequeueCell = [super dequeueReusableCellWithIdentifier:identifier forIndexPath:indexPath];
     aop_utils.isUICalling -= 1;
     return dequeueCell;
 }

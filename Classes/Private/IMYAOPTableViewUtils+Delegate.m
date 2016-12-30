@@ -15,8 +15,7 @@
     if (realIndexPath) {                                                \
         delegate = self.tableDelegate;                                  \
         indexPath = realIndexPath;                                      \
-    }                                                                   \
-    else {                                                              \
+    } else {                                                            \
         delegate = self.delegate;                                       \
     }
 
@@ -26,8 +25,7 @@
     if (realSection >= 0) {                                    \
         delegate = self.tableDelegate;                         \
         section = realSection;                                 \
-    }                                                          \
-    else {                                                     \
+    } else {                                                   \
         delegate = self.delegate;                              \
     }
 
@@ -46,7 +44,7 @@
     if ([self.delegate respondsToSelector:@selector(aopTableUtils:willDisplayCell:forRowAtIndexPath:)]) {
         [self.delegate aopTableUtils:self willDisplayCell:cell forRowAtIndexPath:indexPath];
     }
-    
+
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)]) {
         [delegate tableView:tableView willDisplayCell:cell forRowAtIndexPath:indexPath];
@@ -78,7 +76,7 @@
     if ([self.delegate respondsToSelector:@selector(aopTableUtils:didEndDisplayingCell:forRowAtIndexPath:)]) {
         [self.delegate aopTableUtils:self didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
     }
-    
+
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]) {
         [delegate tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
@@ -113,8 +111,7 @@
     CGFloat cellHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:heightForRowAtIndexPath:)]) {
         cellHeight = [delegate tableView:tableView heightForRowAtIndexPath:indexPath];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         cellHeight = tableView.rowHeight;
     }
     kAOPUICallingResotre;
@@ -130,8 +127,7 @@
     CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:heightForHeaderInSection:)]) {
         sectionHeight = [delegate tableView:tableView heightForHeaderInSection:section];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         sectionHeight = tableView.sectionHeaderHeight;
     }
     kAOPUICallingResotre;
@@ -144,8 +140,7 @@
     CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
         sectionHeight = [delegate tableView:tableView heightForFooterInSection:section];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         sectionHeight = tableView.sectionFooterHeight;
     }
     kAOPUICallingResotre;
@@ -161,8 +156,7 @@
     CGFloat cellHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)]) {
         cellHeight = [delegate tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         cellHeight = tableView.rowHeight;
     }
     kAOPUICallingResotre;
@@ -175,8 +169,7 @@
     CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForHeaderInSection:)]) {
         sectionHeight = [delegate tableView:tableView estimatedHeightForHeaderInSection:section];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         sectionHeight = tableView.sectionHeaderHeight;
     }
     kAOPUICallingResotre;
@@ -189,8 +182,7 @@
     CGFloat sectionHeight = 0;
     if ([delegate respondsToSelector:@selector(tableView:estimatedHeightForFooterInSection:)]) {
         sectionHeight = [delegate tableView:tableView estimatedHeightForFooterInSection:section];
-    }
-    else if (delegate) {
+    } else if (delegate) {
         sectionHeight = tableView.sectionFooterHeight;
     }
     kAOPUICallingResotre;

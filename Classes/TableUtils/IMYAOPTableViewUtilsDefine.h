@@ -46,4 +46,14 @@ typedef NS_ENUM(NSUInteger, IMYAOPType) {
     IMYAOPTypeAll,
 };
 
+#ifndef IMYLog
+
+#ifdef DEBUG
+#define IMYLog(s, ...) NSLog(@"<%@:(%d)> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__])
+#else
+#define IMYLog(...)
+#endif
+
+#endif
+
 NS_ASSUME_NONNULL_END

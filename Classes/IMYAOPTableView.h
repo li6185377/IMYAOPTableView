@@ -6,9 +6,8 @@
 //  Copyright © 2016年 ljh. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "IMYAOPTableViewUtils.h"
 #import "IMYAOPTableViewUtils+Proxy.h"
+#import "IMYAOPTableViewUtils.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
