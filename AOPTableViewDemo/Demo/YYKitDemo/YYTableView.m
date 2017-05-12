@@ -32,6 +32,11 @@
     return self;
 }
 
+- (void)reloadData
+{
+    [super reloadData];
+}
+
 - (BOOL)touchesShouldCancelInContentView:(UIView *)view {
     if ( [view isKindOfClass:[UIControl class]]) {
         return YES;
