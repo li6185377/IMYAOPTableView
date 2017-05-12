@@ -326,7 +326,10 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
 {
     IMYAOPTableViewUtils *aop_utils = [self aop_uiCallingUtils];
     aop_utils.isUICalling += 1;
-    [super reloadData];
+    struct objc_super objcSuper;
+    objcSuper.receiver = self;
+    objcSuper.super_class = self.aop_utils.tableViewClass;
+    ((void (*)(void *, SEL))(void *)objc_msgSendSuper)(&objcSuper, @selector(reloadData));
     aop_utils.isUICalling -= 1;
 }
 
