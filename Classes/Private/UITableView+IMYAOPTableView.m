@@ -416,7 +416,13 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         section = [aop_utils tableSectionByReal:section];
     }
     aop_utils.isUICalling += 1;
-    CGRect rect = ((CGRect (*)(void *, SEL, NSInteger))(void *)objc_msgSendSuper_stret)(&objcSuper, @selector(rectForSection:), section);
+    CGRect (*actionBlock)(void *, SEL, NSInteger);
+#if !defined(__arm64__)
+    actionBlock = (void *)objc_msgSendSuper_stret;
+#else
+    actionBlock = (void *)objc_msgSendSuper;
+#endif
+    CGRect rect = actionBlock(&objcSuper, @selector(rectForSection:), section);
     aop_utils.isUICalling -= 1;
     return rect;
 }
@@ -428,7 +434,13 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         section = [aop_utils tableSectionByReal:section];
     }
     aop_utils.isUICalling += 1;
-    CGRect rect = ((CGRect (*)(void *, SEL, NSInteger))(void *)objc_msgSendSuper_stret)(&objcSuper, @selector(rectForHeaderInSection:), section);
+    CGRect (*actionBlock)(void *, SEL, NSInteger);
+#if !defined(__arm64__)
+    actionBlock = (void *)objc_msgSendSuper_stret;
+#else
+    actionBlock = (void *)objc_msgSendSuper;
+#endif
+    CGRect rect = actionBlock(&objcSuper, @selector(rectForHeaderInSection:), section);
     aop_utils.isUICalling -= 1;
     return rect;
 }
@@ -440,7 +452,13 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         section = [aop_utils tableSectionByReal:section];
     }
     aop_utils.isUICalling += 1;
-    CGRect rect = ((CGRect (*)(void *, SEL, NSInteger))(void *)objc_msgSendSuper_stret)(&objcSuper, @selector(rectForFooterInSection:), section);
+    CGRect (*actionBlock)(void *, SEL, NSInteger);
+#if !defined(__arm64__)
+    actionBlock = (void *)objc_msgSendSuper_stret;
+#else
+    actionBlock = (void *)objc_msgSendSuper;
+#endif
+    CGRect rect = actionBlock(&objcSuper, @selector(rectForFooterInSection:), section);
     aop_utils.isUICalling -= 1;
     return rect;
 }
@@ -452,7 +470,13 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         indexPath = [aop_utils tableIndexPathByReal:indexPath];
     }
     aop_utils.isUICalling += 1;
-    CGRect rect = ((CGRect (*)(void *, SEL, id))(void *)objc_msgSendSuper_stret)(&objcSuper, @selector(rectForRowAtIndexPath:), indexPath);
+    CGRect (*actionBlock)(void *, SEL, id);
+#if !defined(__arm64__)
+    actionBlock = (void *)objc_msgSendSuper_stret;
+#else
+    actionBlock = (void *)objc_msgSendSuper;
+#endif
+    CGRect rect = actionBlock(&objcSuper, @selector(rectForRowAtIndexPath:), indexPath);
     aop_utils.isUICalling -= 1;
     return rect;
 }
