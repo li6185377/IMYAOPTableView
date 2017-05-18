@@ -151,9 +151,11 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
-        AopDefineObjcSuper;
-        AopCallSuper_1(@selector(setDelegate:), delegate);
-        aop_utils.tableDelegate = delegate;
+        if (aop_utils.tableDelegate != delegate) {
+            AopDefineObjcSuper;
+            AopCallSuper_1(@selector(setDelegate:), delegate);
+            aop_utils.tableDelegate = delegate;
+        }
     } else {
         [super setDelegate:delegate];
     }
@@ -173,9 +175,11 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
-        AopDefineObjcSuper;
-        AopCallSuper_1(@selector(setDataSource:), dataSource);
-        aop_utils.tableDataSource = dataSource;
+        if (aop_utils.tableDataSource != dataSource) {
+            AopDefineObjcSuper;
+            AopCallSuper_1(@selector(setDataSource:), dataSource);
+            aop_utils.tableDataSource = dataSource;
+        }
     } else {
         [super setDataSource:dataSource];
     }
