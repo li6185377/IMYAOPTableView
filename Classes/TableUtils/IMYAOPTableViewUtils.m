@@ -89,9 +89,10 @@ static Class kIMYTVAOPClass;
 
     _tableDataSource = tableView.dataSource;
     _tableDelegate = tableView.delegate;
-
-    tableView.delegate = self;
-    tableView.dataSource = self;
+    
+    struct objc_super objcSuper = { .super_class = [UITableView class], .receiver = tableView };
+    ((void (*)(void *, SEL, id))(void *)objc_msgSendSuper)(&objcSuper, @selector(setDelegate:), self);
+    ((void (*)(void *, SEL, id))(void *)objc_msgSendSuper)(&objcSuper, @selector(setDataSource:), self);
 
     self.tableViewClass = [tableView class];
     Class aopClass = [self makeSubclassWithClass:self.tableViewClass];
