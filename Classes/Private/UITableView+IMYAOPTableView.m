@@ -151,6 +151,8 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
+        AopDefineObjcSuper;
+        AopCallSuper_1(@selector(setDelegate:), delegate);
         aop_utils.tableDelegate = delegate;
     } else {
         [super setDelegate:delegate];
@@ -171,6 +173,8 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
 {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
+        AopDefineObjcSuper;
+        AopCallSuper_1(@selector(setDataSource:), dataSource);
         aop_utils.tableDataSource = dataSource;
     } else {
         [super setDataSource:dataSource];
@@ -329,9 +333,8 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         uiAopUtils = aop_utils;
     }
     uiAopUtils.isUICalling += 1;
-    AopDefineObjcSuper;
-    AopCallSuper_1(@selector(setDelegate:), nil);
-    AopCallSuper_1(@selector(setDelegate:), aop_utils);
+    [super setDelegate:nil];
+    [super setDelegate:aop_utils];
     uiAopUtils.isUICalling -= 1;
 }
 
@@ -343,9 +346,8 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
         uiAopUtils = aop_utils;
     }
     uiAopUtils.isUICalling += 1;
-    AopDefineObjcSuper;
-    AopCallSuper_1(@selector(setDataSource:), nil);
-    AopCallSuper_1(@selector(setDataSource:), aop_utils);
+    [super setDataSource:nil];
+    [super setDataSource:aop_utils];
     uiAopUtils.isUICalling -= 1;
 }
 
