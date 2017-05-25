@@ -279,6 +279,9 @@
     if ([delegate respondsToSelector:@selector(tableView:willSelectRowAtIndexPath:)]) {
         indexPath = [delegate tableView:tableView willSelectRowAtIndexPath:indexPath];
     }
+    if (realIndexPath) {
+        indexPath = [self tableIndexPathByReal:indexPath];
+    }
     kAOPUICallingResotre;
     return indexPath;
 }
@@ -289,6 +292,9 @@
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:willDeselectRowAtIndexPath:)]) {
         indexPath = [delegate tableView:tableView willDeselectRowAtIndexPath:indexPath];
+    }
+    if (realIndexPath) {
+        indexPath = [self tableIndexPathByReal:indexPath];
     }
     kAOPUICallingResotre;
     return indexPath;
