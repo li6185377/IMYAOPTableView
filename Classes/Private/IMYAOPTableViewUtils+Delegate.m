@@ -279,7 +279,9 @@
     if ([delegate respondsToSelector:@selector(tableView:willSelectRowAtIndexPath:)]) {
         indexPath = [delegate tableView:tableView willSelectRowAtIndexPath:indexPath];
     }
-    indexPath = [self tableIndexPathByReal:indexPath];
+    if (realIndexPath) {
+        indexPath = [self tableIndexPathByReal:indexPath];
+    }
     kAOPUICallingResotre;
     return indexPath;
 }
@@ -291,7 +293,9 @@
     if ([delegate respondsToSelector:@selector(tableView:willDeselectRowAtIndexPath:)]) {
         indexPath = [delegate tableView:tableView willDeselectRowAtIndexPath:indexPath];
     }
-    indexPath = [self tableIndexPathByReal:indexPath];
+    if (realIndexPath) {
+        indexPath = [self tableIndexPathByReal:indexPath];
+    }
     kAOPUICallingResotre;
     return indexPath;
 }

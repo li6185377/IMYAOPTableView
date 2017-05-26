@@ -338,7 +338,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
     uiAopUtils.isUICalling += 1;
     [super setDelegate:nil];
-    [super setDelegate:aop_utils];
+    [super setDelegate:(id)aop_utils];
     uiAopUtils.isUICalling -= 1;
 }
 
@@ -351,7 +351,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_)
     }
     uiAopUtils.isUICalling += 1;
     [super setDataSource:nil];
-    [super setDataSource:aop_utils];
+    [super setDataSource:(id)aop_utils];
     uiAopUtils.isUICalling -= 1;
 }
 
