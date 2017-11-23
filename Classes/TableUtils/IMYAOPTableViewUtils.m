@@ -118,9 +118,11 @@ static Class kIMYTVAOPClass;
     for (id observance in observanceArray) {
         NSString *keyPath = [observance valueForKeyPath:@"_property._keyPath"];
         id observer = [observance valueForKey:@"_observer"];
+        id context = nil;
         if (observer && keyPath) {
             NSKeyValueObservingOptions options = 0;
             @try {
+                context = [observance valueForKey:@"_context"];
                 options = [[observance valueForKey:@"_options"] unsignedIntegerValue];
             } @catch (NSException *exception) {
                 IMYLog(@"%@", exception.debugDescription);
@@ -128,7 +130,7 @@ static Class kIMYTVAOPClass;
             if (options == 0) {
                 options = (NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew);
             }
-            [tableView addObserver:observer forKeyPath:keyPath options:options context:nil];
+            [tableView addObserver:observer forKeyPath:keyPath options:options context:(void *)context];
         }
     }
 }
