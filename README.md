@@ -1,6 +1,6 @@
 # IMYAOPTableView
 
-Aspect Oriented Programming For TableView，无业务入侵，无逻辑入侵，外部察觉不到的 TableView AOP框架
+无业务入侵，无逻辑入侵，外部察觉不到的 TableView AOP框架
 
 按道理最低应该是支持 iOS 5.0的，但是已经没有iOS7之前的机子测试了。 所以不敢保证没问题。
 
@@ -28,7 +28,7 @@ pod 'IMYAOPTableView'
 Look ./AOPTableViewDemo
 ```
 
-开始讲故事 《如何优雅的插入广告》
+《如何优雅的插入广告》
 ====================================
 
 当应用发展到一定阶段，一般都会在feeds流中插入广告，来进行广告的变现，这是每个应用都要进行的过程。 比如微信朋友圈，微博，QQ空间。。。 不列举了，一般有feeds流的都会有广告。
