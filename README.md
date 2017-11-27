@@ -4,9 +4,9 @@ Aspect Oriented Programming For TableView，无业务入侵，无逻辑入侵，
 
 按道理最低应该是支持 iOS 5.0的，但是已经没有iOS7之前的机子测试了。 所以不敢保证没问题。
 
-这个框架已经在`美柚`稳定使用半年多了，美柚总用户突破1亿，日活接近千万，代码的稳定性是可以放心的。有需求或者bug可以提issues，我会尽快回复。
+这个框架已经在 美柚 稳定 2016 年就开始使用，美柚总用户突破1亿，日活接近千万，代码的稳定性是可以放心的。有需求或者bug可以提issues，我会尽快回复。
 
-![](http://www.meiyou.com/g/images/logo1.png)
+![](http://sc.seeyouyima.com/shopGuide/data/59647e039f684_1920_576.png?imageView2/2/w/800/h/600)
 
 
 ## 要求
