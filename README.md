@@ -186,5 +186,3 @@ Look ./AOPTableViewDemo
 
 ![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/aop_tableview_demo.gif)
 
-
-如果有兴趣可以看具体的源码：[传送门](https://github.com/li6185377/IMYAOPTableView.git)
