@@ -40,15 +40,13 @@ static Class kIMYTVAOPClass;
 
 @implementation IMYAOPTableViewUtils
 
-+ (instancetype)aopUtilsWithTableView:(UITableView *)tableView
-{
++ (instancetype)aopUtilsWithTableView:(UITableView *)tableView {
     IMYAOPTableViewUtils *aopUtils = [super new];
     [aopUtils setTableView:tableView];
     return aopUtils;
 }
 
-- (void)setTableDelegate:(id<UITableViewDelegate>)tableDelegate
-{
+- (void)setTableDelegate:(id<UITableViewDelegate>)tableDelegate {
     if (_tableDelegate != tableDelegate) {
         _tableDelegate = tableDelegate;
         id tableView = self.tableView;
@@ -56,8 +54,7 @@ static Class kIMYTVAOPClass;
     }
 }
 
-- (void)setTableDataSource:(id<UITableViewDataSource>)tableDataSource
-{
+- (void)setTableDataSource:(id<UITableViewDataSource>)tableDataSource {
     if (_tableDataSource != tableDataSource) {
         _tableDataSource = tableDataSource;
         id tableView = self.tableView;
@@ -65,8 +62,7 @@ static Class kIMYTVAOPClass;
     }
 }
 
-- (void)setDelegate:(id<IMYAOPTableViewDelegate>)delegate
-{
+- (void)setDelegate:(id<IMYAOPTableViewDelegate>)delegate {
     if (_delegate != delegate) {
         _delegate = delegate;
         id tableView = self.tableView;
@@ -74,8 +70,7 @@ static Class kIMYTVAOPClass;
     }
 }
 
-- (void)setDataSource:(id<IMYAOPTableViewDataSource>)dataSource
-{
+- (void)setDataSource:(id<IMYAOPTableViewDataSource>)dataSource {
     if (_dataSource != dataSource) {
         _dataSource = dataSource;
         id tableView = self.tableView;
@@ -83,14 +78,13 @@ static Class kIMYTVAOPClass;
     }
 }
 
-- (void)injectTableView
-{
+- (void)injectTableView {
     UITableView *tableView = self.tableView;
 
     _tableDataSource = tableView.dataSource;
     _tableDelegate = tableView.delegate;
-    
-    struct objc_super objcSuper = { .super_class = [UITableView class], .receiver = tableView };
+
+    struct objc_super objcSuper = {.super_class = [UITableView class], .receiver = tableView};
     ((void (*)(void *, SEL, id))(void *)objc_msgSendSuper)(&objcSuper, @selector(setDelegate:), self);
     ((void (*)(void *, SEL, id))(void *)objc_msgSendSuper)(&objcSuper, @selector(setDataSource:), self);
 
@@ -101,8 +95,7 @@ static Class kIMYTVAOPClass;
     }
 }
 
-- (void)bindingTableView:(UITableView *)tableView aopClass:(Class)aopClass
-{
+- (void)bindingTableView:(UITableView *)tableView aopClass:(Class)aopClass {
     id observationInfo = [tableView observationInfo];
     NSArray *observanceArray = [observationInfo valueForKey:@"_observances"];
     ///移除旧的KVO
@@ -118,25 +111,34 @@ static Class kIMYTVAOPClass;
     for (id observance in observanceArray) {
         NSString *keyPath = [observance valueForKeyPath:@"_property._keyPath"];
         id observer = [observance valueForKey:@"_observer"];
-        id context = nil;
         if (observer && keyPath) {
-            NSKeyValueObservingOptions options = 0;
+            void *context = NULL;
+            NSUInteger options = 0;
             @try {
-                context = [observance valueForKey:@"_context"];
-                options = [[observance valueForKey:@"_options"] unsignedIntegerValue];
+                Ivar _civar = class_getInstanceVariable([observance class], "_context");
+                if (_civar) {
+                    context = ((void *(*)(id, Ivar))(void *)object_getIvar)(observance, _civar);
+                }
+                Ivar _oivar = class_getInstanceVariable([observance class], "_options");
+                if (_oivar) {
+                    options = ((NSUInteger(*)(id, Ivar))(void *)object_getIvar)(observance, _oivar);
+                }
+                /// 不知道为什么，iOS11 返回的值 会填充8个字节。。 128
+                if (options >= 128) {
+                    options -= 128;
+                }
             } @catch (NSException *exception) {
                 IMYLog(@"%@", exception.debugDescription);
             }
             if (options == 0) {
                 options = (NSKeyValueObservingOptionOld | NSKeyValueObservingOptionNew);
             }
-            [tableView addObserver:observer forKeyPath:keyPath options:options context:(void *)context];
+            [tableView addObserver:observer forKeyPath:keyPath options:options context:context];
         }
     }
 }
 
-- (void)insertWithSections:(NSArray<IMYAOPTableViewInsertBody *> *)insertSections
-{
+- (void)insertWithSections:(NSArray<IMYAOPTableViewInsertBody *> *)insertSections {
     NSArray<IMYAOPTableViewInsertBody *> *array = [insertSections sortedArrayUsingComparator:^NSComparisonResult(IMYAOPTableViewInsertBody *_Nonnull obj1, IMYAOPTableViewInsertBody *_Nonnull obj2) {
         if (obj1.section > obj2.section) {
             return NSOrderedDescending;
@@ -164,8 +166,7 @@ static Class kIMYTVAOPClass;
     self.sections = insertArray;
 }
 
-- (void)insertWithIndexPaths:(NSArray<IMYAOPTableViewInsertBody *> *)indexPaths
-{
+- (void)insertWithIndexPaths:(NSArray<IMYAOPTableViewInsertBody *> *)indexPaths {
     NSArray<IMYAOPTableViewInsertBody *> *array = [indexPaths sortedArrayUsingComparator:^NSComparisonResult(IMYAOPTableViewInsertBody *_Nonnull obj1, IMYAOPTableViewInsertBody *_Nonnull obj2) {
         return [obj1.indexPath compare:obj2.indexPath];
     }];
@@ -200,8 +201,7 @@ static Class kIMYTVAOPClass;
 }
 
 #pragma mark - install aop method
-- (Class)makeSubclassWithClass:(Class)origClass
-{
+- (Class)makeSubclassWithClass:(Class)origClass {
     NSString *className = NSStringFromClass(origClass);
     NSString *aopClassName = [kAOPTableViewPrefix stringByAppendingString:className];
     Class aopClass = NSClassFromString(aopClassName);
@@ -217,8 +217,7 @@ static Class kIMYTVAOPClass;
     return aopClass;
 }
 
-- (void)setupAopClass:(Class)aopClass
-{
+- (void)setupAopClass:(Class)aopClass {
     kIMYTVAOPClass = [UITableView imy_aopClass];
     ///纯手动敲打
     [self addOverriteMethod:@selector(class) aopClass:aopClass];
@@ -291,16 +290,14 @@ static Class kIMYTVAOPClass;
     [self addOverriteMethod:@selector(dequeueReusableCellWithIdentifier:forIndexPath:) aopClass:aopClass];
 }
 
-- (void)addOverriteMethod:(SEL)seletor aopClass:(Class)aopClass
-{
+- (void)addOverriteMethod:(SEL)seletor aopClass:(Class)aopClass {
     NSString *seletorString = NSStringFromSelector(seletor);
     NSString *aopSeletorString = [NSString stringWithFormat:@"aop_%@", seletorString];
     SEL aopMethod = NSSelectorFromString(aopSeletorString);
     [self addOverriteMethod:seletor toMethod:aopMethod class:aopClass];
 }
 
-- (void)addOverriteMethod:(SEL)seletor toMethod:(SEL)toSeletor class:(Class)clazz
-{
+- (void)addOverriteMethod:(SEL)seletor toMethod:(SEL)toSeletor class:(Class)clazz {
     Method method = class_getInstanceMethod(kIMYTVAOPClass, toSeletor);
     if (method == NULL) {
         method = class_getInstanceMethod(kIMYTVAOPClass, seletor);
@@ -310,8 +307,7 @@ static Class kIMYTVAOPClass;
     class_addMethod(clazz, seletor, imp, types);
 }
 
-- (BOOL)respondsToSelector:(SEL)aSelector
-{
+    - (BOOL)respondsToSelector : (SEL)aSelector {
     BOOL responds = NO;
     responds = ([self.tableDelegate respondsToSelector:aSelector] || [self.tableDataSource respondsToSelector:aSelector]);
     if (!responds) {
@@ -323,8 +319,7 @@ static Class kIMYTVAOPClass;
     return responds;
 }
 
-- (id)forwardingTargetForSelector:(SEL)aSelector
-{
+- (id)forwardingTargetForSelector:(SEL)aSelector {
     if ([self.tableDelegate respondsToSelector:aSelector]) {
         return self.tableDelegate;
     } else if ([self.tableDataSource respondsToSelector:aSelector]) {
@@ -333,15 +328,13 @@ static Class kIMYTVAOPClass;
     return nil;
 }
 
-- (void)forwardInvocation:(NSInvocation *)invocation
-{
+- (void)forwardInvocation:(NSInvocation *)invocation {
     if (self.tableDelegate || self.tableDataSource) {
         NSAssert(NO, @"未实现该方法");
     }
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
     IMYLog(@"dealloc aop table utils");
 }
 
@@ -349,8 +342,7 @@ static Class kIMYTVAOPClass;
 
 @implementation IMYAOPTableViewUtils (IndexPath)
 
-- (NSIndexPath *)realIndexPathByTable:(NSIndexPath *)tableIndexPath
-{
+- (NSIndexPath *)realIndexPathByTable:(NSIndexPath *)tableIndexPath {
     if (!tableIndexPath) {
         return nil;
     }
@@ -379,8 +371,7 @@ static Class kIMYTVAOPClass;
     return realIndexPath;
 }
 
-- (NSIndexPath *)tableIndexPathByReal:(NSIndexPath *)realIndexPath
-{
+- (NSIndexPath *)tableIndexPathByReal:(NSIndexPath *)realIndexPath {
     if (realIndexPath == nil) {
         return nil;
     }
@@ -402,8 +393,7 @@ static Class kIMYTVAOPClass;
     return tableIndexPath;
 }
 
-- (NSArray<NSIndexPath *> *)realIndexPathsByTableIndexPaths:(NSArray<NSIndexPath *> *)tableIndexPaths
-{
+- (NSArray<NSIndexPath *> *)realIndexPathsByTableIndexPaths:(NSArray<NSIndexPath *> *)tableIndexPaths {
     NSMutableArray *toArray = [NSMutableArray array];
     [tableIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
         NSIndexPath *realIndexPath = [self realIndexPathByTable:obj];
@@ -414,8 +404,7 @@ static Class kIMYTVAOPClass;
     return toArray;
 }
 
-- (NSArray<NSIndexPath *> *)tableIndexPathsByRealIndexPaths:(NSArray<NSIndexPath *> *)realIndexPaths
-{
+- (NSArray<NSIndexPath *> *)tableIndexPathsByRealIndexPaths:(NSArray<NSIndexPath *> *)realIndexPaths {
     NSMutableArray *toArray = [NSMutableArray array];
     [realIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
         NSIndexPath *tableIndexPath = [self tableIndexPathByReal:obj];
@@ -426,8 +415,7 @@ static Class kIMYTVAOPClass;
     return toArray;
 }
 
-- (NSInteger)tableSectionByReal:(NSInteger)realSection
-{
+- (NSInteger)tableSectionByReal:(NSInteger)realSection {
     __block NSInteger section = realSection;
     [self.sections enumerateIndexesUsingBlock:^(NSUInteger insertSection, BOOL *_Nonnull stop) {
         if (insertSection <= section) {
@@ -439,8 +427,7 @@ static Class kIMYTVAOPClass;
     return section;
 }
 
-- (NSInteger)realSectionByTable:(NSInteger)tableSection
-{
+- (NSInteger)realSectionByTable:(NSInteger)tableSection {
     __block NSInteger cutCount = 0;
     [self.sections enumerateIndexesUsingBlock:^(NSUInteger insertSection, BOOL *_Nonnull stop) {
         if (insertSection == tableSection) {
@@ -458,8 +445,7 @@ static Class kIMYTVAOPClass;
     return -1;
 }
 
-- (NSIndexSet *)tableSectionsByRealSet:(NSIndexSet *)realSet
-{
+- (NSIndexSet *)tableSectionsByRealSet:(NSIndexSet *)realSet {
     NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
     [realSet enumerateIndexesUsingBlock:^(NSUInteger realIndex, BOOL *_Nonnull stop) {
         NSInteger section = [self tableSectionByReal:realIndex];
@@ -470,8 +456,7 @@ static Class kIMYTVAOPClass;
     return sections;
 }
 
-- (NSIndexSet *)realSectionsByTableSet:(NSIndexSet *)tableSet
-{
+- (NSIndexSet *)realSectionsByTableSet:(NSIndexSet *)tableSet {
     NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
     [tableSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *_Nonnull stop) {
         NSInteger section = [self realSectionByTable:idx];
@@ -487,12 +472,10 @@ static Class kIMYTVAOPClass;
 static const void *kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
 @implementation UITableView (AOPTableViewUtils)
 
-- (IMYAOPTableViewUtils *)aop_utils
-{
+- (IMYAOPTableViewUtils *)aop_utils {
     IMYAOPTableViewUtils *aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
     if (!aopUtils) {
-        @synchronized(self)
-        {
+        @synchronized(self) {
             aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
             if (!aopUtils) {
                 ///初始化部分配置
@@ -507,8 +490,7 @@ static const void *kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
     return aopUtils;
 }
 
-- (BOOL)aop_installed
-{
+- (BOOL)aop_installed {
     IMYAOPTableViewUtils *aopUtils = objc_getAssociatedObject(self, kIMYAOPTableUtilsKey);
     if (aopUtils) {
         return YES;
@@ -520,13 +502,10 @@ static const void *kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
 
 @implementation IMYAOPTableViewUtils (Deprecated_Nonfunctional)
 
-- (void)setCombineReloadData:(BOOL)combineReloadData
-{
-    
+- (void)setCombineReloadData:(BOOL)combineReloadData {
 }
 
-- (BOOL)combineReloadData
-{
+- (BOOL)combineReloadData {
     return NO;
 }
 
