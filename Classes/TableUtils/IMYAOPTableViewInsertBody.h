@@ -27,4 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+
+@interface IMYAOPTableViewRawModel : NSObject
+
++ (instancetype)rawWithModel:(id)model indexPath:(NSIndexPath *)indexPath;
+
+@property (nonatomic, readonly) NSIndexPath *indexPath;
+@property (nonatomic, readonly) id model;
+
+@end
+
 NS_ASSUME_NONNULL_END
