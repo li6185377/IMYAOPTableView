@@ -38,8 +38,7 @@
 @implementation IMYAOPTableViewUtils (UITableViewDelegate)
 
 // Display customization
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     ///回调给ad manager 虚拟广告位的上报
     if ([self.delegate respondsToSelector:@selector(aopTableUtils:willDisplayCell:forRowAtIndexPath:)]) {
@@ -53,8 +52,7 @@
     kAOPUICallingResotre;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section
-{
+- (void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     if ([delegate respondsToSelector:@selector(tableView:willDisplayHeaderView:forSection:)]) {
@@ -63,8 +61,7 @@
     kAOPUICallingResotre;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section
-{
+- (void)tableView:(UITableView *)tableView willDisplayFooterView:(UIView *)view forSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     if ([delegate respondsToSelector:@selector(tableView:willDisplayFooterView:forSection:)]) {
@@ -73,8 +70,7 @@
     kAOPUICallingResotre;
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     ///回调给ad manager 虚拟广告位的上报
     if ([self.delegate respondsToSelector:@selector(aopTableUtils:didEndDisplayingCell:forRowAtIndexPath:)]) {
@@ -88,8 +84,7 @@
     kAOPUICallingResotre;
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingHeaderView:(UIView *)view forSection:(NSInteger)section
-{
+- (void)tableView:(UITableView *)tableView didEndDisplayingHeaderView:(UIView *)view forSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     if ([delegate respondsToSelector:@selector(tableView:didEndDisplayingHeaderView:forSection:)]) {
@@ -98,8 +93,7 @@
     kAOPUICallingResotre;
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(UIView *)view forSection:(NSInteger)section
-{
+- (void)tableView:(UITableView *)tableView didEndDisplayingFooterView:(UIView *)view forSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     if ([delegate respondsToSelector:@selector(tableView:didEndDisplayingFooterView:forSection:)]) {
@@ -110,8 +104,7 @@
 
 // Variable height support
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     CGFloat cellHeight = 0;
@@ -124,8 +117,7 @@
     return cellHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     if ([self.delegate respondsToSelector:@selector(aopTableUtils:heightForHeaderInSection:)]) {
         return [self.delegate aopTableUtils:self heightForHeaderInSection:section];
     }
@@ -141,8 +133,7 @@
     return sectionHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     CGFloat sectionHeight = 0;
@@ -157,8 +148,7 @@
 
 // Use the estimatedHeight methods to quickly calcuate guessed values which will allow for fast load times of the table.
 // If these methods are implemented, the above -tableView:heightForXXX calls will be deferred until views are ready to be displayed, so more expensive logic can be placed there.
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     CGFloat cellHeight = 0;
@@ -171,8 +161,7 @@
     return cellHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     CGFloat sectionHeight = 0;
@@ -185,8 +174,7 @@
     return sectionHeight;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section
-{
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForFooterInSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     CGFloat sectionHeight = 0;
@@ -201,8 +189,7 @@
 
 // Section header & footer information. Views are preferred over title should you decide to provide both
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     UIView *headerView = nil;
@@ -213,8 +200,7 @@
     return headerView;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     UIView *headerView = nil;
@@ -225,8 +211,7 @@
     return headerView;
 }
 
-- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:accessoryButtonTappedForRowWithIndexPath:)]) {
@@ -239,8 +224,7 @@
 
 // -tableView:shouldHighlightRowAtIndexPath: is called when a touch comes down on a row.
 // Returning NO to that message halts the selection process and does not cause the currently selected row to lose its selected look while the touch is down.
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     BOOL canHighlight = YES;
@@ -251,8 +235,7 @@
     return canHighlight;
 }
 
-- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:didHighlightRowAtIndexPath:)]) {
@@ -261,8 +244,7 @@
     kAOPUICallingResotre;
 }
 
-- (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didUnhighlightRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:didUnhighlightRowAtIndexPath:)]) {
@@ -272,8 +254,7 @@
 }
 
 // Called before the user changes the selection. Return a new indexPath, or nil, to change the proposed selection.
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:willSelectRowAtIndexPath:)]) {
@@ -286,8 +267,7 @@
     return indexPath;
 }
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSIndexPath *)tableView:(UITableView *)tableView willDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:willDeselectRowAtIndexPath:)]) {
@@ -301,8 +281,7 @@
 }
 
 // Called after the user changes the selection.
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)]) {
@@ -311,8 +290,7 @@
     kAOPUICallingResotre;
 }
 
-- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:didDeselectRowAtIndexPath:)]) {
@@ -324,8 +302,7 @@
 // Editing
 
 // Allows customization of the editingStyle for a particular cell located at 'indexPath'. If not implemented, all editable cells will have UITableViewCellEditingStyleDelete set for them when the table has editing property set to YES.
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     UITableViewCellEditingStyle editStyle = UITableViewCellEditingStyleNone;
@@ -336,8 +313,7 @@
     return editStyle;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     NSString *title = nil;
@@ -348,8 +324,7 @@
     return title;
 }
 
-- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     id actions = nil;
@@ -361,8 +336,7 @@
 }
 
 // Controls whether the background is indented while editing.  If not implemented, the default is YES.  This is unrelated to the indentation level below.  This method only applies to grouped style table views.
-- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     BOOL shouldIndent = YES;
@@ -374,8 +348,7 @@
 }
 
 // The willBegin/didEnd methods are called whenever the 'editing' property is automatically changed by the table (allowing insert/delete/move). This is done by a swipe activating a single row
-- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:willBeginEditingRowAtIndexPath:)]) {
@@ -384,8 +357,7 @@
     kAOPUICallingResotre;
 }
 
-- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:didEndEditingRowAtIndexPath:)]) {
@@ -397,8 +369,7 @@
 // Moving/reordering
 
 // Allows customization of the target row for a particular row as it is being moved/reordered
-- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
-{
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
     kAOPUICallingSaved;
     NSIndexPath *realOne = [self realIndexPathByTable:sourceIndexPath];
     NSIndexPath *realTwo = [self realIndexPathByTable:proposedDestinationIndexPath];
@@ -416,8 +387,7 @@
 
 // Indentation
 
-- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (NSInteger)tableView:(UITableView *)tableView indentationLevelForRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     NSInteger indentationLevel = 0;
@@ -430,8 +400,7 @@
 
 // Copy/Paste.  All three methods must be implemented by the delegate.
 
-- (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView shouldShowMenuForRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     BOOL shouldShow = YES;
@@ -442,8 +411,7 @@
     return shouldShow;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
-{
+- (BOOL)tableView:(UITableView *)tableView canPerformAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     BOOL canPerform = NO;
@@ -454,8 +422,7 @@
     return canPerform;
 }
 
-- (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender
-{
+- (void)tableView:(UITableView *)tableView performAction:(SEL)action forRowAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:performAction:forRowAtIndexPath:withSender:)]) {
@@ -466,8 +433,7 @@
 
 // Focus
 
-- (BOOL)tableView:(UITableView *)tableView canFocusRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canFocusRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     BOOL canFocus = YES;
@@ -478,8 +444,7 @@
     return canFocus;
 }
 
-- (NSIndexPath *)indexPathForPreferredFocusedViewInTableView:(UITableView *)tableView
-{
+- (NSIndexPath *)indexPathForPreferredFocusedViewInTableView:(UITableView *)tableView {
     kAOPUICallingSaved;
     NSIndexPath *indexPath = nil;
     if ([self.tableDelegate respondsToSelector:@selector(indexPathForPreferredFocusedViewInTableView:)]) {

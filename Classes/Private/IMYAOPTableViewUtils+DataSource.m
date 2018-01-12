@@ -37,8 +37,7 @@
 
 @implementation IMYAOPTableViewUtils (UITableViewDataSource)
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     kAOPUICallingSaved;
     NSInteger numberOfSection = 1;
     if ([self.tableDataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]) {
@@ -55,8 +54,7 @@
     return numberOfSection;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     kAOPUICallingSaved;
     NSInteger realSection = [self realSectionByTable:section];
     NSInteger rowCount = 0;
@@ -83,8 +81,7 @@
 // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
 // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     UITableViewCell *cell = nil;
@@ -101,8 +98,7 @@
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     NSString *title = nil;
@@ -113,8 +109,7 @@
     return title;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
-{
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     kAOPUICallingSaved;
     kAOPRealSectionCode;
     NSString *title = nil;
@@ -128,8 +123,7 @@
 // Editing
 
 // Individual rows can opt out of having the -editing property set for them. If not implemented, all rows are assumed to be editable.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     BOOL canEditing = NO;
@@ -143,8 +137,7 @@
 // Moving/reordering
 
 // Allows the reorder accessory view to optionally be shown for a particular row. By default, the reorder control will be shown only if the datasource implements -tableView:moveRowAtIndexPath:toIndexPath:
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     BOOL canMove = NO;
@@ -173,8 +166,7 @@
 
 // After a row has the minus or plus button invoked (based on the UITableViewCellEditingStyle for the cell), the dataSource must commit the change
 // Not called for edit actions using UITableViewRowAction - the action's handler will be invoked instead
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     if ([dataSource respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)]) {
@@ -185,8 +177,7 @@
 
 // Data manipulation - reorder / moving support
 
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
-{
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     kAOPUICallingSaved;
     NSIndexPath *source = [self realIndexPathByTable:sourceIndexPath];
     NSIndexPath *destin = [self realIndexPathByTable:destinationIndexPath];

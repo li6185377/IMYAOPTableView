@@ -7,14 +7,14 @@
 //
 
 #import "T1HomeTimelineItemsViewController.h"
-#import "T1StatusLayout.h"
 #import "T1StatusCell.h"
-#import "YYTableView.h"
+#import "T1StatusLayout.h"
 #import "YYFPSLabel.h"
 #import "YYPhotoGroupView.h"
 #import "YYSimpleWebViewController.h"
+#import "YYTableView.h"
 
-@interface T1HomeTimelineItemsViewController() <UITableViewDelegate, UITableViewDataSource, T1StatusCellDelegate>
+@interface T1HomeTimelineItemsViewController () <UITableViewDelegate, UITableViewDataSource, T1StatusCellDelegate>
 @property (nonatomic, strong) NSMutableArray *layouts;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) YYFPSLabel *fpsLabel;
@@ -38,34 +38,32 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithWhite:1.000 alpha:0.919];
-    
-    if ([self respondsToSelector:@selector( setAutomaticallyAdjustsScrollViewInsets:)]) {
+
+    if ([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)]) {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
-    
+
     _tableView.frame = self.view.bounds;
     _tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);
     _tableView.scrollIndicatorInsets = _tableView.contentInset;
     _tableView.backgroundColor = [UIColor clearColor];
     _tableView.backgroundView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableView];
-    
+
     _fpsLabel = [YYFPSLabel new];
     [_fpsLabel sizeToFit];
     _fpsLabel.bottom = self.view.height - kT1CellPadding;
     _fpsLabel.left = kT1CellPadding;
     _fpsLabel.alpha = 0;
     [self.view addSubview:_fpsLabel];
-    
+
     if (kSystemVersion < 7) {
         _fpsLabel.top -= 44;
         _tableView.top -= 64;
         _tableView.height += 20;
     }
-    
-    
-    
-    
+
+
     self.navigationController.view.userInteractionEnabled = NO;
     UIActivityIndicatorView *indicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
     indicator.size = CGSizeMake(80, 80);
@@ -75,12 +73,12 @@
     indicator.layer.cornerRadius = 6;
     [indicator startAnimating];
     [self.view addSubview:indicator];
-    
-    
+
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableArray *layouts = [NSMutableArray new];
         for (int i = 0; i <= 3; i++) {
-            NSData *data = [NSData dataNamed:[NSString stringWithFormat:@"twitter_%d.json",i]];
+            NSData *data = [NSData dataNamed:[NSString stringWithFormat:@"twitter_%d.json", i]];
             T1APIRespose *response = [T1APIRespose modelWithJSON:data];
             for (id item in response.timelineItmes) {
                 if ([item isKindOfClass:[T1Tweet class]]) {
@@ -107,7 +105,7 @@
                 }
             }
         }
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             self.title = [NSString stringWithFormat:@"Twitter (loaded:%d)", (int)layouts.count];
             [indicator removeFromSuperview];
@@ -116,41 +114,56 @@
             [_tableView reloadData];
         });
     });
-    
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     if (_fpsLabel.alpha == 0) {
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _fpsLabel.alpha = 1;
-        } completion:NULL];
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             _fpsLabel.alpha = 1;
+                         }
+                         completion:NULL];
     }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     if (!decelerate) {
         if (_fpsLabel.alpha != 0) {
-            [UIView animateWithDuration:1 delay:2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-                _fpsLabel.alpha = 0;
-            } completion:NULL];
+            [UIView animateWithDuration:1
+                                  delay:2
+                                options:UIViewAnimationOptionBeginFromCurrentState
+                             animations:^{
+                                 _fpsLabel.alpha = 0;
+                             }
+                             completion:NULL];
         }
     }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     if (_fpsLabel.alpha != 0) {
-        [UIView animateWithDuration:1 delay:2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _fpsLabel.alpha = 0;
-        } completion:NULL];
+        [UIView animateWithDuration:1
+                              delay:2
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             _fpsLabel.alpha = 0;
+                         }
+                         completion:NULL];
     }
 }
 
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView {
     if (_fpsLabel.alpha == 0) {
-        [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            _fpsLabel.alpha = 1;
-        } completion:^(BOOL finished) {
-        }];
+        [UIView animateWithDuration:0.3
+                              delay:0
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{
+                             _fpsLabel.alpha = 1;
+                         }
+                         completion:^(BOOL finished){
+                         }];
     }
 }
 
@@ -178,6 +191,9 @@
     return NO;
 }
 
+- (id)tableView:(UITableView *)tableView modelForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [NSString stringWithFormat:@"cell: %d, %d", indexPath.section, indexPath.row];
+}
 
 #pragma mark - T1StatusCellDelegate
 
@@ -214,7 +230,7 @@
     UIImageView *fromView = nil;
     NSMutableArray *items = [NSMutableArray new];
     NSArray<T1Media *> *images = cell.layout.images;
-    
+
     for (NSUInteger i = 0, max = images.count; i < max; i++) {
         UIImageView *imgView = cell.statusView.mediaView.imageViews[i];
         T1Media *img = images[i];
@@ -227,25 +243,21 @@
             fromView = imgView;
         }
     }
-    
+
     YYPhotoGroupView *v = [[YYPhotoGroupView alloc] initWithGroupItems:items];
     [v presentFromImageView:fromView toContainer:self.navigationController.view animated:YES completion:nil];
 }
 
 - (void)cell:(T1StatusCell *)cell didClickQuoteWithLongPress:(BOOL)longPress {
-    
 }
 
 - (void)cell:(T1StatusCell *)cell didClickAvatarWithLongPress:(BOOL)longPress {
-    
 }
 
 - (void)cell:(T1StatusCell *)cell didClickContentWithLongPress:(BOOL)longPress {
-    
 }
 
 - (void)cellDidClickReply:(T1StatusCell *)cell {
-    
 }
 
 - (void)cellDidClickRetweet:(T1StatusCell *)cell {
@@ -253,7 +265,8 @@
     T1Tweet *tweet = layout.displayedTweet;
     if (tweet.retweeted) {
         tweet.retweeted = NO;
-        if (tweet.retweetCount > 0) tweet.retweetCount--;
+        if (tweet.retweetCount > 0)
+            tweet.retweetCount--;
         layout.retweetCountTextLayout = [layout retweetCountTextLayoutForTweet:tweet];
     } else {
         tweet.retweeted = YES;
@@ -268,7 +281,8 @@
     T1Tweet *tweet = layout.displayedTweet;
     if (tweet.favorited) {
         tweet.favorited = NO;
-        if (tweet.favoriteCount > 0) tweet.favoriteCount--;
+        if (tweet.favoriteCount > 0)
+            tweet.favoriteCount--;
         layout.favoriteCountTextLayout = [layout favoriteCountTextLayoutForTweet:tweet];
     } else {
         tweet.favorited = YES;
