@@ -14,9 +14,10 @@
 @interface _IMYAOPCallProxy : NSProxy
 
 @property (nonatomic, weak) id target;
+@property (nonatomic, weak) IMYAOPTableViewUtils *aop_utils;
 @property (nonatomic, strong) Class invokeClass;
 
-+ (id)callWithSuperClass:(Class)superClass object:(id)obj;
++ (id)callWithSuperClass:(Class)superClass object:(id)obj aopUtils:(IMYAOPTableViewUtils *)aopUtils;
 
 @end
 
@@ -38,7 +39,7 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
 - (UITableView *)proxyRawTableView {
     id tableView = objc_getAssociatedObject(self, kIMYAOPProxyRawTableViewKey);
     if (!tableView) {
-        tableView = [_IMYAOPCallProxy callWithSuperClass:self.tableViewClass object:self.tableView];
+        tableView = [_IMYAOPCallProxy callWithSuperClass:self.tableViewClass object:self.tableView aopUtils:self];
         objc_setAssociatedObject(self, kIMYAOPProxyRawTableViewKey, tableView, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return tableView;
@@ -128,7 +129,9 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
         class_addMethod(invokeClass, superSelector, superIMP, method_getTypeEncoding(superMethod));
     }
     invocation.selector = superSelector;
+    self.aop_utils.isUICalling += 1;
     [invocation invokeWithTarget:target];
+    self.aop_utils.isUICalling -= 1;
 }
 
 - (Class)superclass {
@@ -139,7 +142,7 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
     return NULL;
 }
 
-- (Class) class {
+- (Class)class {
     id target = self.target;
     if (target) {
         return [target class];
@@ -147,7 +150,7 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
     return NULL;
 }
 
-    - (BOOL)respondsToSelector : (SEL)aSelector {
+- (BOOL)respondsToSelector : (SEL)aSelector {
     id target = self.target;
     if (target) {
         return [target respondsToSelector:aSelector];
@@ -187,24 +190,16 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
     return @"";
 }
 
-+ (id)callSuper:(id)obj {
-    Class clazz = object_getClass(obj);
-    NSString *className = NSStringFromClass(clazz);
-    if ([className hasPrefix:@"NSKVONotifying_"]) {
-        clazz = class_getSuperclass(clazz);
-    }
-    Class superclass = class_getSuperclass(clazz);
-    return [self callWithSuperClass:superclass object:obj];
-}
-
-+ (id)callWithSuperClass:(Class)superClass object:(id)obj {
++ (id)callWithSuperClass:(Class)superClass object:(id)obj aopUtils:(IMYAOPTableViewUtils *)aopUtils {
     if (object_getClass(obj) == superClass || superClass == nil || [obj isKindOfClass:superClass] == NO) {
         return obj;
     }
-
+    
     _IMYAOPCallProxy *proxy = [_IMYAOPCallProxy alloc];
     proxy.target = obj;
     proxy.invokeClass = superClass;
+    proxy.aop_utils = aopUtils;
+    
     return (id)proxy;
 }
 
