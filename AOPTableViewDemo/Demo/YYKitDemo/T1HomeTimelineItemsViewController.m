@@ -18,6 +18,7 @@
 @property (nonatomic, strong) NSMutableArray *layouts;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) YYFPSLabel *fpsLabel;
+@property (nonatomic, strong) UITableView *feedsView;
 @end
 
 @implementation T1HomeTimelineItemsViewController
@@ -25,6 +26,7 @@
 - (instancetype)init {
     self = [super init];
     _tableView = [YYTableView new];
+    _feedsView = _tableView;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     return self;

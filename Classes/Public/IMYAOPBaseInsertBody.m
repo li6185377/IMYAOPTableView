@@ -1,30 +1,29 @@
 //
-//  IMYAOPTableViewInsertBody.m
-//  AOPTableView
+//  IMYAOPBaseInsertBody.m
+//  IMYAOPFeedsView
 //
-//  Created by ljh on 16/5/31.
-//  Copyright © 2016年 ljh. All rights reserved.
+//  Created by ljh on 2018/10/19.
 //
 
-#import "IMYAOPTableViewInsertBody.h"
+#import "IMYAOPBaseInsertBody.h"
 
-@implementation IMYAOPTableViewInsertBody
+@implementation IMYAOPBaseInsertBody
 
 + (instancetype)insertBodyWithSection:(NSInteger)section {
-    IMYAOPTableViewInsertBody *body = [[self alloc] init];
+    IMYAOPBaseInsertBody *body = [[self alloc] init];
     body.section = section;
     return body;
 }
 
 + (instancetype)insertBodyWithIndexPath:(NSIndexPath *)indexPath {
-    IMYAOPTableViewInsertBody *body = [[self alloc] init];
+    IMYAOPBaseInsertBody *body = [[self alloc] init];
     body.indexPath = indexPath;
     return body;
 }
 
 @end
 
-@implementation IMYAOPTableViewRawModel
+@implementation IMYAOPBaseRawModel
 @synthesize model = _model;
 @synthesize indexPath = _indexPath;
 

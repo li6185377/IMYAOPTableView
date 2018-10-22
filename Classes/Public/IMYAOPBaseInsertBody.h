@@ -1,16 +1,15 @@
 //
-//  IMYAOPTableViewInsertBody.h
-//  AOPTableView
+//  IMYAOPBaseInsertBody.h
+//  IMYAOPFeedsView
 //
-//  Created by ljh on 16/5/31.
-//  Copyright © 2016年 ljh. All rights reserved.
+//  Created by ljh on 2018/10/19.
 //
 
 #import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface IMYAOPTableViewInsertBody : NSObject
+@interface IMYAOPBaseInsertBody : NSObject
 
 + (instancetype)insertBodyWithSection:(NSInteger)section;
 + (instancetype)insertBodyWithIndexPath:(NSIndexPath *)indexPath;
@@ -28,7 +27,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@interface IMYAOPTableViewRawModel : NSObject
+@interface IMYAOPBaseRawModel : NSObject
 
 + (instancetype)rawWithModel:(id)model indexPath:(NSIndexPath *)indexPath;
 

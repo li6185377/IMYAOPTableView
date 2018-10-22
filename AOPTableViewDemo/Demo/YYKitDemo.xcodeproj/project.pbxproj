@@ -7,8 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		367F27791D16E87A00C8BD36 /* IMYAOPDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 367F27781D16E87A00C8BD36 /* IMYAOPDemo.m */; };
+		36535499217DEABF00D571FF /* YYWaterfallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36535498217DEABF00D571FF /* YYWaterfallViewController.m */; };
+		367F27791D16E87A00C8BD36 /* IMYAOPTableDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 367F27781D16E87A00C8BD36 /* IMYAOPTableDemo.m */; };
 		367F277B1D16EC0C00C8BD36 /* aop_ad_image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 367F277A1D16EC0C00C8BD36 /* aop_ad_image.jpeg */; };
+		36D1B09B217DEEEA005E118B /* IMYAOPCollectionDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 36D1B09A217DEEEA005E118B /* IMYAOPCollectionDemo.m */; };
 		89304E1AD58C9AC82AA55841 /* libPods-YYKitDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FEE686F30B81E51CF45B8E7 /* libPods-YYKitDemo.a */; };
 		D9067E001B9879E300F346EB /* YYFPSLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067DFF1B9879E300F346EB /* YYFPSLabel.m */; };
 		D9067E071B98A3B200F346EB /* YYFeedListExample.m in Sources */ = {isa = PBXBuildFile; fileRef = D9067E061B98A3B200F346EB /* YYFeedListExample.m */; };
@@ -178,9 +180,13 @@
 /* Begin PBXFileReference section */
 		236E9F42F58BFA3D81E8DB13 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		28B61FD692662CF67C5F1EE4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		367F27771D16E87A00C8BD36 /* IMYAOPDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMYAOPDemo.h; sourceTree = "<group>"; };
-		367F27781D16E87A00C8BD36 /* IMYAOPDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMYAOPDemo.m; sourceTree = "<group>"; };
+		36535497217DEABF00D571FF /* YYWaterfallViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYWaterfallViewController.h; sourceTree = "<group>"; };
+		36535498217DEABF00D571FF /* YYWaterfallViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYWaterfallViewController.m; sourceTree = "<group>"; };
+		367F27771D16E87A00C8BD36 /* IMYAOPTableDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMYAOPTableDemo.h; sourceTree = "<group>"; };
+		367F27781D16E87A00C8BD36 /* IMYAOPTableDemo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMYAOPTableDemo.m; sourceTree = "<group>"; };
 		367F277A1D16EC0C00C8BD36 /* aop_ad_image.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = aop_ad_image.jpeg; sourceTree = SOURCE_ROOT; };
+		36D1B099217DEEEA005E118B /* IMYAOPCollectionDemo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMYAOPCollectionDemo.h; sourceTree = "<group>"; };
+		36D1B09A217DEEEA005E118B /* IMYAOPCollectionDemo.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IMYAOPCollectionDemo.m; sourceTree = "<group>"; };
 		4FEE686F30B81E51CF45B8E7 /* libPods-YYKitDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-YYKitDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		76D1CF3EA9E8F68161517CAD /* Pods-YYKitDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-YYKitDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-YYKitDemo/Pods-YYKitDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		8C27E6EBECEBE7829B633BCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -486,12 +492,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		36535496217DEA7B00D571FF /* GridView */ = {
+			isa = PBXGroup;
+			children = (
+				36535497217DEABF00D571FF /* YYWaterfallViewController.h */,
+				36535498217DEABF00D571FF /* YYWaterfallViewController.m */,
+			);
+			name = GridView;
+			sourceTree = "<group>";
+		};
 		D9067E041B98A39200F346EB /* Feed List */ = {
 			isa = PBXGroup;
 			children = (
+				36535496217DEA7B00D571FF /* GridView */,
 				367F277A1D16EC0C00C8BD36 /* aop_ad_image.jpeg */,
-				367F27771D16E87A00C8BD36 /* IMYAOPDemo.h */,
-				367F27781D16E87A00C8BD36 /* IMYAOPDemo.m */,
+				367F27771D16E87A00C8BD36 /* IMYAOPTableDemo.h */,
+				367F27781D16E87A00C8BD36 /* IMYAOPTableDemo.m */,
+				36D1B099217DEEEA005E118B /* IMYAOPCollectionDemo.h */,
+				36D1B09A217DEEEA005E118B /* IMYAOPCollectionDemo.m */,
 				D9067E051B98A3B200F346EB /* YYFeedListExample.h */,
 				D9067E061B98A3B200F346EB /* YYFeedListExample.m */,
 				D92FF8621BC7FB7700FFEBF4 /* Twitter */,
@@ -1186,6 +1204,7 @@
 				D9B260671BEE79370038C00A /* UIGestureRecognizer+YYAdd.m in Sources */,
 				D9B260681BEE79370038C00A /* UIImage+YYAdd.m in Sources */,
 				D9B260A01BEE79370038C00A /* YYWeakProxy.m in Sources */,
+				36D1B09B217DEEEA005E118B /* IMYAOPCollectionDemo.m in Sources */,
 				D9B260951BEE79370038C00A /* YYAsyncLayer.m in Sources */,
 				D9B260691BEE79370038C00A /* UIScreen+YYAdd.m in Sources */,
 				D9B2607F1BEE79370038C00A /* NSObject+YYModel.m in Sources */,
@@ -1194,6 +1213,7 @@
 				D9B2605A1BEE79370038C00A /* NSObject+YYAddForKVO.m in Sources */,
 				D9B260601BEE79370038C00A /* UIApplication+YYAdd.m in Sources */,
 				D97FC1131BA191C800E7ECBF /* YYTableViewCell.m in Sources */,
+				36535499217DEABF00D571FF /* YYWaterfallViewController.m in Sources */,
 				D9B260881BEE79370038C00A /* YYTextMagnifier.m in Sources */,
 				D9B2606F1BEE79370038C00A /* YYDiskCache.m in Sources */,
 				D9237BCC1BC2BA650092A558 /* WBStatusComposeTextParser.m in Sources */,
@@ -1235,7 +1255,7 @@
 				D9067E201B9A0B8F00F346EB /* WBStatusCell.m in Sources */,
 				D9B2608F1BEE79370038C00A /* YYTextParser.m in Sources */,
 				D9B2609A1BEE79370038C00A /* YYReachability.m in Sources */,
-				367F27791D16E87A00C8BD36 /* IMYAOPDemo.m in Sources */,
+				367F27791D16E87A00C8BD36 /* IMYAOPTableDemo.m in Sources */,
 				D9067E071B98A3B200F346EB /* YYFeedListExample.m in Sources */,
 				D9B260971BEE79370038C00A /* YYFileHash.m in Sources */,
 				D9B260631BEE79370038C00A /* UIColor+YYAdd.m in Sources */,

@@ -1,6 +1,6 @@
 //
-//  UITableView+IMYADTableUtils.h
-//  IMYAdvertisementDemo
+//  UITableView+IMYAOPTableUtils.h
+//  IMYAOPFeedsView
 //
 //  Created by ljh on 16/4/16.
 //  Copyright © 2016年 IMY. All rights reserved.

@@ -1,6 +1,6 @@
 //
-//  IMYAOPTableViewUtils+UITableViewDataSource.m
-//  IMYAdvertisementDemo
+//  IMYAOPFeedsViewUtils+UITableViewDataSource.m
+//  IMYAOPFeedsView
 //
 //  Created by ljh on 16/4/15.
 //  Copyright © 2016年 IMY. All rights reserved.
@@ -11,9 +11,9 @@
 
 #define kAOPRealIndexPathCode                                           \
     NSIndexPath *realIndexPath = [self realIndexPathByTable:indexPath]; \
-    id<UITableViewDataSource> dataSource = nil;                         \
+    id<IMYAOPTableViewDataSource> dataSource = nil;                     \
     if (realIndexPath) {                                                \
-        dataSource = self.tableDataSource;                              \
+        dataSource = (id)self.origDataSource;                           \
         indexPath = realIndexPath;                                      \
     } else {                                                            \
         dataSource = self.dataSource;                                   \
@@ -21,9 +21,9 @@
 
 #define kAOPRealSectionCode                                    \
     NSInteger realSection = [self realSectionByTable:section]; \
-    id<UITableViewDataSource> dataSource = nil;                \
+    id<IMYAOPTableViewDataSource> dataSource = nil;            \
     if (realSection >= 0) {                                    \
-        dataSource = self.tableDataSource;                     \
+        dataSource = (id)self.origDataSource;                  \
         section = realSection;                                 \
     } else {                                                   \
         dataSource = self.dataSource;                          \
@@ -40,8 +40,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     kAOPUICallingSaved;
     NSInteger numberOfSection = 1;
-    if ([self.tableDataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]) {
-        numberOfSection = [self.tableDataSource numberOfSectionsInTableView:tableView];
+    if ([self.origDataSource respondsToSelector:@selector(numberOfSectionsInTableView:)]) {
+        numberOfSection = [self.origDataSource numberOfSectionsInTableView:tableView];
     }
     ///初始化回调
     [self.dataSource aopTableUtils:self numberOfSection:numberOfSection];
@@ -60,7 +60,7 @@
     NSInteger rowCount = 0;
     if (realSection >= 0) {
         section = realSection;
-        rowCount = [self.tableDataSource tableView:tableView numberOfRowsInSection:section];
+        rowCount = [self.origDataSource tableView:tableView numberOfRowsInSection:section];
 
         NSIndexPath *tableIndexPath = [self tableIndexPathByReal:[NSIndexPath indexPathForRow:rowCount inSection:section]];
         rowCount = tableIndexPath.row;
@@ -181,8 +181,8 @@
     kAOPUICallingSaved;
     NSIndexPath *source = [self realIndexPathByTable:sourceIndexPath];
     NSIndexPath *destin = [self realIndexPathByTable:destinationIndexPath];
-    if ([self.tableDataSource respondsToSelector:@selector(tableView:moveRowAtIndexPath:toIndexPath:)]) {
-        [self.tableDataSource tableView:tableView moveRowAtIndexPath:source toIndexPath:destin];
+    if ([self.origDataSource respondsToSelector:@selector(tableView:moveRowAtIndexPath:toIndexPath:)]) {
+        [self.origDataSource tableView:tableView moveRowAtIndexPath:source toIndexPath:destin];
     }
     kAOPUICallingResotre;
 }

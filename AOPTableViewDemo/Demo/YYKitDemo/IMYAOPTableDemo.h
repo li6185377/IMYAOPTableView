@@ -9,6 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <IMYAOPTableView.h>
 
-@interface IMYAOPDemo : NSObject
+@interface IMYAOPTableDemo : NSObject
 @property (weak, nonatomic) IMYAOPTableViewUtils *aopUtils;
 @end

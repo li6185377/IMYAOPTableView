@@ -20,6 +20,7 @@
 
 @interface WBStatusTimelineViewController () <UITableViewDelegate, UITableViewDataSource, WBStatusCellDelegate>
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UITableView *feedsView;
 @property (nonatomic, strong) NSMutableArray *layouts;
 @property (nonatomic, strong) YYFPSLabel *fpsLabel;
 @end
@@ -29,6 +30,7 @@
 - (instancetype)init {
     self = [super init];
     _tableView = [YYTableView new];
+    _feedsView = _tableView;
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _layouts = [NSMutableArray new];

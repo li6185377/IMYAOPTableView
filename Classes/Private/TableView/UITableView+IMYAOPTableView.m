@@ -1,6 +1,6 @@
 //
-//  UITableView+IMYADTableUtils.m
-//  IMYAdvertisementDemo
+//  UITableView+IMYAOPTableUtils.m
+//  IMYAOPFeedsView
 //
 //  Created by ljh on 16/4/16.
 //  Copyright © 2016年 IMY. All rights reserved.
@@ -12,35 +12,10 @@
 #import <objc/message.h>
 #import <objc/runtime.h>
 
-static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_) {
-    if (!clazz) {
-        return NO;
-    }
-    Method origMethod = class_getInstanceMethod(clazz, origSel_);
-    if (!origMethod) {
-        return NO;
-    }
-    Method altMethod = class_getInstanceMethod(clazz, altSel_);
-    if (!altMethod) {
-        return NO;
-    }
+extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 
-    class_addMethod(clazz,
-                    origSel_,
-                    class_getMethodImplementation(clazz, origSel_),
-                    method_getTypeEncoding(origMethod));
-    class_addMethod(clazz,
-                    altSel_,
-                    class_getMethodImplementation(clazz, altSel_),
-                    method_getTypeEncoding(altMethod));
-
-    method_exchangeImplementations(class_getInstanceMethod(clazz, origSel_), class_getInstanceMethod(clazz, altSel_));
-
-    return YES;
-}
-
-#define AopDefineObjcSuper struct objc_super objcSuper = {                                                       \
-                               .super_class = aop_utils.tableViewClass ?: [UITableView class], .receiver = self, \
+#define AopDefineObjcSuper struct objc_super objcSuper = {                                                      \
+                               .super_class = aop_utils.origViewClass ?: [UITableView class], .receiver = self, \
 };
 
 #define AopDefineVars                                 \
@@ -59,7 +34,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_) {
 #define AopCallSuper_2(selector, var0, var1) ((void (*)(void *, SEL, id, id))(void *)objc_msgSendSuper)(&objcSuper, selector, var0, var1);
 #define AopCallSuperResult_2(selector, var0, var1) ((id(*)(void *, SEL, id, id))(void *)objc_msgSendSuper)(&objcSuper, selector, var0, var1);
 
-@implementation UIView (IMYADTableUtils)
+@implementation UIView (IMYAOPTableUtils)
 
 - (BOOL)imyaop_gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
     UITableView *tableView = (id)self.superview;
@@ -81,7 +56,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_) {
 
 @end
 
-@implementation UITableView (IMYADTableUtils)
+@implementation UITableView (IMYAOPTableUtils)
 
 + (SEL)aop_userSelectRowAtPendingSelectionIndexPathSEL {
     static SEL sel;
@@ -146,10 +121,10 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_) {
 - (void)aop_setDelegate:(id<UITableViewDelegate>)delegate {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
-        if (aop_utils.tableDelegate != delegate) {
+        if (aop_utils.origDelegate != delegate) {
             AopDefineObjcSuper;
             AopCallSuper_1(@selector(setDelegate:), delegate);
-            aop_utils.tableDelegate = delegate;
+            aop_utils.origDelegate = delegate;
         }
     } else {
         [super setDelegate:delegate];
@@ -159,7 +134,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_) {
 - (id<UITableViewDelegate>)aop_delegate {
     AopDefineVars;
     if (aop_utils) {
-        return aop_utils.tableDelegate;
+        return aop_utils.origDelegate;
     } else {
         return AopCallSuperResult(@selector(delegate));
     }
@@ -168,10 +143,10 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_) {
 - (void)aop_setDataSource:(id<UITableViewDataSource>)dataSource {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
-        if (aop_utils.tableDataSource != dataSource) {
+        if (aop_utils.origDataSource != dataSource) {
             AopDefineObjcSuper;
             AopCallSuper_1(@selector(setDataSource:), dataSource);
-            aop_utils.tableDataSource = dataSource;
+            aop_utils.origDataSource = dataSource;
         }
     } else {
         [super setDataSource:dataSource];
@@ -181,7 +156,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_) {
 - (id<UITableViewDataSource>)aop_dataSource {
     AopDefineVars;
     if (aop_utils) {
-        return aop_utils.tableDataSource;
+        return aop_utils.origDataSource;
     } else {
         return AopCallSuperResult(@selector(dataSource));
     }
@@ -190,7 +165,7 @@ static BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_) {
 - (Class)aop_class {
     IMYAOPTableViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
-        return aop_utils.tableViewClass;
+        return aop_utils.origViewClass;
     } else {
         return [super class];
     }

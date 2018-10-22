@@ -1,0 +1,38 @@
+//
+//  IMYAOPBaseUtils+Private.h
+//  CHTCollectionViewWaterfallLayout
+//
+//  Created by ljh on 2018/10/22.
+//
+
+#import "IMYAOPBaseUtils.h"
+
+NS_ASSUME_NONNULL_BEGIN
+
+@protocol IAOPBaseUtilsPrivate <NSObject>
+
+@property (nullable, nonatomic, strong) NSMutableIndexSet *sections;
+@property (nullable, nonatomic, strong) NSMutableDictionary *sectionMap;
+
+///orig Feeds View Class
+@property (nullable, nonatomic, strong) Class origViewClass;
+///是否由UI 进行调用
+@property (nonatomic, assign) NSInteger isUICalling;
+
+@end
+
+@interface IMYAOPBaseUtils (Private) <IAOPBaseUtilsPrivate>
+
+- (void)injectFeedsView:(UIView *)feedsView;
+- (Class)makeSubclassWithClass:(Class)origClass;
+- (void)setupAopClass:(Class)aopClass;
+- (Class)aop_sendSuperClass;
+- (Class)aop_implViewClass;
+- (void)addOverriteMethod:(SEL)seletor aopClass:(Class)aopClass;
+- (void)addOverriteMethod:(SEL)seletor toMethod:(SEL)toSeletor aopClass:(Class)aopClass;
+
++ (instancetype)newInstance;
+
+@end
+
+NS_ASSUME_NONNULL_END

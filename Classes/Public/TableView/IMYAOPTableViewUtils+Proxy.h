@@ -1,5 +1,5 @@
 //
-//  IMYAOPTableViewUtils+Proxy.h
+//  IMYAOPFeedsViewUtils+Proxy.h
 //  Pods
 //
 //  Created by ljh on 16/6/22.
@@ -51,7 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface IMYAOPTableViewUtils (Models)
 
-///需要 tableView.dataSource 实现 IMYAOPTableViewGetModelProtocol 协议中的方法
+///需要 tableView.dataSource 实现 tableView:modelForRowAtIndexPath: 协议中的方法
 - (NSArray<IMYAOPTableViewRawModel *> *)allModels;
 
 ///需要 tableView.dataSource 实现 IMYAOPTableViewGetModelProtocol 协议中的方法

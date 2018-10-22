@@ -1,6 +1,6 @@
 //
-//  IMYAOPTableViewUtils+UITableViewDelegate.h
-//  IMYAdvertisementDemo
+//  IMYAOPFeedsViewUtils+UITableViewDataSource.h
+//  IMYAOPFeedsView
 //
 //  Created by ljh on 16/4/15.
 //  Copyright © 2016年 IMY. All rights reserved.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface IMYAOPTableViewUtils (UITableViewDelegate) <UITableViewDelegate>
+@interface IMYAOPTableViewUtils (UITableViewDataSource) <UITableViewDataSource>
 
 @end
 

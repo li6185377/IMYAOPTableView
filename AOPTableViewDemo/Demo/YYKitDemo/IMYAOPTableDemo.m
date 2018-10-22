@@ -6,12 +6,12 @@
 //  Copyright © 2016年 ibireme. All rights reserved.
 //
 
-#import "IMYAOPDemo.h"
+#import "IMYAOPTableDemo.h"
 
-@interface IMYAOPDemo () <IMYAOPTableViewDelegate, IMYAOPTableViewDataSource, IMYAOPTableViewGetModelProtocol>
+@interface IMYAOPTableDemo () <IMYAOPTableViewDelegate, IMYAOPTableViewDataSource, IMYAOPTableViewGetModelProtocol>
 
 @end
-@implementation IMYAOPDemo
+@implementation IMYAOPTableDemo
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     ///只是为了不警告  该回调是不会被调用的
     return 0;

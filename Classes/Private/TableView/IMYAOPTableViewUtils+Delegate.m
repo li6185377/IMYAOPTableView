@@ -1,6 +1,6 @@
 //
-//  IMYAOPTableViewUtils+UITableViewDelegate.m
-//  IMYAdvertisementDemo
+//  IMYAOPFeedsViewUtils+UITableViewDelegate.m
+//  IMYAOPFeedsView
 //
 //  Created by ljh on 16/4/15.
 //  Copyright © 2016年 IMY. All rights reserved.
@@ -11,9 +11,9 @@
 
 #define kAOPRealIndexPathCode                                           \
     NSIndexPath *realIndexPath = [self realIndexPathByTable:indexPath]; \
-    id<UITableViewDelegate> delegate = nil;                             \
+    id<IMYAOPTableViewDelegate> delegate = nil;                         \
     if (realIndexPath) {                                                \
-        delegate = self.tableDelegate;                                  \
+        delegate = (id)self.origDelegate;                               \
         indexPath = realIndexPath;                                      \
     } else {                                                            \
         delegate = self.delegate;                                       \
@@ -21,9 +21,9 @@
 
 #define kAOPRealSectionCode                                    \
     NSInteger realSection = [self realSectionByTable:section]; \
-    id<UITableViewDelegate> delegate = nil;                    \
+    id<IMYAOPTableViewDelegate> delegate = nil;                \
     if (realSection >= 0) {                                    \
-        delegate = self.tableDelegate;                         \
+        delegate = (id)self.origDelegate;                      \
         section = realSection;                                 \
     } else {                                                   \
         delegate = self.delegate;                              \
@@ -376,8 +376,8 @@
 
     NSIndexPath *resultIndexPath = proposedDestinationIndexPath;
     if (realOne && realTwo) {
-        if ([self.tableDelegate respondsToSelector:@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)]) {
-            resultIndexPath = [self.tableDelegate tableView:tableView targetIndexPathForMoveFromRowAtIndexPath:realOne toProposedIndexPath:realTwo];
+        if ([self.origDelegate respondsToSelector:@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)]) {
+            resultIndexPath = [self.origDelegate tableView:tableView targetIndexPathForMoveFromRowAtIndexPath:realOne toProposedIndexPath:realTwo];
             resultIndexPath = [self tableIndexPathByReal:resultIndexPath];
         }
     }
@@ -447,8 +447,8 @@
 - (NSIndexPath *)indexPathForPreferredFocusedViewInTableView:(UITableView *)tableView {
     kAOPUICallingSaved;
     NSIndexPath *indexPath = nil;
-    if ([self.tableDelegate respondsToSelector:@selector(indexPathForPreferredFocusedViewInTableView:)]) {
-        indexPath = [self.tableDelegate indexPathForPreferredFocusedViewInTableView:tableView];
+    if ([self.origDelegate respondsToSelector:@selector(indexPathForPreferredFocusedViewInTableView:)]) {
+        indexPath = [self.origDelegate indexPathForPreferredFocusedViewInTableView:tableView];
         if (indexPath) {
             indexPath = [self tableIndexPathByReal:indexPath];
         }

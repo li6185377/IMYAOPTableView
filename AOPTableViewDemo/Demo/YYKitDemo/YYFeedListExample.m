@@ -7,7 +7,8 @@
 //
 
 #import "YYFeedListExample.h"
-#import "IMYAOPDemo.h"
+#import "IMYAOPCollectionDemo.h"
+#import "IMYAOPTableDemo.h"
 #import "YYKit.h"
 
 @interface YYFeedListExample ()
@@ -15,7 +16,7 @@
 @property (nonatomic, strong) NSMutableArray *classNames;
 @property (nonatomic, strong) NSMutableArray *images;
 ///只是声明，防止提前释放
-@property (nonatomic, strong) IMYAOPDemo *aopDemo;
+@property (nonatomic, strong) IMYAOPTableDemo *aopDemo;
 @end
 
 @implementation YYFeedListExample
@@ -28,6 +29,7 @@
 
     [self addCell:@"Twitter" class:@"T1HomeTimelineItemsViewController" image:@"Twitter.jpg"];
     [self addCell:@"Weibo" class:@"WBStatusTimelineViewController" image:@"Weibo.jpg"];
+    [self addCell:@"Waterfall" class:@"YYWaterfallViewController" image:@"Weibo.jpg"];
 
     if (!kiOS7Later) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -77,12 +79,17 @@
     Class class = NSClassFromString(className);
     if (class) {
         UIViewController *ctrl = class.new;
-
+        [ctrl view];
         ///begin 插入3行代码
-        self.aopDemo = [IMYAOPDemo new];
-        UITableView *feedsTableView = [ctrl valueForKey:@"tableView"];
-        [feedsTableView addObserver:self forKeyPath:@"contentOffset" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:@selector(viewDidLoad)];
-        self.aopDemo.aopUtils = feedsTableView.aop_utils;
+        UITableView *feedsTableView = [ctrl valueForKey:@"feedsView"];
+        if ([feedsTableView isKindOfClass:[UITableView class]]) {
+            self.aopDemo = [IMYAOPTableDemo new];
+            self.aopDemo.aopUtils = feedsTableView.aop_utils;
+        } else {
+            self.aopDemo = (id)[IMYAOPCollectionDemo new];
+            self.aopDemo.aopUtils = feedsTableView.aop_utils;
+        }
+
         ///end
 
         ctrl.title = _titles[indexPath.row];
