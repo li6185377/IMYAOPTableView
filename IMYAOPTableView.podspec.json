@@ -15,7 +15,7 @@
   "platforms": {
     "ios": "7.0"
   },
-  "public_header_files": ["Classes/IMYAOPTableView.h", "Classes/TableUtils/*.h"],
+  "public_header_files": ["Classes/*.h", "Classes/Public/**/*.h"],
   "source_files": "Classes/**/*.{h,m}",
   "requires_arc": true
 }
