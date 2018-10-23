@@ -71,7 +71,7 @@ look ./AOPTableViewDemo
 	@property (nonatomic, strong) IMYAOPDemo* aopDemo;
 	
 	///插入3行代码的地方
-	- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *className = self.classNames[indexPath.row];
     Class class = NSClassFromString(className);
     if (class) {
@@ -97,8 +97,7 @@ look ./AOPTableViewDemo
 
 ```objective-c
 
-- (void)injectTableView
-{
+- (void)injectTableView {
     [self.aopUtils.tableView registerClass:[UITableViewCell class]  forCellReuseIdentifier:@"AD"];
 
     ///广告回调，跟TableView的Delegate，DataSource 一样。
@@ -110,8 +109,7 @@ look ./AOPTableViewDemo
     });
 }
 ///简单的rows插入
-- (void)insertRows
-{
+- (void)insertRows {
     NSMutableArray<IMYAOPTableViewInsertBody*>* insertBodys = [NSMutableArray array];
     ///随机生成了5个要插入的位置
     for (int i = 0 ; i< 5; i++) {
@@ -150,8 +148,7 @@ look ./AOPTableViewDemo
 
 ```objective-c
 
-	-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:@"AD"];
     if(cell.contentView.subviews.count == 0) {
         CGFloat screenWidth = [UIScreen mainScreen].bounds.size.width;
@@ -168,12 +165,12 @@ look ./AOPTableViewDemo
     }
     return cell;
 }
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
+
+-(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"插入的cell要显示啦");
 }
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"被点击了> <" message:[NSString stringWithFormat:@"我的位置: %@",indexPath] delegate:nil cancelButtonTitle:@"哦~滚" otherButtonTitles:nil];
     [alertView show];
 }
@@ -184,6 +181,3 @@ look ./AOPTableViewDemo
 效果图 （GIF , 如不播放，可点击到新页面试试）:  
 
 ![](https://raw.githubusercontent.com/MeetYouDevs/IMYAOPTableView/master/screenshot/demo0.gif)  
-
-![](https://raw.githubusercontent.com/MeetYouDevs/IMYAOPTableView/master/screenshot/aop_tableview_demo.gif)  
-
