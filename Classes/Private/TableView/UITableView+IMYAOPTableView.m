@@ -471,7 +471,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     return cell;
 }
 
-- (NSArray *)aop_containVisibleCells:(const IMYAOPType)containType {
+- (NSArray<UITableViewCell *> *)aop_containVisibleCells:(const IMYAOPType)containType {
     AopDefineVars;
     aop_utils.isUICalling += 1;
     NSArray<UITableViewCell *> *visibleCells = AopCallSuperResult(@selector(visibleCells));

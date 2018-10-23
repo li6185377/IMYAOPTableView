@@ -95,7 +95,7 @@ static NSString *const kAOPFeedsViewPrefix = @"kIMYAOP_";
 #pragma mark - 注入 aop class
 
 - (void)injectFeedsView:(UIView *)feedsView {
-    struct objc_super objcSuper = {.super_class = [self aop_sendSuperClass], .receiver = feedsView};
+    struct objc_super objcSuper = {.super_class = [self msgSendSuperClass], .receiver = feedsView};
     ((void (*)(void *, SEL, id))(void *)objc_msgSendSuper)(&objcSuper, @selector(setDelegate:), self);
     ((void (*)(void *, SEL, id))(void *)objc_msgSendSuper)(&objcSuper, @selector(setDataSource:), self);
 
@@ -170,12 +170,12 @@ static NSString *const kAOPFeedsViewPrefix = @"kIMYAOP_";
     NSAssert(NO, @"必须子类实现!");
 }
 
-- (Class)aop_sendSuperClass {
+- (Class)msgSendSuperClass {
     NSAssert(NO, @"必须子类实现!");
     return [UIView class];
 }
 
-- (Class)aop_implViewClass {
+- (Class)implAopViewClass {
     NSAssert(NO, @"必须子类实现!");
     return [UIView class];
 }
@@ -188,7 +188,7 @@ static NSString *const kAOPFeedsViewPrefix = @"kIMYAOP_";
 }
 
 - (void)addOverriteMethod:(SEL)seletor toMethod:(SEL)toSeletor aopClass:(Class)aopClass {
-    Class implClass = [self aop_implViewClass];
+    Class implClass = [self implAopViewClass];
     Method method = class_getInstanceMethod(implClass, toSeletor);
     if (method == NULL) {
         method = class_getInstanceMethod(implClass, seletor);

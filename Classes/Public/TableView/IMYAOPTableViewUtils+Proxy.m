@@ -37,15 +37,15 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
 }
 
 - (CGRect)rectForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [[self proxyRawTableView] rectForRowAtIndexPath:indexPath];
+    return [self.proxyRawTableView rectForRowAtIndexPath:indexPath];
 }
 
 - (UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [[self proxyRawTableView] cellForRowAtIndexPath:indexPath];
+    return [self.proxyRawTableView cellForRowAtIndexPath:indexPath];
 }
 
 - (NSIndexPath *)indexPathForCell:(UITableViewCell *)cell {
-    return [[self proxyRawTableView] indexPathForCell:cell];
+    return [self.proxyRawTableView indexPathForCell:cell];
 }
 
 @end
@@ -54,7 +54,7 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
 
 - (NSArray<IMYAOPTableViewRawModel *> *)allModels {
     NSMutableArray *results = [NSMutableArray array];
-    UITableView *tableView = [self proxyRawTableView];
+    UITableView *tableView = self.proxyRawTableView;
     NSUInteger numberOfSections = [tableView numberOfSections];
     for (NSInteger section = 0; section < numberOfSections; section++) {
         NSUInteger numberOfRows = [tableView numberOfRowsInSection:section];

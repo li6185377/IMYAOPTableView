@@ -80,11 +80,11 @@
 
 #pragma mark - install aop method
 
-- (Class)aop_implViewClass {
+- (Class)implAopViewClass {
     return [UICollectionView imy_aopClass];
 }
 
-- (Class)aop_sendSuperClass {
+- (Class)msgSendSuperClass {
     return [UICollectionView class];
 }
 

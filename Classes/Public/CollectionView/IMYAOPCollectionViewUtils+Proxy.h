@@ -49,10 +49,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface IMYAOPCollectionViewUtils (Models)
 
-///需要 tableView.dataSource 实现 tableView:modelForRowAtIndexPath: 协议中的方法
+///需要 collectionView.dataSource 实现 collectionView:modelForRowAtIndexPath: 协议中的方法
 - (NSArray<IMYAOPCollectionViewRawModel *> *)allModels;
 
-///需要 tableView.dataSource 实现 IMYAOPTableViewGetModelProtocol 协议中的方法
+///需要 collectionView.dataSource 实现 IMYAOPCollectionViewGetModelProtocol 协议中的方法
 - (nullable id)modelForRowAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

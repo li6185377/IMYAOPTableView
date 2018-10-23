@@ -27,8 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)injectFeedsView:(UIView *)feedsView;
 - (Class)makeSubclassWithClass:(Class)origClass;
 - (void)setupAopClass:(Class)aopClass;
-- (Class)aop_sendSuperClass;
-- (Class)aop_implViewClass;
+- (Class)msgSendSuperClass;
+- (Class)implAopViewClass;
 - (void)addOverriteMethod:(SEL)seletor aopClass:(Class)aopClass;
 - (void)addOverriteMethod:(SEL)seletor toMethod:(SEL)toSeletor aopClass:(Class)aopClass;
 
