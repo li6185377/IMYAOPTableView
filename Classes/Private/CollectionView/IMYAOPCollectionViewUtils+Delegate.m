@@ -110,6 +110,10 @@
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
+    ///回调给ad manager 虚拟广告位的上报
+    if ([self.delegate respondsToSelector:@selector(aopCollectionUtils:willDisplayCell:forItemAtIndexPath:)]) {
+        [self.delegate aopCollectionUtils:self willDisplayCell:cell forItemAtIndexPath:indexPath];
+    }
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:willDisplayCell:forItemAtIndexPath:)]) {
         [delegate collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
@@ -128,6 +132,10 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
+    ///回调给ad manager 虚拟广告位的上报
+    if ([self.delegate respondsToSelector:@selector(aopCollectionUtils:didEndDisplayingCell:forItemAtIndexPath:)]) {
+        [self.delegate aopCollectionUtils:self didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
+    }
     kAOPRealIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)]) {
         [delegate collectionView:collectionView didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
