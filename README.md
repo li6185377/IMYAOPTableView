@@ -1,13 +1,12 @@
 # IMYAOPTableView
 
-无业务入侵，无逻辑入侵，外部察觉不到的 TableView AOP框架
+无业务入侵，无逻辑入侵，业务端察觉不到 UITableView/UICollectionView 的 AOP框架
 
 按道理最低应该是支持 iOS 5.0的，但是已经没有iOS7之前的机子测试了。 所以不敢保证没问题。
 
 这个框架已经在 美柚 稳定 2016 年就开始使用，美柚总用户突破1亿，日活接近千万，代码的稳定性是可以放心的。有需求或者bug可以提issues，我会尽快回复。
 
 ![](http://sc.seeyouyima.com/shopGuide/data/59647e039f684_1920_576.png?imageView2/2/w/800/h/600)
-
 
 ## 要求
 
@@ -25,7 +24,7 @@ pod 'IMYAOPTableView'
 ## 用法
 
 ```
-Look ./AOPTableViewDemo
+look ./AOPTableViewDemo
 ```
 
 《如何优雅的插入广告》
@@ -33,11 +32,11 @@ Look ./AOPTableViewDemo
 
 当应用发展到一定阶段，一般都会在feeds流中插入广告，来进行广告的变现，这是每个应用都要进行的过程。 比如微信朋友圈，微博，QQ空间。。。 不列举了，一般有feeds流的都会有广告。
 
-![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo1.jpg)
+![](https://raw.githubusercontent.com/MeetYouDevs/IMYAOPTableView/master/screenshot/demo1.jpg)
 
 当你的应用也需要在原有的业务上插入广告，你会怎么做？ 可能你会直接叫接口把广告跟业务数据合并下，就下发给你。然后你在业务层去各种判断。 
 
-![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo2.jpg)
+![](https://raw.githubusercontent.com/MeetYouDevs/IMYAOPTableView/master/screenshot/demo2.jpg)
 
 曾经这样做的程序猿应该很多，累吗？ 这样子的插入，需要去改各种代码，还可能在一个微小的角落 可能直接调用了  `- (nullable __kindof UITableViewCell *)cellForRowAtIndexPath:(NSIndexPath *)indexPath;` ，然后返回的类型不对，应用直接Crash了
 
@@ -53,7 +52,7 @@ Look ./AOPTableViewDemo
 4. 上手简单
 
 
-![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/demo3.jpg)
+![](https://raw.githubusercontent.com/MeetYouDevs/IMYAOPTableView/master/screenshot/demo3.jpg)
 
 ### 用法：
 
@@ -182,7 +181,9 @@ Look ./AOPTableViewDemo
 ```
 
 
-效果图 （GIF , 如不播放，可点击到新页面试试）:
+效果图 （GIF , 如不播放，可点击到新页面试试）:  
 
-![](https://raw.githubusercontent.com/li6185377/IMYAOPTableView/master/screenshot/aop_tableview_demo.gif)
+![](https://raw.githubusercontent.com/MeetYouDevs/IMYAOPTableView/master/screenshot/demo0.gif)  
+
+![](https://raw.githubusercontent.com/MeetYouDevs/IMYAOPTableView/master/screenshot/aop_tableview_demo.gif)  
 
