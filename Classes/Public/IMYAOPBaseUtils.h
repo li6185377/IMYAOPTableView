@@ -1,8 +1,9 @@
 //
-//  IMYAOPFeedsViewUtils.h
+//  IMYAOPBaseUtils.h
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 2018/10/19.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPBaseInsertBody.h"
@@ -27,22 +28,22 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface IMYAOPBaseUtils (IndexPath)
 
-///table的 indexPath 转 逻辑调用的indexPath
-- (nullable NSIndexPath *)realIndexPathByTable:(nullable NSIndexPath *)tableIndexPath;
-///逻辑indexPath 转 table 使用的indexPath
-- (nullable NSIndexPath *)tableIndexPathByReal:(nullable NSIndexPath *)realIndexPath;
+/// feedsView的 indexPath 转 业务使用的 indexPath
+- (nullable NSIndexPath *)userIndexPathByFeeds:(nullable NSIndexPath *)feedsIndexPath;
+/// 业务使用的 indexPath 转 feedsView使用的 indexPath
+- (nullable NSIndexPath *)feedsIndexPathByUser:(nullable NSIndexPath *)userIndexPath;
 
-///table的section 转 逻辑调用的section
-- (NSInteger)realSectionByTable:(NSInteger)tableSection;
-///逻辑section 转 table 使用的section
-- (NSInteger)tableSectionByReal:(NSInteger)realSection;
+/// feedsView section 转 业务使用的 section
+- (NSInteger)userSectionByFeeds:(NSInteger)feedsSection;
+/// 业务使用的 section 转 feedsView section
+- (NSInteger)feedsSectionByUser:(NSInteger)userSection;
 
 /// 数组转换, 效果跟上面一样
-- (NSArray<NSIndexPath *> *)realIndexPathsByTableIndexPaths:(nullable NSArray<NSIndexPath *> *)tableIndexPaths;
-- (NSArray<NSIndexPath *> *)tableIndexPathsByRealIndexPaths:(nullable NSArray<NSIndexPath *> *)realIndexPaths;
+- (NSArray<NSIndexPath *> *)userIndexPathsByFeedsIndexPaths:(nullable NSArray<NSIndexPath *> *)feedsIndexPaths;
+- (NSArray<NSIndexPath *> *)feedsIndexPathsByUserIndexPaths:(nullable NSArray<NSIndexPath *> *)userIndexPaths;
 
-- (NSIndexSet *)realSectionsByTableSet:(nullable NSIndexSet *)tableSet;
-- (NSIndexSet *)tableSectionsByRealSet:(nullable NSIndexSet *)realSet;
+- (NSIndexSet *)userSectionsByFeedsSet:(nullable NSIndexSet *)feedsSet;
+- (NSIndexSet *)feedsSectionsByUserSet:(nullable NSIndexSet *)userSet;
 
 @end
 

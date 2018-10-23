@@ -29,7 +29,8 @@
 
     [self addCell:@"Twitter" class:@"T1HomeTimelineItemsViewController" image:@"Twitter.jpg"];
     [self addCell:@"Weibo" class:@"WBStatusTimelineViewController" image:@"Weibo.jpg"];
-    [self addCell:@"Waterfall" class:@"YYWaterfallViewController" image:@"Weibo.jpg"];
+    [self addCell:@"Waterfall" class:@"YYWaterfallViewController" image:@"Twitter.jpg"];
+    [self addCell:@"Flowlayout" class:@"YYFlowlayoutViewController" image:@"Weibo.jpg"];
 
     if (!kiOS7Later) {
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:nil action:nil];

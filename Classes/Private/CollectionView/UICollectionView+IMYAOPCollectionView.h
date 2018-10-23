@@ -1,9 +1,9 @@
 //
-//  UITableView+IMYAOPTableUtils.h
+//  UICollectionView+IMYAOPCollectionView.h
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 16/4/16.
-//  Copyright © 2016年 IMY. All rights reserved.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPCollectionViewUtils.h"
@@ -21,7 +21,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface _IMYAOPCollectionView : UICollectionView
 
-//+ (void)aop_setupConfigs;
 - (void)aop_refreshDelegate;
 - (void)aop_refreshDataSource;
 ///获取显示中的cell containType => 0：原生cell   1：插入的cell   2：全部cell

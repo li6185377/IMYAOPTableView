@@ -2,7 +2,8 @@
 //  IMYAOPBaseInsertBody.h
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 2018/10/19.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

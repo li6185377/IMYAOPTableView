@@ -1,9 +1,9 @@
 //
-//  UITableView+IMYAOPTableUtils.m
+//  UITableView+IMYAOPTableView.m
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 16/4/16.
-//  Copyright © 2016年 IMY. All rights reserved.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPTableView.h"
@@ -339,7 +339,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     NSInteger number = ((NSInteger(*)(void *, SEL))(void *)objc_msgSendSuper)(&objcSuper, @selector(numberOfSections));
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        number = [aop_utils realSectionByTable:number];
+        number = [aop_utils userSectionByFeeds:number];
     }
     return number;
 }
@@ -347,13 +347,13 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (NSInteger)aop_numberOfRowsInSection:(NSInteger)section {
     AopDefineVars;
     if (aop_utils) {
-        section = [aop_utils tableSectionByReal:section];
+        section = [aop_utils feedsSectionByUser:section];
     }
     aop_utils.isUICalling += 1;
     NSInteger number = ((NSInteger(*)(void *, SEL, NSInteger))(void *)objc_msgSendSuper)(&objcSuper, @selector(numberOfRowsInSection:), section);
     aop_utils.isUICalling -= 1;
     if (aop_utils && number > 0) {
-        number = [aop_utils realIndexPathByTable:[NSIndexPath indexPathForRow:number inSection:section]].row;
+        number = [aop_utils userIndexPathByFeeds:[NSIndexPath indexPathForRow:number inSection:section]].row;
     }
     return number;
 }
@@ -361,7 +361,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (CGRect)aop_rectForSection:(NSInteger)section {
     AopDefineVars;
     if (aop_utils) {
-        section = [aop_utils tableSectionByReal:section];
+        section = [aop_utils feedsSectionByUser:section];
     }
     aop_utils.isUICalling += 1;
     CGRect (*actionBlock)(void *, SEL, NSInteger);
@@ -378,7 +378,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (CGRect)aop_rectForHeaderInSection:(NSInteger)section {
     AopDefineVars;
     if (aop_utils) {
-        section = [aop_utils tableSectionByReal:section];
+        section = [aop_utils feedsSectionByUser:section];
     }
     aop_utils.isUICalling += 1;
     CGRect (*actionBlock)(void *, SEL, NSInteger);
@@ -395,7 +395,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (CGRect)aop_rectForFooterInSection:(NSInteger)section {
     AopDefineVars;
     if (aop_utils) {
-        section = [aop_utils tableSectionByReal:section];
+        section = [aop_utils feedsSectionByUser:section];
     }
     aop_utils.isUICalling += 1;
     CGRect (*actionBlock)(void *, SEL, NSInteger);
@@ -412,7 +412,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (CGRect)aop_rectForRowAtIndexPath:(NSIndexPath *)indexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     CGRect (*actionBlock)(void *, SEL, id);
@@ -432,7 +432,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     NSIndexPath *indexPath = ((id(*)(void *, SEL, CGPoint))(void *)objc_msgSendSuper)(&objcSuper, @selector(indexPathForRowAtPoint:), point);
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        indexPath = [aop_utils realIndexPathByTable:indexPath];
+        indexPath = [aop_utils userIndexPathByFeeds:indexPath];
     }
     return indexPath;
 }
@@ -443,7 +443,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     NSIndexPath *indexPath = AopCallSuperResult_1(@selector(indexPathForCell:), cell);
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        indexPath = [aop_utils realIndexPathByTable:indexPath] ?: indexPath;
+        indexPath = [aop_utils userIndexPathByFeeds:indexPath] ?: indexPath;
     }
     return indexPath;
 }
@@ -455,7 +455,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     ;
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        indexPaths = [aop_utils realIndexPathsByTableIndexPaths:indexPaths];
+        indexPaths = [aop_utils userIndexPathsByFeedsIndexPaths:indexPaths];
     }
     return indexPaths;
 }
@@ -463,7 +463,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (UITableViewCell *)aop_cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     UITableViewCell *cell = AopCallSuperResult_1(@selector(cellForRowAtIndexPath:), indexPath);
@@ -483,7 +483,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
         for (UITableViewCell *cell in visibleCells) {
             NSIndexPath *indexPath = AopCallSuperResult_1(@selector(indexPathForCell:), cell);
             if (aop_utils) {
-                indexPath = [aop_utils realIndexPathByTable:indexPath];
+                indexPath = [aop_utils userIndexPathByFeeds:indexPath];
             }
             if (containType == IMYAOPTypeInsert) {
                 ///只返回插入的cell
@@ -511,7 +511,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     aop_utils.isUICalling += 1;
     NSArray<NSIndexPath *> *array = AopCallSuperResult(@selector(indexPathsForVisibleRows));
     if (aop_utils) {
-        array = [aop_utils realIndexPathsByTableIndexPaths:array];
+        array = [aop_utils userIndexPathsByFeedsIndexPaths:array];
     }
     aop_utils.isUICalling -= 1;
     return array;
@@ -520,7 +520,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (UITableViewHeaderFooterView *)aop_headerViewForSection:(NSInteger)section {
     AopDefineVars;
     if (aop_utils) {
-        section = [aop_utils tableSectionByReal:section];
+        section = [aop_utils feedsSectionByUser:section];
     }
     aop_utils.isUICalling += 1;
     UITableViewHeaderFooterView *headerView = ((id(*)(void *, SEL, NSInteger))(void *)objc_msgSendSuper)(&objcSuper, @selector(headerViewForSection:), section);
@@ -531,7 +531,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (UITableViewHeaderFooterView *)aop_footerViewForSection:(NSInteger)section {
     AopDefineVars;
     if (aop_utils) {
-        section = [aop_utils tableSectionByReal:section];
+        section = [aop_utils feedsSectionByUser:section];
     }
     aop_utils.isUICalling += 1;
     UITableViewHeaderFooterView *footerView = ((id(*)(void *, SEL, NSInteger))(void *)objc_msgSendSuper)(&objcSuper, @selector(footerViewForSection:), section);
@@ -542,7 +542,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_scrollToRowAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UITableViewScrollPosition)scrollPosition animated:(BOOL)animated {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, UITableViewScrollPosition, BOOL))(void *)objc_msgSendSuper)(&objcSuper, @selector(scrollToRowAtIndexPath:atScrollPosition:animated:), indexPath, scrollPosition, animated);
@@ -553,7 +553,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
     AopDefineVars;
     if (aop_utils) {
-        sections = [aop_utils tableSectionsByRealSet:sections];
+        sections = [aop_utils feedsSectionsByUserSet:sections];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, UITableViewRowAnimation))(void *)objc_msgSendSuper)(&objcSuper, @selector(insertSections:withRowAnimation:), sections, animation);
@@ -563,7 +563,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
     AopDefineVars;
     if (aop_utils) {
-        sections = [aop_utils tableSectionsByRealSet:sections];
+        sections = [aop_utils feedsSectionsByUserSet:sections];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, UITableViewRowAnimation))(void *)objc_msgSendSuper)(&objcSuper, @selector(deleteSections:withRowAnimation:), sections, animation);
@@ -573,7 +573,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
     AopDefineVars;
     if (aop_utils) {
-        sections = [aop_utils tableSectionsByRealSet:sections];
+        sections = [aop_utils feedsSectionsByUserSet:sections];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, UITableViewRowAnimation))(void *)objc_msgSendSuper)(&objcSuper, @selector(reloadSections:withRowAnimation:), sections, animation);
@@ -583,8 +583,8 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_moveSection:(NSInteger)section toSection:(NSInteger)newSection {
     AopDefineVars;
     if (aop_utils) {
-        section = [aop_utils tableSectionByReal:section];
-        newSection = [aop_utils tableSectionByReal:newSection];
+        section = [aop_utils feedsSectionByUser:section];
+        newSection = [aop_utils feedsSectionByUser:newSection];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, NSInteger, NSInteger))(void *)objc_msgSendSuper)(&objcSuper, @selector(moveSection:toSection:), section, newSection);
@@ -594,7 +594,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_insertRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
     AopDefineVars;
     if (aop_utils) {
-        indexPaths = [aop_utils tableIndexPathsByRealIndexPaths:indexPaths];
+        indexPaths = [aop_utils feedsIndexPathsByUserIndexPaths:indexPaths];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, UITableViewRowAnimation))(void *)objc_msgSendSuper)(&objcSuper, @selector(insertRowsAtIndexPaths:withRowAnimation:), indexPaths, animation);
@@ -604,7 +604,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_deleteRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
     AopDefineVars;
     if (aop_utils) {
-        indexPaths = [aop_utils tableIndexPathsByRealIndexPaths:indexPaths];
+        indexPaths = [aop_utils feedsIndexPathsByUserIndexPaths:indexPaths];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, UITableViewRowAnimation))(void *)objc_msgSendSuper)(&objcSuper, @selector(deleteRowsAtIndexPaths:withRowAnimation:), indexPaths, animation);
@@ -614,7 +614,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_reloadRowsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation {
     AopDefineVars;
     if (aop_utils) {
-        indexPaths = [aop_utils tableIndexPathsByRealIndexPaths:indexPaths];
+        indexPaths = [aop_utils feedsIndexPathsByUserIndexPaths:indexPaths];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, UITableViewRowAnimation))(void *)objc_msgSendSuper)(&objcSuper, @selector(reloadRowsAtIndexPaths:withRowAnimation:), indexPaths, animation);
@@ -624,8 +624,8 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_moveRowAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
-        newIndexPath = [aop_utils tableIndexPathByReal:newIndexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
+        newIndexPath = [aop_utils feedsIndexPathByUser:newIndexPath];
     }
     aop_utils.isUICalling += 1;
     AopCallSuper_2(@selector(moveRowAtIndexPath:toIndexPath:), indexPath, newIndexPath);
@@ -639,7 +639,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     NSIndexPath *indexPath = AopCallSuperResult(@selector(indexPathForSelectedRow));
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        indexPath = [aop_utils realIndexPathByTable:indexPath];
+        indexPath = [aop_utils userIndexPathByFeeds:indexPath];
     }
     return indexPath;
 }
@@ -650,7 +650,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     NSArray<NSIndexPath *> *indexPaths = AopCallSuperResult(@selector(indexPathsForSelectedRows));
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        indexPaths = [aop_utils realIndexPathsByTableIndexPaths:indexPaths];
+        indexPaths = [aop_utils userIndexPathsByFeedsIndexPaths:indexPaths];
     }
     return indexPaths;
 }
@@ -658,7 +658,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (void)aop_selectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UITableViewScrollPosition)scrollPosition {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, BOOL, UITableViewScrollPosition))(void *)objc_msgSendSuper)(&objcSuper, @selector(reloadRowsAtIndexPaths:withRowAnimation:), indexPath, animated, scrollPosition);
@@ -670,7 +670,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, BOOL))(void *)objc_msgSendSuper)(&objcSuper, @selector(deselectRowAtIndexPath:animated:), indexPath, animated);
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
         ((void (*)(void *, SEL, id, BOOL))(void *)objc_msgSendSuper)(&objcSuper, @selector(deselectRowAtIndexPath:animated:), indexPath, animated);
     }
     aop_utils.isUICalling -= 1;
@@ -696,7 +696,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 - (UITableViewCell *)aop_dequeueReusableCellWithIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     UITableViewCell *dequeueCell = AopCallSuperResult_2(@selector(dequeueReusableCellWithIdentifier:forIndexPath:), identifier, indexPath);

@@ -2,7 +2,8 @@
 //  IMYAOPCollectionViewUtils+Proxy.m
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 2018/10/22.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPCallProxy.h"
@@ -64,11 +65,11 @@ static const void *kIMYAOPProxyRawCollectionViewKey = &kIMYAOPProxyRawCollection
 }
 
 - (id)modelForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSIndexPath *realIndexPath = [self realIndexPathByTable:indexPath];
+    NSIndexPath *userIndexPath = [self userIndexPathByFeeds:indexPath];
     id<UITableViewDataSource, IMYAOPCollectionViewGetModelProtocol> dataSource = nil;
-    if (realIndexPath) {
+    if (userIndexPath) {
         dataSource = (id)self.origDataSource;
-        indexPath = realIndexPath;
+        indexPath = userIndexPath;
     } else {
         dataSource = (id)self.dataSource;
     }

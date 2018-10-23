@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		364AFF3B217EAFEB00960F2E /* YYFlowlayoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 364AFF3A217EAFEB00960F2E /* YYFlowlayoutViewController.m */; };
 		36535499217DEABF00D571FF /* YYWaterfallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 36535498217DEABF00D571FF /* YYWaterfallViewController.m */; };
 		367F27791D16E87A00C8BD36 /* IMYAOPTableDemo.m in Sources */ = {isa = PBXBuildFile; fileRef = 367F27781D16E87A00C8BD36 /* IMYAOPTableDemo.m */; };
 		367F277B1D16EC0C00C8BD36 /* aop_ad_image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 367F277A1D16EC0C00C8BD36 /* aop_ad_image.jpeg */; };
@@ -180,6 +181,8 @@
 /* Begin PBXFileReference section */
 		236E9F42F58BFA3D81E8DB13 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		28B61FD692662CF67C5F1EE4 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		364AFF39217EAFEB00960F2E /* YYFlowlayoutViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYFlowlayoutViewController.h; sourceTree = "<group>"; };
+		364AFF3A217EAFEB00960F2E /* YYFlowlayoutViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYFlowlayoutViewController.m; sourceTree = "<group>"; };
 		36535497217DEABF00D571FF /* YYWaterfallViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YYWaterfallViewController.h; sourceTree = "<group>"; };
 		36535498217DEABF00D571FF /* YYWaterfallViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YYWaterfallViewController.m; sourceTree = "<group>"; };
 		367F27771D16E87A00C8BD36 /* IMYAOPTableDemo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMYAOPTableDemo.h; sourceTree = "<group>"; };
@@ -497,6 +500,8 @@
 			children = (
 				36535497217DEABF00D571FF /* YYWaterfallViewController.h */,
 				36535498217DEABF00D571FF /* YYWaterfallViewController.m */,
+				364AFF39217EAFEB00960F2E /* YYFlowlayoutViewController.h */,
+				364AFF3A217EAFEB00960F2E /* YYFlowlayoutViewController.m */,
 			);
 			name = GridView;
 			sourceTree = "<group>";
@@ -1187,6 +1192,7 @@
 			files = (
 				D9B260961BEE79370038C00A /* YYDispatchQueuePool.m in Sources */,
 				D9B260941BEE79370038C00A /* YYTextView.m in Sources */,
+				364AFF3B217EAFEB00960F2E /* YYFlowlayoutViewController.m in Sources */,
 				D9B260781BEE79370038C00A /* YYFrameImage.m in Sources */,
 				D9067E001B9879E300F346EB /* YYFPSLabel.m in Sources */,
 				D9B260511BEE79370038C00A /* NSBundle+YYAdd.m in Sources */,

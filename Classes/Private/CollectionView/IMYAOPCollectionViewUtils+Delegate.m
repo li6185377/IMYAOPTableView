@@ -1,30 +1,30 @@
 //
-//  IMYAOPFeedsViewUtils+UITableViewDelegate.m
+//  IMYAOPCollectionViewUtils+Delegate.m
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 16/4/15.
-//  Copyright © 2016年 IMY. All rights reserved.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPCollectionViewUtils+Delegate.h"
 #import "IMYAOPCollectionViewUtils+Private.h"
 
 #define kAOPRealIndexPathCode                                           \
-    NSIndexPath *realIndexPath = [self realIndexPathByTable:indexPath]; \
+    NSIndexPath *userIndexPath = [self userIndexPathByFeeds:indexPath]; \
     id<IMYAOPCollectionViewDelegate> delegate = nil;                    \
-    if (realIndexPath) {                                                \
+    if (userIndexPath) {                                                \
         delegate = (id)self.origDelegate;                               \
-        indexPath = realIndexPath;                                      \
+        indexPath = userIndexPath;                                      \
     } else {                                                            \
         delegate = self.delegate;                                       \
     }
 
 #define kAOPRealSectionCode                                    \
-    NSInteger realSection = [self realSectionByTable:section]; \
+    NSInteger userSection = [self userSectionByFeeds:section]; \
     id<IMYAOPCollectionViewDelegate> delegate = nil;           \
-    if (realSection >= 0) {                                    \
+    if (userSection >= 0) {                                    \
         delegate = (id)self.origDelegate;                      \
-        section = realSection;                                 \
+        section = userSection;                                 \
     } else {                                                   \
         delegate = self.delegate;                              \
     }
@@ -34,6 +34,8 @@
 
 #define kAOPUICallingResotre \
     self.isUICalling += 1;
+
+#define kAOPDefineLayout
 
 @implementation IMYAOPCollectionViewUtils (UITableViewDelegate)
 
@@ -186,8 +188,8 @@
 
 - (NSIndexPath *)collectionView:(UICollectionView *)collectionView targetIndexPathForMoveFromItemAtIndexPath:(NSIndexPath *)originalIndexPath toProposedIndexPath:(NSIndexPath *)proposedIndexPath {
     kAOPUICallingSaved;
-    NSIndexPath *source = [self realIndexPathByTable:originalIndexPath];
-    NSIndexPath *destin = [self realIndexPathByTable:proposedIndexPath];
+    NSIndexPath *source = [self userIndexPathByFeeds:originalIndexPath];
+    NSIndexPath *destin = [self userIndexPathByFeeds:proposedIndexPath];
     NSIndexPath *resultIndex = nil;
     if ([self.origDelegate respondsToSelector:@selector(collectionView:targetIndexPathForMoveFromItemAtIndexPath:toProposedIndexPath:)]) {
         resultIndex = [self.origDelegate collectionView:collectionView targetIndexPathForMoveFromItemAtIndexPath:source toProposedIndexPath:destin];
@@ -207,12 +209,16 @@
     return shouldSpringLoad;
 }
 
-#pragma mark - CHTCollectionViewDelegateWaterfallLayout
+#pragma mark - common layout delegate
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(CHTCollectionViewWaterfallLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+// water layout and flow layout
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
     kAOPRealIndexPathCode;
     CGSize size = CGSizeZero;
+    if ([collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]) {
+        size = ((UICollectionViewFlowLayout *)collectionViewLayout).itemSize;
+    }
     if ([delegate respondsToSelector:@selector(collectionView:layout:sizeForItemAtIndexPath:)]) {
         size = [delegate collectionView:collectionView layout:collectionViewLayout sizeForItemAtIndexPath:indexPath];
     }
@@ -220,13 +226,108 @@
     return size;
 }
 
+- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    kAOPUICallingSaved;
+    NSInteger userSection = [self userSectionByFeeds:section];
+    UIEdgeInsets edgeInsets = ((UICollectionViewFlowLayout *)collectionViewLayout).sectionInset;
+    id delegate = nil;
+    if (userSection >= 0) {
+        section = userSection;
+        delegate = self.origDelegate;
+    } else {
+        delegate = self.delegate;
+    }
+    if ([delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
+        edgeInsets = [delegate collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
+    }
+    kAOPUICallingResotre;
+    return edgeInsets;
+}
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
+    kAOPUICallingSaved;
+    NSInteger userSection = [self userSectionByFeeds:section];
+    CGFloat spacing = ((UICollectionViewFlowLayout *)collectionViewLayout).minimumInteritemSpacing;
+    id delegate = nil;
+    if (userSection >= 0) {
+        section = userSection;
+        delegate = self.origDelegate;
+    } else {
+        delegate = self.delegate;
+    }
+    if ([delegate respondsToSelector:@selector(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:)]) {
+        spacing = [delegate collectionView:collectionView layout:collectionViewLayout minimumInteritemSpacingForSectionAtIndex:section];
+    }
+    kAOPUICallingResotre;
+    return spacing;
+}
+
+#pragma mark - flow layout
+
+- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section {
+    kAOPUICallingSaved;
+    NSInteger userSection = [self userSectionByFeeds:section];
+    CGFloat spacing = collectionViewLayout.minimumLineSpacing;
+    id delegate = nil;
+    if (userSection >= 0) {
+        section = userSection;
+        delegate = self.origDelegate;
+    } else {
+        delegate = self.delegate;
+    }
+    if ([delegate respondsToSelector:@selector(collectionView:layout:minimumLineSpacingForSectionAtIndex:)]) {
+        spacing = [delegate collectionView:collectionView layout:collectionViewLayout minimumLineSpacingForSectionAtIndex:section];
+    }
+    kAOPUICallingResotre;
+    return spacing;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
+    kAOPUICallingSaved;
+    NSInteger userSection = [self userSectionByFeeds:section];
+    CGSize size = collectionViewLayout.headerReferenceSize;
+    id delegate = nil;
+    if (userSection >= 0) {
+        section = userSection;
+        delegate = self.origDelegate;
+    } else {
+        delegate = self.delegate;
+    }
+    if ([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForHeaderInSection:)]) {
+        size = [delegate collectionView:collectionView layout:collectionViewLayout referenceSizeForHeaderInSection:section];
+    }
+    kAOPUICallingResotre;
+    return size;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewFlowLayout *)collectionViewLayout referenceSizeForFooterInSection:(NSInteger)section {
+    kAOPUICallingSaved;
+    NSInteger userSection = [self userSectionByFeeds:section];
+    CGSize size = collectionViewLayout.headerReferenceSize;
+    id delegate = nil;
+    if (userSection >= 0) {
+        section = userSection;
+        delegate = self.origDelegate;
+    } else {
+        delegate = self.delegate;
+    }
+    if ([delegate respondsToSelector:@selector(collectionView:layout:referenceSizeForFooterInSection:)]) {
+        size = [delegate collectionView:collectionView layout:collectionViewLayout referenceSizeForFooterInSection:section];
+    }
+    kAOPUICallingResotre;
+    return size;
+}
+
+#pragma mark - water layout
+#if _has_chtwaterfall_layout_
+
 - (NSInteger)collectionView:(UICollectionView *)collectionView layout:(CHTCollectionViewWaterfallLayout *)collectionViewLayout columnCountForSection:(NSInteger)section {
     kAOPUICallingSaved;
-    NSInteger realSection = [self realSectionByTable:section];
+    NSInteger userSection = [self userSectionByFeeds:section];
     NSInteger columnCount = collectionViewLayout.columnCount;
     id delegate = nil;
-    if (realSection >= 0) {
-        section = realSection;
+    if (userSection >= 0) {
+        section = userSection;
         delegate = self.origDelegate;
     } else {
         delegate = self.delegate;
@@ -240,11 +341,11 @@
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(CHTCollectionViewWaterfallLayout *)collectionViewLayout heightForHeaderInSection:(NSInteger)section {
     kAOPUICallingSaved;
-    NSInteger realSection = [self realSectionByTable:section];
+    NSInteger userSection = [self userSectionByFeeds:section];
     CGFloat height = collectionViewLayout.headerHeight;
     id delegate = nil;
-    if (realSection >= 0) {
-        section = realSection;
+    if (userSection >= 0) {
+        section = userSection;
         delegate = self.origDelegate;
     } else {
         delegate = self.delegate;
@@ -258,11 +359,11 @@
 
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(CHTCollectionViewWaterfallLayout *)collectionViewLayout heightForFooterInSection:(NSInteger)section {
     kAOPUICallingSaved;
-    NSInteger realSection = [self realSectionByTable:section];
+    NSInteger userSection = [self userSectionByFeeds:section];
     CGFloat height = collectionViewLayout.footerHeight;
     id delegate = nil;
-    if (realSection >= 0) {
-        section = realSection;
+    if (userSection >= 0) {
+        section = userSection;
         delegate = self.origDelegate;
     } else {
         delegate = self.delegate;
@@ -274,31 +375,13 @@
     return height;
 }
 
-- (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(CHTCollectionViewWaterfallLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    kAOPUICallingSaved;
-    NSInteger realSection = [self realSectionByTable:section];
-    UIEdgeInsets edgeInsets = collectionViewLayout.sectionInset;
-    id delegate = nil;
-    if (realSection >= 0) {
-        section = realSection;
-        delegate = self.origDelegate;
-    } else {
-        delegate = self.delegate;
-    }
-    if ([delegate respondsToSelector:@selector(collectionView:layout:insetForSectionAtIndex:)]) {
-        edgeInsets = [delegate collectionView:collectionView layout:collectionViewLayout insetForSectionAtIndex:section];
-    }
-    kAOPUICallingResotre;
-    return edgeInsets;
-}
-
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(CHTCollectionViewWaterfallLayout *)collectionViewLayout insetForHeaderInSection:(NSInteger)section {
     kAOPUICallingSaved;
-    NSInteger realSection = [self realSectionByTable:section];
+    NSInteger userSection = [self userSectionByFeeds:section];
     UIEdgeInsets edgeInsets = collectionViewLayout.headerInset;
     id delegate = nil;
-    if (realSection >= 0) {
-        section = realSection;
+    if (userSection >= 0) {
+        section = userSection;
         delegate = self.origDelegate;
     } else {
         delegate = self.delegate;
@@ -312,11 +395,11 @@
 
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(CHTCollectionViewWaterfallLayout *)collectionViewLayout insetForFooterInSection:(NSInteger)section {
     kAOPUICallingSaved;
-    NSInteger realSection = [self realSectionByTable:section];
+    NSInteger userSection = [self userSectionByFeeds:section];
     UIEdgeInsets edgeInsets = collectionViewLayout.footerInset;
     id delegate = nil;
-    if (realSection >= 0) {
-        section = realSection;
+    if (userSection >= 0) {
+        section = userSection;
         delegate = self.origDelegate;
     } else {
         delegate = self.delegate;
@@ -328,31 +411,13 @@
     return edgeInsets;
 }
 
-- (CGFloat)collectionView:(UICollectionView *)collectionView layout:(CHTCollectionViewWaterfallLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section {
-    kAOPUICallingSaved;
-    NSInteger realSection = [self realSectionByTable:section];
-    CGFloat spacing = collectionViewLayout.minimumInteritemSpacing;
-    id delegate = nil;
-    if (realSection >= 0) {
-        section = realSection;
-        delegate = self.origDelegate;
-    } else {
-        delegate = self.delegate;
-    }
-    if ([delegate respondsToSelector:@selector(collectionView:layout:minimumInteritemSpacingForSectionAtIndex:)]) {
-        spacing = [delegate collectionView:collectionView layout:collectionViewLayout minimumInteritemSpacingForSectionAtIndex:section];
-    }
-    kAOPUICallingResotre;
-    return spacing;
-}
-
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(CHTCollectionViewWaterfallLayout *)collectionViewLayout minimumColumnSpacingForSectionAtIndex:(NSInteger)section {
     kAOPUICallingSaved;
-    NSInteger realSection = [self realSectionByTable:section];
+    NSInteger userSection = [self userSectionByFeeds:section];
     CGFloat spacing = collectionViewLayout.minimumColumnSpacing;
     id delegate = nil;
-    if (realSection >= 0) {
-        section = realSection;
+    if (userSection >= 0) {
+        section = userSection;
         delegate = self.origDelegate;
     } else {
         delegate = self.delegate;
@@ -363,5 +428,7 @@
     kAOPUICallingResotre;
     return spacing;
 }
+
+#endif
 
 @end

@@ -1,9 +1,9 @@
 //
-//  IMYAOPFeedsViewUtils.h
+//  IMYAOPTableViewUtils.h
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 16/4/15.
-//  Copyright © 2016年 IMY. All rights reserved.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPBaseUtils.h"
@@ -23,6 +23,19 @@ NS_ASSUME_NONNULL_BEGIN
 ///AOP TableView 的回调
 @property (nullable, nonatomic, weak) id<IMYAOPTableViewDelegate> delegate;
 @property (nullable, nonatomic, weak) id<IMYAOPTableViewDataSource> dataSource;
+
+@end
+
+@interface IMYAOPTableViewUtils (IndexPathDeprecated)
+
+- (nullable NSIndexPath *)realIndexPathByTable:(NSIndexPath *)tableIndexPath __deprecated_msg("Use `userIndexPathByFeeds:`");
+- (nullable NSIndexPath *)tableIndexPathByReal:(NSIndexPath *)realIndexPath __deprecated_msg("Use `feedsIndexPathByUser:`");
+- (NSInteger)realSectionByTable:(NSInteger)tableSection __deprecated_msg("Use `userSectionByFeeds:`");
+- (NSInteger)tableSectionByReal:(NSInteger)realSection __deprecated_msg("Use `feedsSectionByUser:`");
+- (NSArray<NSIndexPath *> *)realIndexPathsByTableIndexPaths:(NSArray<NSIndexPath *> *)tableIndexPaths __deprecated_msg("Use `userIndexPathsByFeedsIndexPaths:`");
+- (NSArray<NSIndexPath *> *)tableIndexPathsByRealIndexPaths:(NSArray<NSIndexPath *> *)realIndexPaths __deprecated_msg("Use `feedsIndexPathsByUserIndexPaths:`");
+- (NSIndexSet *)realSectionsByTableSet:(NSIndexSet *)tableSet __deprecated_msg("Use `userSectionsByFeedsSet:`");
+- (NSIndexSet *)tableSectionsByRealSet:(NSIndexSet *)realSet __deprecated_msg("Use `feedsSectionsByUserSet:`");
 
 @end
 

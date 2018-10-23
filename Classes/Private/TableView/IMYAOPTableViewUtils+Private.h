@@ -1,9 +1,9 @@
 //
-//  IMYAOPFeedsViewUtils+Private.h
+//  IMYAOPTableViewUtils+Private.h
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 16/4/16.
-//  Copyright © 2016年 IMY. All rights reserved.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPBaseUtils+Private.h"

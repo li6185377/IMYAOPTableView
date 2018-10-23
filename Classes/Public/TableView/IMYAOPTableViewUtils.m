@@ -1,9 +1,9 @@
 //
-//  IMYAOPFeedsViewUtils.m
+//  IMYAOPTableViewUtils.m
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 16/4/15.
-//  Copyright © 2016年 IMY. All rights reserved.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPTableViewUtils.h"
@@ -231,4 +231,32 @@ static const void *kIMYAOPTableUtilsKey = &kIMYAOPTableUtilsKey;
     return NO;
 }
 
+@end
+
+
+@implementation IMYAOPTableViewUtils (IndexPathDeprecated)
+- (nullable NSIndexPath *)realIndexPathByTable:(NSIndexPath *)tableIndexPath {
+    return [self userIndexPathByFeeds:tableIndexPath];
+}
+- (nullable NSIndexPath *)tableIndexPathByReal:(NSIndexPath *)realIndexPath {
+    return [self feedsIndexPathByUser:realIndexPath];
+}
+- (NSInteger)realSectionByTable:(NSInteger)tableSection {
+    return [self userSectionByFeeds:tableSection];
+}
+- (NSInteger)tableSectionByReal:(NSInteger)realSection {
+    return [self feedsSectionByUser:realSection];
+}
+- (NSArray<NSIndexPath *> *)realIndexPathsByTableIndexPaths:(NSArray<NSIndexPath *> *)tableIndexPaths {
+    return [self userIndexPathsByFeedsIndexPaths:tableIndexPaths];
+}
+- (NSArray<NSIndexPath *> *)tableIndexPathsByRealIndexPaths:(NSArray<NSIndexPath *> *)realIndexPaths {
+    return [self feedsIndexPathsByUserIndexPaths:realIndexPaths];
+}
+- (NSIndexSet *)realSectionsByTableSet:(NSIndexSet *)tableSet {
+    return [self userSectionsByFeedsSet:tableSet];
+}
+- (NSIndexSet *)tableSectionsByRealSet:(NSIndexSet *)realSet {
+    return [self feedsSectionsByUserSet:realSet];
+}
 @end

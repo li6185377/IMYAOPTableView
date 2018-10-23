@@ -1,9 +1,9 @@
 //
-//  IMYAOPFeedsViewUtils+Proxy.h
-//  Pods
+//  IMYAOPTableViewUtils+Proxy.h
+//  IMYAOPFeedsView
 //
-//  Created by ljh on 16/6/22.
-//
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPTableViewUtils.h"

@@ -2,7 +2,8 @@
 //  IMYAOPBaseUtils.m
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 2018/10/19.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPBaseUtils.h"
@@ -201,12 +202,12 @@ static NSString *const kAOPFeedsViewPrefix = @"kIMYAOP_";
 
 @implementation IMYAOPBaseUtils (IndexPath)
 
-- (NSIndexPath *)realIndexPathByTable:(NSIndexPath *)tableIndexPath {
-    if (!tableIndexPath) {
+- (NSIndexPath *)userIndexPathByFeeds:(NSIndexPath *)feedsIndexPath {
+    if (!feedsIndexPath) {
         return nil;
     }
-    NSInteger section = tableIndexPath.section;
-    NSInteger row = tableIndexPath.row;
+    NSInteger section = feedsIndexPath.section;
+    NSInteger row = feedsIndexPath.row;
 
     NSMutableArray<NSIndexPath *> *array = self.sectionMap[@(section)];
     NSInteger cutCount = 0;
@@ -225,20 +226,20 @@ static NSString *const kAOPFeedsViewPrefix = @"kIMYAOP_";
         return nil;
     }
     ///如果该位置不是广告， 则转为逻辑index
-    section = [self realSectionByTable:section];
-    NSIndexPath *realIndexPath = [NSIndexPath indexPathForRow:row - cutCount inSection:section];
-    return realIndexPath;
+    section = [self userSectionByFeeds:section];
+    NSIndexPath *userIndexPath = [NSIndexPath indexPathForRow:row - cutCount inSection:section];
+    return userIndexPath;
 }
 
-- (NSIndexPath *)tableIndexPathByReal:(NSIndexPath *)realIndexPath {
-    if (realIndexPath == nil) {
+- (NSIndexPath *)feedsIndexPathByUser:(NSIndexPath *)userIndexPath {
+    if (userIndexPath == nil) {
         return nil;
     }
-    NSInteger section = realIndexPath.section;
-    NSInteger row = realIndexPath.row;
+    NSInteger section = userIndexPath.section;
+    NSInteger row = userIndexPath.row;
 
     ///转为table section
-    section = [self tableSectionByReal:section];
+    section = [self feedsSectionByUser:section];
 
     NSMutableArray<NSIndexPath *> *array = self.sectionMap[@(section)];
     for (NSIndexPath *obj in array) {
@@ -248,34 +249,34 @@ static NSString *const kAOPFeedsViewPrefix = @"kIMYAOP_";
             break;
         }
     }
-    NSIndexPath *tableIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
-    return tableIndexPath;
+    NSIndexPath *feedsIndexPath = [NSIndexPath indexPathForRow:row inSection:section];
+    return feedsIndexPath;
 }
 
-- (NSArray<NSIndexPath *> *)realIndexPathsByTableIndexPaths:(NSArray<NSIndexPath *> *)tableIndexPaths {
+- (NSArray<NSIndexPath *> *)userIndexPathsByFeedsIndexPaths:(NSArray<NSIndexPath *> *)feedsIndexPaths {
     NSMutableArray *toArray = [NSMutableArray array];
-    [tableIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
-        NSIndexPath *realIndexPath = [self realIndexPathByTable:obj];
-        if (realIndexPath) {
-            [toArray addObject:realIndexPath];
+    [feedsIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
+        NSIndexPath *userIndexPath = [self userIndexPathByFeeds:obj];
+        if (userIndexPath) {
+            [toArray addObject:userIndexPath];
         }
     }];
     return toArray;
 }
 
-- (NSArray<NSIndexPath *> *)tableIndexPathsByRealIndexPaths:(NSArray<NSIndexPath *> *)realIndexPaths {
+- (NSArray<NSIndexPath *> *)feedsIndexPathsByUserIndexPaths:(NSArray<NSIndexPath *> *)userIndexPaths {
     NSMutableArray *toArray = [NSMutableArray array];
-    [realIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
-        NSIndexPath *tableIndexPath = [self tableIndexPathByReal:obj];
-        if (tableIndexPath) {
-            [toArray addObject:tableIndexPath];
+    [userIndexPaths enumerateObjectsUsingBlock:^(NSIndexPath *_Nonnull obj, NSUInteger idx, BOOL *_Nonnull stop) {
+        NSIndexPath *feedsIndexPath = [self feedsIndexPathByUser:obj];
+        if (feedsIndexPath) {
+            [toArray addObject:feedsIndexPath];
         }
     }];
     return toArray;
 }
 
-- (NSInteger)tableSectionByReal:(NSInteger)realSection {
-    __block NSInteger section = realSection;
+- (NSInteger)feedsSectionByUser:(NSInteger)userSection {
+    __block NSInteger section = userSection;
     [self.sections enumerateIndexesUsingBlock:^(NSUInteger insertSection, BOOL *_Nonnull stop) {
         if (insertSection <= section) {
             section += 1;
@@ -286,7 +287,7 @@ static NSString *const kAOPFeedsViewPrefix = @"kIMYAOP_";
     return section;
 }
 
-- (NSInteger)realSectionByTable:(NSInteger)tableSection {
+- (NSInteger)userSectionByFeeds:(NSInteger)tableSection {
     __block NSInteger cutCount = 0;
     [self.sections enumerateIndexesUsingBlock:^(NSUInteger insertSection, BOOL *_Nonnull stop) {
         if (insertSection == tableSection) {
@@ -304,10 +305,10 @@ static NSString *const kAOPFeedsViewPrefix = @"kIMYAOP_";
     return -1;
 }
 
-- (NSIndexSet *)tableSectionsByRealSet:(NSIndexSet *)realSet {
+- (NSIndexSet *)feedsSectionsByUserSet:(NSIndexSet *)userSet {
     NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-    [realSet enumerateIndexesUsingBlock:^(NSUInteger realIndex, BOOL *_Nonnull stop) {
-        NSInteger section = [self tableSectionByReal:realIndex];
+    [userSet enumerateIndexesUsingBlock:^(NSUInteger userSection, BOOL *_Nonnull stop) {
+        NSInteger section = [self feedsSectionByUser:userSection];
         if (section >= 0) {
             [sections addIndex:section];
         }
@@ -315,10 +316,10 @@ static NSString *const kAOPFeedsViewPrefix = @"kIMYAOP_";
     return sections;
 }
 
-- (NSIndexSet *)realSectionsByTableSet:(NSIndexSet *)tableSet {
+- (NSIndexSet *)userSectionsByFeedsSet:(NSIndexSet *)feedsSet {
     NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-    [tableSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *_Nonnull stop) {
-        NSInteger section = [self realSectionByTable:idx];
+    [feedsSet enumerateIndexesUsingBlock:^(NSUInteger idx, BOOL *_Nonnull stop) {
+        NSInteger section = [self userSectionByFeeds:idx];
         if (section >= 0) {
             [sections addIndex:section];
         }

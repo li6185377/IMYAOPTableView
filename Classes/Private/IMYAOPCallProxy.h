@@ -1,9 +1,11 @@
 //
 //  IMYAOPCallProxy.h
-//  CHTCollectionViewWaterfallLayout
+//  IMYAOPFeedsView
 //
-//  Created by ljh on 2018/10/22.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
+
 
 #import "IMYAOPBaseUtils.h"
 #import <Foundation/Foundation.h>

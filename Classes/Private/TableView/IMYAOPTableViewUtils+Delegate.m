@@ -1,30 +1,30 @@
 //
-//  IMYAOPFeedsViewUtils+UITableViewDelegate.m
+//  IMYAOPTableViewUtils+Delegate.m
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 16/4/15.
-//  Copyright © 2016年 IMY. All rights reserved.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPTableViewUtils+Delegate.h"
 #import "IMYAOPTableViewUtils+Private.h"
 
 #define kAOPRealIndexPathCode                                           \
-    NSIndexPath *realIndexPath = [self realIndexPathByTable:indexPath]; \
+    NSIndexPath *userIndexPath = [self userIndexPathByFeeds:indexPath]; \
     id<IMYAOPTableViewDelegate> delegate = nil;                         \
-    if (realIndexPath) {                                                \
+    if (userIndexPath) {                                                \
         delegate = (id)self.origDelegate;                               \
-        indexPath = realIndexPath;                                      \
+        indexPath = userIndexPath;                                      \
     } else {                                                            \
         delegate = self.delegate;                                       \
     }
 
 #define kAOPRealSectionCode                                    \
-    NSInteger realSection = [self realSectionByTable:section]; \
+    NSInteger userSection = [self userSectionByFeeds:section]; \
     id<IMYAOPTableViewDelegate> delegate = nil;                \
-    if (realSection >= 0) {                                    \
+    if (userSection >= 0) {                                    \
         delegate = (id)self.origDelegate;                      \
-        section = realSection;                                 \
+        section = userSection;                                 \
     } else {                                                   \
         delegate = self.delegate;                              \
     }
@@ -260,8 +260,8 @@
     if ([delegate respondsToSelector:@selector(tableView:willSelectRowAtIndexPath:)]) {
         indexPath = [delegate tableView:tableView willSelectRowAtIndexPath:indexPath];
     }
-    if (realIndexPath) {
-        indexPath = [self tableIndexPathByReal:indexPath];
+    if (userIndexPath) {
+        indexPath = [self feedsIndexPathByUser:indexPath];
     }
     kAOPUICallingResotre;
     return indexPath;
@@ -273,8 +273,8 @@
     if ([delegate respondsToSelector:@selector(tableView:willDeselectRowAtIndexPath:)]) {
         indexPath = [delegate tableView:tableView willDeselectRowAtIndexPath:indexPath];
     }
-    if (realIndexPath) {
-        indexPath = [self tableIndexPathByReal:indexPath];
+    if (userIndexPath) {
+        indexPath = [self feedsIndexPathByUser:indexPath];
     }
     kAOPUICallingResotre;
     return indexPath;
@@ -371,14 +371,14 @@
 // Allows customization of the target row for a particular row as it is being moved/reordered
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
     kAOPUICallingSaved;
-    NSIndexPath *realOne = [self realIndexPathByTable:sourceIndexPath];
-    NSIndexPath *realTwo = [self realIndexPathByTable:proposedDestinationIndexPath];
+    NSIndexPath *realOne = [self userIndexPathByFeeds:sourceIndexPath];
+    NSIndexPath *realTwo = [self userIndexPathByFeeds:proposedDestinationIndexPath];
 
     NSIndexPath *resultIndexPath = proposedDestinationIndexPath;
     if (realOne && realTwo) {
         if ([self.origDelegate respondsToSelector:@selector(tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:)]) {
             resultIndexPath = [self.origDelegate tableView:tableView targetIndexPathForMoveFromRowAtIndexPath:realOne toProposedIndexPath:realTwo];
-            resultIndexPath = [self tableIndexPathByReal:resultIndexPath];
+            resultIndexPath = [self feedsIndexPathByUser:resultIndexPath];
         }
     }
     kAOPUICallingResotre;
@@ -450,7 +450,7 @@
     if ([self.origDelegate respondsToSelector:@selector(indexPathForPreferredFocusedViewInTableView:)]) {
         indexPath = [self.origDelegate indexPathForPreferredFocusedViewInTableView:tableView];
         if (indexPath) {
-            indexPath = [self tableIndexPathByReal:indexPath];
+            indexPath = [self feedsIndexPathByUser:indexPath];
         }
     }
     kAOPUICallingResotre;

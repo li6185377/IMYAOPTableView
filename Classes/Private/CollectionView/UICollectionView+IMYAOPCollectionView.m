@@ -1,9 +1,9 @@
 //
-//  UITableView+IMYAOPTableUtils.m
+//  UICollectionView+IMYAOPCollectionView.m
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 16/4/16.
-//  Copyright © 2016年 IMY. All rights reserved.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPCollectionView.h"
@@ -58,15 +58,7 @@
 
 @implementation _IMYAOPCollectionView
 
-+ (void)aop_setupConfigs {
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-
-                  });
-}
-
 // 纯手动敲打
-
 - (Class)aop_class {
     IMYAOPCollectionViewUtils *aop_utils = self.aop_utils;
     if (aop_utils) {
@@ -247,7 +239,7 @@
         for (UICollectionViewCell *cell in visibleCells) {
             NSIndexPath *indexPath = AopCallSuperResult_1(@selector(indexPathForCell:), cell);
             if (aop_utils) {
-                indexPath = [aop_utils realIndexPathByTable:indexPath];
+                indexPath = [aop_utils userIndexPathByFeeds:indexPath];
             }
             if (containType == IMYAOPTypeInsert) {
                 ///只返回插入的cell
@@ -280,7 +272,7 @@
             CGPoint point = CGPointMake((NSInteger)(cell.frame.origin.x + cell.frame.size.width / 2.0), (NSInteger)(cell.frame.origin.y + cell.frame.size.height / 2.0));
             NSIndexPath *indexPath = ((id(*)(void *, SEL, CGPoint))(void *)objc_msgSendSuper)(&objcSuper, @selector(indexPathForItemAtPoint:), point);
             if (aop_utils) {
-                indexPath = [aop_utils realIndexPathByTable:indexPath];
+                indexPath = [aop_utils userIndexPathByFeeds:indexPath];
             }
             if (containType == IMYAOPTypeInsert) {
                 ///只返回插入的cell
@@ -306,7 +298,7 @@
 - (UICollectionViewCell *)aop_dequeueReusableCellWithReuseIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     UICollectionViewCell *dequeueCell = AopCallSuperResult_2(@selector(dequeueReusableCellWithReuseIdentifier:forIndexPath:), identifier, indexPath);
@@ -317,7 +309,7 @@
 - (UICollectionReusableView *)aop_dequeueReusableSupplementaryViewOfKind:(NSString *)elementKind withReuseIdentifier:(NSString *)identifier forIndexPath:(NSIndexPath *)indexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     UICollectionReusableView *reusableView = AopCallSuperResult_3(@selector(dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:),
@@ -331,7 +323,7 @@
     aop_utils.isUICalling += 1;
     NSArray<NSIndexPath *> *array = AopCallSuperResult(@selector(indexPathsForSelectedItems));
     if (aop_utils) {
-        array = [aop_utils realIndexPathsByTableIndexPaths:array];
+        array = [aop_utils userIndexPathsByFeedsIndexPaths:array];
     }
     aop_utils.isUICalling -= 1;
     return array;
@@ -342,7 +334,7 @@
     aop_utils.isUICalling += 1;
     NSArray<NSIndexPath *> *array = AopCallSuperResult(@selector(indexPathsForVisibleItems));
     if (aop_utils) {
-        array = [aop_utils realIndexPathsByTableIndexPaths:array];
+        array = [aop_utils userIndexPathsByFeedsIndexPaths:array];
     }
     aop_utils.isUICalling -= 1;
     return array;
@@ -351,7 +343,7 @@
 - (void)aop_selectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated scrollPosition:(UICollectionViewScrollPosition)scrollPosition {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, BOOL, UICollectionViewScrollPosition))(void *)objc_msgSendSuper)(&objcSuper, @selector(selectItemAtIndexPath:animated:scrollPosition:), indexPath, animated, scrollPosition);
@@ -361,7 +353,7 @@
 - (void)aop_deselectItemAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, BOOL))(void *)objc_msgSendSuper)(&objcSuper, @selector(deselectItemAtIndexPath:animated:), indexPath, animated);
@@ -411,7 +403,7 @@
     NSInteger number = ((NSInteger(*)(void *, SEL))(void *)objc_msgSendSuper)(&objcSuper, @selector(numberOfSections));
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        number = [aop_utils realSectionByTable:number];
+        number = [aop_utils userSectionByFeeds:number];
     }
     return number;
 }
@@ -419,13 +411,13 @@
 - (NSInteger)aop_numberOfItemsInSection:(NSInteger)section {
     AopDefineVars;
     if (aop_utils) {
-        section = [aop_utils tableSectionByReal:section];
+        section = [aop_utils feedsSectionByUser:section];
     }
     aop_utils.isUICalling += 1;
     NSInteger number = ((NSInteger(*)(void *, SEL, NSInteger))(void *)objc_msgSendSuper)(&objcSuper, @selector(numberOfItemsInSection:), section);
     aop_utils.isUICalling -= 1;
     if (aop_utils && number > 0) {
-        number = [aop_utils realIndexPathByTable:[NSIndexPath indexPathForRow:number inSection:section]].row;
+        number = [aop_utils userIndexPathByFeeds:[NSIndexPath indexPathForRow:number inSection:section]].row;
     }
     return number;
 }
@@ -433,7 +425,7 @@
 - (UICollectionViewLayoutAttributes *)aop_layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     UICollectionViewLayoutAttributes *attributes = AopCallSuperResult_1(@selector(layoutAttributesForItemAtIndexPath:), indexPath);
@@ -444,7 +436,7 @@
 - (UICollectionViewLayoutAttributes *)aop_layoutAttributesForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     UICollectionViewLayoutAttributes *attributes = AopCallSuperResult_2(@selector(layoutAttributesForSupplementaryElementOfKind:atIndexPath:),
@@ -459,7 +451,7 @@
     NSIndexPath *indexPath = ((id(*)(void *, SEL, CGPoint))(void *)objc_msgSendSuper)(&objcSuper, @selector(indexPathForItemAtPoint:), point);
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        indexPath = [aop_utils realIndexPathByTable:indexPath];
+        indexPath = [aop_utils userIndexPathByFeeds:indexPath];
     }
     return indexPath;
 }
@@ -470,7 +462,7 @@
     NSIndexPath *indexPath = AopCallSuperResult_1(@selector(indexPathForCell:), cell);
     aop_utils.isUICalling -= 1;
     if (aop_utils) {
-        indexPath = [aop_utils realIndexPathByTable:indexPath] ?: indexPath;
+        indexPath = [aop_utils userIndexPathByFeeds:indexPath] ?: indexPath;
     }
     return indexPath;
 }
@@ -478,7 +470,7 @@
 - (UICollectionViewCell *)aop_cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     UICollectionViewCell *cell = AopCallSuperResult_1(@selector(cellForItemAtIndexPath:), indexPath);
@@ -493,7 +485,7 @@
 - (UICollectionReusableView *)aop_supplementaryViewForElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     UICollectionReusableView *reusableView = AopCallSuperResult_2(@selector(supplementaryViewForElementKind:atIndexPath:),
@@ -511,7 +503,7 @@
     aop_utils.isUICalling += 1;
     NSArray<NSIndexPath *> *array = AopCallSuperResult_1(@selector(indexPathsForVisibleSupplementaryElementsOfKind:), elementKind);
     if (aop_utils) {
-        array = [aop_utils realIndexPathsByTableIndexPaths:array];
+        array = [aop_utils userIndexPathsByFeedsIndexPaths:array];
     }
     aop_utils.isUICalling -= 1;
     return array;
@@ -522,7 +514,7 @@
 - (void)aop_scrollToItemAtIndexPath:(NSIndexPath *)indexPath atScrollPosition:(UICollectionViewScrollPosition)scrollPosition animated:(BOOL)animated {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, id, UICollectionViewScrollPosition, BOOL))(void *)objc_msgSendSuper)(&objcSuper, @selector(scrollToItemAtIndexPath:atScrollPosition:animated:), indexPath, scrollPosition, animated);
@@ -533,7 +525,7 @@
 - (void)aop_insertSections:(NSIndexSet *)sections {
     AopDefineVars;
     if (aop_utils) {
-        sections = [aop_utils tableSectionsByRealSet:sections];
+        sections = [aop_utils feedsSectionsByUserSet:sections];
     }
     aop_utils.isUICalling += 1;
     AopCallSuper_1(@selector(insertSections:), sections);
@@ -543,7 +535,7 @@
 - (void)aop_deleteSections:(NSIndexSet *)sections {
     AopDefineVars;
     if (aop_utils) {
-        sections = [aop_utils tableSectionsByRealSet:sections];
+        sections = [aop_utils feedsSectionsByUserSet:sections];
     }
     aop_utils.isUICalling += 1;
     AopCallSuper_1(@selector(deleteSections:), sections);
@@ -553,7 +545,7 @@
 - (void)aop_reloadSections:(NSIndexSet *)sections {
     AopDefineVars;
     if (aop_utils) {
-        sections = [aop_utils tableSectionsByRealSet:sections];
+        sections = [aop_utils feedsSectionsByUserSet:sections];
     }
     aop_utils.isUICalling += 1;
     AopCallSuper_1(@selector(reloadSections:), sections);
@@ -563,8 +555,8 @@
 - (void)aop_moveSection:(NSInteger)section toSection:(NSInteger)newSection {
     AopDefineVars;
     if (aop_utils) {
-        section = [aop_utils tableSectionByReal:section];
-        newSection = [aop_utils tableSectionByReal:newSection];
+        section = [aop_utils feedsSectionByUser:section];
+        newSection = [aop_utils feedsSectionByUser:newSection];
     }
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, NSInteger, NSInteger))(void *)objc_msgSendSuper)(&objcSuper, @selector(moveSection:toSection:), section, newSection);
@@ -575,7 +567,7 @@
 - (void)aop_insertItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
     AopDefineVars;
     if (aop_utils) {
-        indexPaths = [aop_utils tableIndexPathsByRealIndexPaths:indexPaths];
+        indexPaths = [aop_utils feedsIndexPathsByUserIndexPaths:indexPaths];
     }
     aop_utils.isUICalling += 1;
     AopCallSuper_1(@selector(insertItemsAtIndexPaths:), indexPaths);
@@ -585,7 +577,7 @@
 - (void)aop_deleteItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
     AopDefineVars;
     if (aop_utils) {
-        indexPaths = [aop_utils tableIndexPathsByRealIndexPaths:indexPaths];
+        indexPaths = [aop_utils feedsIndexPathsByUserIndexPaths:indexPaths];
     }
     aop_utils.isUICalling += 1;
     AopCallSuper_1(@selector(deleteItemsAtIndexPaths:), indexPaths);
@@ -595,7 +587,7 @@
 - (void)aop_reloadItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
     AopDefineVars;
     if (aop_utils) {
-        indexPaths = [aop_utils tableIndexPathsByRealIndexPaths:indexPaths];
+        indexPaths = [aop_utils feedsIndexPathsByUserIndexPaths:indexPaths];
     }
     aop_utils.isUICalling += 1;
     AopCallSuper_1(@selector(reloadItemsAtIndexPaths:), indexPaths);
@@ -605,8 +597,8 @@
 - (void)aop_moveItemAtIndexPath:(NSIndexPath *)indexPath toIndexPath:(NSIndexPath *)newIndexPath {
     AopDefineVars;
     if (aop_utils) {
-        indexPath = [aop_utils tableIndexPathByReal:indexPath];
-        newIndexPath = [aop_utils tableIndexPathByReal:newIndexPath];
+        indexPath = [aop_utils feedsIndexPathByUser:indexPath];
+        newIndexPath = [aop_utils feedsIndexPathByUser:newIndexPath];
     }
     aop_utils.isUICalling += 1;
     AopCallSuper_2(@selector(moveItemAtIndexPath:toIndexPath:), indexPath, newIndexPath);

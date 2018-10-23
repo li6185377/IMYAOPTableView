@@ -2,7 +2,8 @@
 //  IMYAOPCollectionViewUtils.m
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 2018/10/22.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPCollectionViewUtils.h"
@@ -206,8 +207,6 @@ static const void *kIMYAOPCollectionUtilsKey = &kIMYAOPCollectionUtilsKey;
         @synchronized(self) {
             aopUtils = objc_getAssociatedObject(self, kIMYAOPCollectionUtilsKey);
             if (!aopUtils) {
-                ///初始化部分配置
-                //                [_IMYAOPTableView aop_setupConfigs];
                 ///获取aop utils
                 aopUtils = [IMYAOPCollectionViewUtils aopUtilsWithCollectionView:self];
                 objc_setAssociatedObject(self, kIMYAOPCollectionUtilsKey, aopUtils, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

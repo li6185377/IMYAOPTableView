@@ -1,30 +1,30 @@
 //
-//  IMYAOPFeedsViewUtils+UITableViewDataSource.m
+//  IMYAOPCollectionViewUtils+DataSource.m
 //  IMYAOPFeedsView
 //
-//  Created by ljh on 16/4/15.
-//  Copyright © 2016年 IMY. All rights reserved.
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPCollectionViewUtils+DataSource.h"
 #import "IMYAOPCollectionViewUtils+Private.h"
 
 #define kAOPRealIndexPathCode                                           \
-    NSIndexPath *realIndexPath = [self realIndexPathByTable:indexPath]; \
+    NSIndexPath *userIndexPath = [self userIndexPathByFeeds:indexPath]; \
     id<IMYAOPCollectionViewDataSource> dataSource = nil;                \
-    if (realIndexPath) {                                                \
+    if (userIndexPath) {                                                \
         dataSource = (id)self.origDataSource;                           \
-        indexPath = realIndexPath;                                      \
+        indexPath = userIndexPath;                                      \
     } else {                                                            \
         dataSource = self.dataSource;                                   \
     }
 
 #define kAOPRealSectionCode                                    \
-    NSInteger realSection = [self realSectionByTable:section]; \
+    NSInteger userSection = [self userSectionByFeeds:section]; \
     id<IMYAOPCollectionViewDataSource> dataSource = nil;       \
-    if (realSection >= 0) {                                    \
+    if (userSection >= 0) {                                    \
         dataSource = (id)self.origDataSource;                  \
-        section = realSection;                                 \
+        section = userSection;                                 \
     } else {                                                   \
         dataSource = self.dataSource;                          \
     }
@@ -48,7 +48,7 @@
 
     ///总number section
     if (numberOfSection > 0) {
-        numberOfSection = [self tableSectionByReal:numberOfSection];
+        numberOfSection = [self feedsSectionByUser:numberOfSection];
     }
     kAOPUICallingResotre;
     return numberOfSection;
@@ -56,14 +56,14 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     kAOPUICallingSaved;
-    NSInteger realSection = [self realSectionByTable:section];
+    NSInteger userSection = [self userSectionByFeeds:section];
     NSInteger rowCount = 0;
-    if (realSection >= 0) {
-        section = realSection;
+    if (userSection >= 0) {
+        section = userSection;
         rowCount = [self.origDataSource collectionView:collectionView numberOfItemsInSection:section];
 
-        NSIndexPath *tableIndexPath = [self tableIndexPathByReal:[NSIndexPath indexPathForRow:rowCount inSection:section]];
-        rowCount = tableIndexPath.row;
+        NSIndexPath *feedsIndexPath = [self feedsIndexPathByUser:[NSIndexPath indexPathForRow:rowCount inSection:section]];
+        rowCount = feedsIndexPath.row;
     } else {
         NSMutableArray<NSIndexPath *> *array = self.sectionMap[@(section)];
         for (NSIndexPath *obj in array) {
@@ -125,8 +125,8 @@
 
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     kAOPUICallingSaved;
-    NSIndexPath *source = [self realIndexPathByTable:sourceIndexPath];
-    NSIndexPath *destin = [self realIndexPathByTable:destinationIndexPath];
+    NSIndexPath *source = [self userIndexPathByFeeds:sourceIndexPath];
+    NSIndexPath *destin = [self userIndexPathByFeeds:destinationIndexPath];
     if ([self.origDataSource respondsToSelector:@selector(collectionView:moveItemAtIndexPath:toIndexPath:)]) {
         [self.origDataSource collectionView:collectionView moveItemAtIndexPath:source toIndexPath:destin];
     }

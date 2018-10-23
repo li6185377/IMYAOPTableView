@@ -1,9 +1,9 @@
 //
-//  IMYAOPFeedsViewUtils+Proxy.m
-//  Pods
+//  IMYAOPTableViewUtils+Proxy.m
+//  IMYAOPFeedsView
 //
-//  Created by ljh on 16/6/22.
-//
+//  Created by ljh on 16/5/20.
+//  Copyright © 2016年 ljh. All rights reserved.
 //
 
 #import "IMYAOPCallProxy.h"
@@ -69,11 +69,11 @@ static const void *kIMYAOPProxyRawTableViewKey = &kIMYAOPProxyRawTableViewKey;
 }
 
 - (id)modelForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSIndexPath *realIndexPath = [self realIndexPathByTable:indexPath];
+    NSIndexPath *userIndexPath = [self userIndexPathByFeeds:indexPath];
     id<UITableViewDataSource, IMYAOPTableViewGetModelProtocol> dataSource = nil;
-    if (realIndexPath) {
+    if (userIndexPath) {
         dataSource = (id)self.origDataSource;
-        indexPath = realIndexPath;
+        indexPath = userIndexPath;
     } else {
         dataSource = (id)self.dataSource;
     }
