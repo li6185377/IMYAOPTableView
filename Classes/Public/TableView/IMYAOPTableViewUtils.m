@@ -178,17 +178,34 @@
     return conforms;
 }
 
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)aSelector {
+    if ([self.origDelegate respondsToSelector:aSelector]) {
+        return [(id)self.origDelegate methodSignatureForSelector:aSelector];
+    } else if ([self.origDataSource respondsToSelector:aSelector]) {
+        return [(id)self.origDataSource methodSignatureForSelector:aSelector];
+    } else if ([self.delegate respondsToSelector:aSelector]) {
+        return [(id)self.delegate methodSignatureForSelector:aSelector];
+    } else if ([self.dataSource respondsToSelector:aSelector]) {
+        return [(id)self.dataSource methodSignatureForSelector:aSelector];
+    }
+    return [super methodSignatureForSelector:aSelector];
+}
+
 - (id)forwardingTargetForSelector:(SEL)aSelector {
     if ([self.origDelegate respondsToSelector:aSelector]) {
         return self.origDelegate;
     } else if ([self.origDataSource respondsToSelector:aSelector]) {
         return self.origDataSource;
+    } else if ([self.delegate respondsToSelector:aSelector]) {
+        return self.delegate;
+    } else if ([self.dataSource respondsToSelector:aSelector]) {
+        return self.dataSource;
     }
-    return nil;
+    return self;
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation {
-    if (self.origDelegate || self.origDataSource) {
+    if (self.origDelegate || self.origDataSource || self.delegate || self.dataSource) {
         NSAssert(NO, @"未实现该方法");
     }
 }
