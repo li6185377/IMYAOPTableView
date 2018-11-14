@@ -9,7 +9,7 @@
 #import "IMYAOPTableViewUtils+DataSource.h"
 #import "IMYAOPTableViewUtils+Private.h"
 
-#define kAOPRealIndexPathCode                                           \
+#define kAOPUserIndexPathCode                                           \
     NSIndexPath *userIndexPath = [self userIndexPathByFeeds:indexPath]; \
     id<IMYAOPTableViewDataSource> dataSource = nil;                     \
     if (userIndexPath) {                                                \
@@ -17,9 +17,13 @@
         indexPath = userIndexPath;                                      \
     } else {                                                            \
         dataSource = self.dataSource;                                   \
+        isInjectAction = YES;                                           \
+    }                                                                   \
+    if (isInjectAction) {                                               \
+        self.isUICalling += 1;                                          \
     }
 
-#define kAOPRealSectionCode                                    \
+#define kAOPUserSectionCode                                    \
     NSInteger userSection = [self userSectionByFeeds:section]; \
     id<IMYAOPTableViewDataSource> dataSource = nil;            \
     if (userSection >= 0) {                                    \
@@ -27,12 +31,20 @@
         section = userSection;                                 \
     } else {                                                   \
         dataSource = self.dataSource;                          \
+        isInjectAction = YES;                                  \
+    }                                                          \
+    if (isInjectAction) {                                      \
+        self.isUICalling += 1;                                 \
     }
 
-#define kAOPUICallingSaved \
+#define kAOPUICallingSaved          \
+    BOOL isInjectAction = NO;       \
     self.isUICalling -= 1;
 
-#define kAOPUICallingResotre \
+#define kAOPUICallingResotre        \
+    if (isInjectAction) {           \
+        self.isUICalling -= 1;      \
+    }                               \
     self.isUICalling += 1;
 
 @implementation IMYAOPTableViewUtils (UITableViewDataSource)
@@ -83,7 +95,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     UITableViewCell *cell = nil;
     if ([dataSource respondsToSelector:@selector(tableView:cellForRowAtIndexPath:)]) {
         cell = [dataSource tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -100,7 +112,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     kAOPUICallingSaved;
-    kAOPRealSectionCode;
+    kAOPUserSectionCode;
     NSString *title = nil;
     if ([dataSource respondsToSelector:@selector(tableView:titleForHeaderInSection:)]) {
         title = [dataSource tableView:tableView titleForHeaderInSection:section];
@@ -111,7 +123,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     kAOPUICallingSaved;
-    kAOPRealSectionCode;
+    kAOPUserSectionCode;
     NSString *title = nil;
     if ([dataSource respondsToSelector:@selector(tableView:titleForFooterInSection:)]) {
         title = [dataSource tableView:tableView titleForFooterInSection:section];
@@ -125,7 +137,7 @@
 // Individual rows can opt out of having the -editing property set for them. If not implemented, all rows are assumed to be editable.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL canEditing = NO;
     if ([dataSource respondsToSelector:@selector(tableView:canEditRowAtIndexPath:)]) {
         canEditing = [dataSource tableView:tableView canEditRowAtIndexPath:indexPath];
@@ -139,7 +151,7 @@
 // Allows the reorder accessory view to optionally be shown for a particular row. By default, the reorder control will be shown only if the datasource implements -tableView:moveRowAtIndexPath:toIndexPath:
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL canMove = NO;
     if ([dataSource respondsToSelector:@selector(tableView:canMoveRowAtIndexPath:)]) {
         canMove = [dataSource tableView:tableView canMoveRowAtIndexPath:indexPath];
@@ -152,14 +164,26 @@
 
 - (NSArray<NSString *> *)sectionIndexTitlesForTableView:(UITableView *)tableView __TVOS_PROHIBITED // return list of section titles to display in section index view (e.g. "ABCD...Z#")
 {
-    NSAssert(NO, @"NO Impl");
-    return nil;
+    // 只回调给业务方，不管注入方
+    kAOPUICallingSaved;
+    NSArray<NSString *> *userArray = @[];
+    if ([self.origDataSource respondsToSelector:@selector(sectionIndexTitlesForTableView:)]) {
+        userArray = [self.origDataSource sectionIndexTitlesForTableView:tableView];
+    }
+    kAOPUICallingResotre;
+    return userArray;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index __TVOS_PROHIBITED // tell table which section corresponds to section title/index (e.g. "B",1))
 {
-    NSAssert(NO, @"NO Impl");
-    return index;
+    // 只回调给业务方，不管注入方
+    kAOPUICallingSaved;
+    NSInteger atIndex = index;
+    if ([self.origDataSource respondsToSelector:@selector(tableView:sectionForSectionIndexTitle:atIndex:)]) {
+        atIndex = [self.origDataSource tableView:tableView sectionForSectionIndexTitle:title atIndex:index];
+    }
+    kAOPUICallingResotre;
+    return atIndex;
 }
 
 // Data manipulation - insert and delete support
@@ -168,7 +192,7 @@
 // Not called for edit actions using UITableViewRowAction - the action's handler will be invoked instead
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([dataSource respondsToSelector:@selector(tableView:commitEditingStyle:forRowAtIndexPath:)]) {
         [dataSource tableView:tableView commitEditingStyle:editingStyle forRowAtIndexPath:indexPath];
     }

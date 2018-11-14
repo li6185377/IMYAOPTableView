@@ -9,7 +9,7 @@
 #import "IMYAOPCollectionViewUtils+DataSource.h"
 #import "IMYAOPCollectionViewUtils+Private.h"
 
-#define kAOPRealIndexPathCode                                           \
+#define kAOPUserIndexPathCode                                           \
     NSIndexPath *userIndexPath = [self userIndexPathByFeeds:indexPath]; \
     id<IMYAOPCollectionViewDataSource> dataSource = nil;                \
     if (userIndexPath) {                                                \
@@ -17,9 +17,13 @@
         indexPath = userIndexPath;                                      \
     } else {                                                            \
         dataSource = self.dataSource;                                   \
+        isInjectAction = YES;                                           \
+    }                                                                   \
+    if (isInjectAction) {                                               \
+        self.isUICalling += 1;                                          \
     }
 
-#define kAOPRealSectionCode                                    \
+#define kAOPUserSectionCode                                    \
     NSInteger userSection = [self userSectionByFeeds:section]; \
     id<IMYAOPCollectionViewDataSource> dataSource = nil;       \
     if (userSection >= 0) {                                    \
@@ -27,12 +31,20 @@
         section = userSection;                                 \
     } else {                                                   \
         dataSource = self.dataSource;                          \
+        isInjectAction = YES;                                  \
+    }                                                          \
+    if (isInjectAction) {                                      \
+        self.isUICalling += 1;                                 \
     }
 
-#define kAOPUICallingSaved \
+#define kAOPUICallingSaved          \
+    BOOL isInjectAction = NO;       \
     self.isUICalling -= 1;
 
-#define kAOPUICallingResotre \
+#define kAOPUICallingResotre        \
+    if (isInjectAction) {           \
+        self.isUICalling -= 1;      \
+    }                               \
     self.isUICalling += 1;
 
 @implementation IMYAOPCollectionViewUtils (UICollectionViewDataSource)
@@ -80,7 +92,7 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     UICollectionViewCell *cell = nil;
     if ([dataSource respondsToSelector:@selector(collectionView:cellForItemAtIndexPath:)]) {
         cell = [dataSource collectionView:collectionView cellForItemAtIndexPath:indexPath];
@@ -97,7 +109,7 @@
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     UICollectionReusableView *reusableView = nil;
     if ([dataSource respondsToSelector:@selector(collectionView:viewForSupplementaryElementOfKind:atIndexPath:)]) {
         reusableView = [dataSource collectionView:collectionView viewForSupplementaryElementOfKind:kind atIndexPath:indexPath];
@@ -114,7 +126,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canMoveItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL canMove = NO;
     if ([dataSource respondsToSelector:@selector(collectionView:canMoveItemAtIndexPath:)]) {
         canMove = [dataSource collectionView:collectionView canMoveItemAtIndexPath:indexPath];
@@ -124,6 +136,7 @@
 }
 
 - (void)collectionView:(UICollectionView *)collectionView moveItemAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    // 只给业务方回调
     kAOPUICallingSaved;
     NSIndexPath *source = [self userIndexPathByFeeds:sourceIndexPath];
     NSIndexPath *destin = [self userIndexPathByFeeds:destinationIndexPath];
@@ -134,13 +147,25 @@
 }
 
 - (NSArray<NSString *> *)indexTitlesForCollectionView:(UICollectionView *)collectionView {
-    NSAssert(NO, @"NO Impl");
-    return nil;
+    // 只给业务方回调
+    kAOPUICallingSaved;
+    NSArray<NSString *> *titles = @[];
+    if ([self.origDataSource respondsToSelector:@selector(indexTitlesForCollectionView:)]) {
+        titles = [self.origDataSource indexTitlesForCollectionView:collectionView];
+    }
+    kAOPUICallingResotre;
+    return titles;
 }
 
 - (NSIndexPath *)collectionView:(UICollectionView *)collectionView indexPathForIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    NSAssert(NO, @"NO Impl");
-    return nil;
+    // 只给业务方回调
+    kAOPUICallingSaved;
+    NSIndexPath *indexPath = nil;
+    if ([self.origDataSource respondsToSelector:@selector(collectionView:indexPathForIndexTitle:atIndex:)]) {
+        indexPath = [self.origDataSource collectionView:collectionView indexPathForIndexTitle:title atIndex:index];
+    }
+    kAOPUICallingResotre;
+    return indexPath;
 }
 
 @end

@@ -9,7 +9,7 @@
 #import "IMYAOPCollectionViewUtils+Delegate.h"
 #import "IMYAOPCollectionViewUtils+Private.h"
 
-#define kAOPRealIndexPathCode                                           \
+#define kAOPUserIndexPathCode                                           \
     NSIndexPath *userIndexPath = [self userIndexPathByFeeds:indexPath]; \
     id<IMYAOPCollectionViewDelegate> delegate = nil;                    \
     if (userIndexPath) {                                                \
@@ -17,9 +17,14 @@
         indexPath = userIndexPath;                                      \
     } else {                                                            \
         delegate = self.delegate;                                       \
+        isInjectAction = YES;                                           \
+    }                                                                   \
+    if (isInjectAction) {                                               \
+        self.isUICalling += 1;                                          \
     }
 
-#define kAOPRealSectionCode                                    \
+
+#define kAOPUserSectionCode                                    \
     NSInteger userSection = [self userSectionByFeeds:section]; \
     id<IMYAOPCollectionViewDelegate> delegate = nil;           \
     if (userSection >= 0) {                                    \
@@ -27,21 +32,28 @@
         section = userSection;                                 \
     } else {                                                   \
         delegate = self.delegate;                              \
+        isInjectAction = YES;                                  \
+    }                                                          \
+    if (isInjectAction) {                                      \
+        self.isUICalling += 1;                                 \
     }
 
-#define kAOPUICallingSaved \
+
+#define kAOPUICallingSaved          \
+    BOOL isInjectAction = NO;       \
     self.isUICalling -= 1;
 
-#define kAOPUICallingResotre \
+#define kAOPUICallingResotre        \
+    if (isInjectAction) {           \
+        self.isUICalling -= 1;      \
+    }                               \
     self.isUICalling += 1;
-
-#define kAOPDefineLayout
 
 @implementation IMYAOPCollectionViewUtils (UITableViewDelegate)
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL canHighlight = YES;
     if ([delegate respondsToSelector:@selector(collectionView:shouldHighlightItemAtIndexPath:)]) {
         canHighlight = [delegate collectionView:collectionView shouldHighlightItemAtIndexPath:indexPath];
@@ -52,7 +64,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:didHighlightItemAtIndexPath:)]) {
         [delegate collectionView:collectionView didHighlightItemAtIndexPath:indexPath];
     }
@@ -61,7 +73,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didUnhighlightItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:didUnhighlightItemAtIndexPath:)]) {
         [delegate collectionView:collectionView didUnhighlightItemAtIndexPath:indexPath];
     }
@@ -70,7 +82,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL canSelected = YES;
     if ([delegate respondsToSelector:@selector(collectionView:shouldSelectItemAtIndexPath:)]) {
         canSelected = [delegate collectionView:collectionView shouldSelectItemAtIndexPath:indexPath];
@@ -81,7 +93,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL canSelected = YES;
     if ([delegate respondsToSelector:@selector(collectionView:shouldDeselectItemAtIndexPath:)]) {
         canSelected = [delegate collectionView:collectionView shouldDeselectItemAtIndexPath:indexPath];
@@ -92,7 +104,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:didSelectItemAtIndexPath:)]) {
         [delegate collectionView:collectionView didSelectItemAtIndexPath:indexPath];
     }
@@ -101,7 +113,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:didDeselectItemAtIndexPath:)]) {
         [delegate collectionView:collectionView didDeselectItemAtIndexPath:indexPath];
     }
@@ -114,7 +126,7 @@
     if ([self.delegate respondsToSelector:@selector(aopCollectionUtils:willDisplayCell:forItemAtIndexPath:)]) {
         [self.delegate aopCollectionUtils:self willDisplayCell:cell forItemAtIndexPath:indexPath];
     }
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:willDisplayCell:forItemAtIndexPath:)]) {
         [delegate collectionView:collectionView willDisplayCell:cell forItemAtIndexPath:indexPath];
     }
@@ -123,7 +135,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplaySupplementaryView:(UICollectionReusableView *)view forElementKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:)]) {
         [delegate collectionView:collectionView willDisplaySupplementaryView:view forElementKind:elementKind atIndexPath:indexPath];
     }
@@ -136,7 +148,7 @@
     if ([self.delegate respondsToSelector:@selector(aopCollectionUtils:didEndDisplayingCell:forItemAtIndexPath:)]) {
         [self.delegate aopCollectionUtils:self didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
     }
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:didEndDisplayingCell:forItemAtIndexPath:)]) {
         [delegate collectionView:collectionView didEndDisplayingCell:cell forItemAtIndexPath:indexPath];
     }
@@ -145,7 +157,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView didEndDisplayingSupplementaryView:(UICollectionReusableView *)view forElementOfKind:(NSString *)elementKind atIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:)]) {
         [delegate collectionView:collectionView didEndDisplayingSupplementaryView:view forElementOfKind:elementKind atIndexPath:indexPath];
     }
@@ -154,7 +166,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL canShowMenu = YES;
     if ([delegate respondsToSelector:@selector(collectionView:shouldShowMenuForItemAtIndexPath:)]) {
         canShowMenu = [delegate collectionView:collectionView shouldShowMenuForItemAtIndexPath:indexPath];
@@ -165,7 +177,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(nullable id)sender {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL canPerform = YES;
     if ([delegate respondsToSelector:@selector(collectionView:canPerformAction:forItemAtIndexPath:withSender:)]) {
         canPerform = [delegate collectionView:collectionView canPerformAction:action forItemAtIndexPath:indexPath withSender:sender];
@@ -176,7 +188,7 @@
 
 - (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(nullable id)sender {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(collectionView:performAction:forItemAtIndexPath:withSender:)]) {
         [delegate collectionView:collectionView performAction:action forItemAtIndexPath:indexPath withSender:sender];
     }
@@ -185,7 +197,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView canFocusItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL canFocus = YES;
     if ([delegate respondsToSelector:@selector(collectionView:canFocusItemAtIndexPath:)]) {
         canFocus = [delegate collectionView:collectionView canFocusItemAtIndexPath:indexPath];
@@ -208,7 +220,7 @@
 
 - (BOOL)collectionView:(UICollectionView *)collectionView shouldSpringLoadItemAtIndexPath:(NSIndexPath *)indexPath withContext:(id<UISpringLoadedInteractionContext>)context {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     BOOL shouldSpringLoad = YES;
     if ([delegate respondsToSelector:@selector(collectionView:shouldSpringLoadItemAtIndexPath:withContext:)]) {
         shouldSpringLoad = [delegate collectionView:collectionView shouldSpringLoadItemAtIndexPath:indexPath withContext:context];
@@ -222,7 +234,7 @@
 // water layout and flow layout
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     kAOPUICallingSaved;
-    kAOPRealIndexPathCode;
+    kAOPUserIndexPathCode;
     CGSize size = CGSizeZero;
     if ([collectionViewLayout isKindOfClass:[UICollectionViewFlowLayout class]]) {
         size = ((UICollectionViewFlowLayout *)collectionViewLayout).itemSize;
