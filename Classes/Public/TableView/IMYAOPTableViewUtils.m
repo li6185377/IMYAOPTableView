@@ -192,21 +192,24 @@
 }
 
 - (id)forwardingTargetForSelector:(SEL)aSelector {
-    if ([self.origDelegate respondsToSelector:aSelector]) {
-        return self.origDelegate;
-    } else if ([self.origDataSource respondsToSelector:aSelector]) {
-        return self.origDataSource;
-    } else if ([self.delegate respondsToSelector:aSelector]) {
-        return self.delegate;
-    } else if ([self.dataSource respondsToSelector:aSelector]) {
-        return self.dataSource;
-    }
-    return self;
+    return nil;
 }
 
 - (void)forwardInvocation:(NSInvocation *)invocation {
-    if (self.origDelegate || self.origDataSource || self.delegate || self.dataSource) {
-        NSAssert(NO, @"未实现该方法");
+    if ([self.origDelegate respondsToSelector:invocation.selector]) {
+        [invocation invokeWithTarget:self.origDelegate];
+    } else if ([self.origDataSource respondsToSelector:invocation.selector]) {
+        [invocation invokeWithTarget:self.origDataSource];
+    }
+    
+    if ([self.delegate respondsToSelector:invocation.selector]) {
+        [invocation invokeWithTarget:self.delegate];
+    } else if ([self.dataSource respondsToSelector:invocation.selector]) {
+        [invocation invokeWithTarget:self.dataSource];
+    }
+    
+    if ([super respondsToSelector:invocation.selector]) {
+        [invocation invokeWithTarget:self];
     }
 }
 
