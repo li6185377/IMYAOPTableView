@@ -114,7 +114,9 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 + (void)aop_setupConfigs {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        imyaop_swizzleMethod(NSClassFromString(@"UITableViewWrapperView"), @selector(gestureRecognizerShouldBegin:), @selector(imyaop_gestureRecognizerShouldBegin:));
+        NSString *className = [[@"UITableView" stringByAppendingString:@"Wrapper"] stringByAppendingString:@"View"];
+        Class wrapperClass = objc_lookUpClass(className.UTF8String);
+        imyaop_swizzleMethod(wrapperClass, @selector(gestureRecognizerShouldBegin:), @selector(imyaop_gestureRecognizerShouldBegin:));
     });
 }
 
