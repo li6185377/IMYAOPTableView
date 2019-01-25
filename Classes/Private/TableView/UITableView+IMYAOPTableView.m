@@ -37,6 +37,10 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 @implementation UIView (IMYAOPTableUtils)
 
 - (BOOL)imyaop_gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    NSString *className = NSStringFromClass(self.class);
+    if (![className hasSuffix:@"TableViewWrapperView"]) {
+        return [self imyaop_gestureRecognizerShouldBegin:gestureRecognizer];
+    }
     UITableView *tableView = (id)self.superview;
     while (tableView && ![tableView isKindOfClass:[UITableView class]]) {
         tableView = (id)tableView.superview;
@@ -114,9 +118,7 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 + (void)aop_setupConfigs {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSString *className = [[@"UITableView" stringByAppendingString:@"Wrapper"] stringByAppendingString:@"View"];
-        Class wrapperClass = objc_lookUpClass(className.UTF8String);
-        imyaop_swizzleMethod(wrapperClass, @selector(gestureRecognizerShouldBegin:), @selector(imyaop_gestureRecognizerShouldBegin:));
+        imyaop_swizzleMethod([UIView class], @selector(gestureRecognizerShouldBegin:), @selector(imyaop_gestureRecognizerShouldBegin:));
     });
 }
 
