@@ -12,8 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UICollectionView (IMYAOPOperation)
 
-+ (SEL)aop_updateAnimationDidStopSEL;
-
 + (Class)imy_aopClass;
 
 @end

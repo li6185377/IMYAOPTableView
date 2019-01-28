@@ -12,12 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface UITableView (IMYAOPTableOperation)
 
-+ (SEL)aop_userSelectRowAtPendingSelectionIndexPathSEL;
-+ (SEL)aop_updateRowDataSEL;
-+ (SEL)aop_rebuildGeometrySEL;
-+ (SEL)aop_updateContentSizeSEL;
-+ (SEL)aop_updateAnimationDidStopSEL;
-
 + (Class)imy_aopClass;
 
 @end

@@ -294,12 +294,19 @@
 
 // Called after the user changes the selection.
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    const BOOL shouldFixCalling = (self.isUICalling == 0);
+    if (shouldFixCalling) {
+        self.isUICalling += 1;
+    }
     kAOPUICallingSaved;
     kAOPUserIndexPathCode;
     if ([delegate respondsToSelector:@selector(tableView:didSelectRowAtIndexPath:)]) {
         [delegate tableView:tableView didSelectRowAtIndexPath:indexPath];
     }
     kAOPUICallingResotre;
+    if (shouldFixCalling) {
+        self.isUICalling -= 1;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath {

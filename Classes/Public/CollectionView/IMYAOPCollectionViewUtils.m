@@ -100,7 +100,12 @@
     [self addOverriteMethod:@selector(reloadData) aopClass:aopClass];
     [self addOverriteMethod:@selector(layoutSubviews) aopClass:aopClass];
     [self addOverriteMethod:@selector(setBounds:) aopClass:aopClass];
-    [self addOverriteMethod:[UICollectionView aop_updateAnimationDidStopSEL] aopClass:aopClass];
+    [self addOverriteMethod:@selector(bringSubviewToFront:) aopClass:aopClass];
+    [self addOverriteMethod:@selector(sendSubviewToBack:) aopClass:aopClass];
+    [self addOverriteMethod:@selector(willMoveToSuperview:) aopClass:aopClass];
+    [self addOverriteMethod:@selector(willMoveToWindow:) aopClass:aopClass];
+    [self addOverriteMethod:@selector(didMoveToWindow) aopClass:aopClass];
+    [self addOverriteMethod:@selector(didMoveToSuperview) aopClass:aopClass];
     [self addOverriteMethod:@selector(touchesBegan:withEvent:) aopClass:aopClass];
     [self addOverriteMethod:@selector(touchesMoved:withEvent:) aopClass:aopClass];
     [self addOverriteMethod:@selector(touchesEnded:withEvent:) aopClass:aopClass];

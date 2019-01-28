@@ -62,51 +62,6 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 
 @implementation UITableView (IMYAOPTableUtils)
 
-+ (SEL)aop_userSelectRowAtPendingSelectionIndexPathSEL {
-    static SEL sel;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_userSelectRowAtPending", @"SelectionIndexPath:"]);
-    });
-    return sel;
-}
-
-+ (SEL)aop_updateRowDataSEL {
-    static SEL sel;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_updateRow", @"Data"]);
-    });
-    return sel;
-}
-
-+ (SEL)aop_rebuildGeometrySEL {
-    static SEL sel;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_rebuild", @"Geometry"]);
-    });
-    return sel;
-}
-
-+ (SEL)aop_updateContentSizeSEL {
-    static SEL sel;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_updateContent", @"Size"]);
-    });
-    return sel;
-}
-
-+ (SEL)aop_updateAnimationDidStopSEL {
-    static SEL sel;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_updateAnimationDidStop:", @"finished:context:"]);
-    });
-    return sel;
-}
-
 + (Class)imy_aopClass {
     return [_IMYAOPTableView class];
 }
@@ -175,7 +130,50 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     }
 }
 
-///AOP
+/// UI Calling
+
+- (void)aop_bringSubviewToFront:(UIView *)view {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper_1(@selector(bringSubviewToFront:), view);
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_sendSubviewToBack:(UIView *)view {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper_1(@selector(sendSubviewToBack:), view);
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_willMoveToWindow:(UIWindow *)newWindow {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper_1(@selector(willMoveToWindow:), newWindow);
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_willMoveToSuperview:(UIView *)newSuperview {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper_1(@selector(willMoveToSuperview:), newSuperview);
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_didMoveToWindow {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper(@selector(didMoveToWindow));
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_didMoveToSuperview {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper(@selector(didMoveToSuperview));
+    aop_utils.isUICalling -= 1;
+}
+
 - (void)aop_touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     AopDefineVars;
     aop_utils.isUICalling += 1;
@@ -194,13 +192,6 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     AopDefineVars;
     aop_utils.isUICalling += 1;
     AopCallSuper_1(@selector(touchesEstimatedPropertiesUpdated:), touches);
-    aop_utils.isUICalling -= 1;
-}
-
-- (void)aop__userSelectRowAtPendingSelectionIndexPath:(NSIndexPath *)indexPath {
-    AopDefineVars;
-    aop_utils.isUICalling += 1;
-    AopCallSuper_1([UITableView aop_userSelectRowAtPendingSelectionIndexPathSEL], indexPath);
     aop_utils.isUICalling -= 1;
 }
 
@@ -240,34 +231,6 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     BOOL should = ((BOOL(*)(void *, SEL, id))(void *)objc_msgSendSuper)(&objcSuper, @selector(gestureRecognizerShouldBegin:), gestureRecognizer);
     aop_utils.isUICalling -= 1;
     return should;
-}
-
-- (void)aop__rebuildGeometry {
-    AopDefineVars;
-    aop_utils.isUICalling += 1;
-    AopCallSuper([UITableView aop_rebuildGeometrySEL]);
-    aop_utils.isUICalling -= 1;
-}
-
-- (void)aop__updateRowData {
-    AopDefineVars;
-    aop_utils.isUICalling += 1;
-    AopCallSuper([UITableView aop_updateRowDataSEL]);
-    aop_utils.isUICalling -= 1;
-}
-
-- (void)aop__updateContentSize {
-    AopDefineVars;
-    aop_utils.isUICalling += 1;
-    AopCallSuper([UITableView aop_updateContentSizeSEL]);
-    aop_utils.isUICalling -= 1;
-}
-
-- (void)aop__updateAnimationDidStop:(id)arg1 finished:(id)arg2 context:(id)arg3 {
-    AopDefineVars;
-    aop_utils.isUICalling += 1;
-    ((void (*)(void *, SEL, id, id, id))(void *)objc_msgSendSuper)(&objcSuper, [UITableView aop_updateAnimationDidStopSEL], arg1, arg2, arg3);
-    aop_utils.isUICalling -= 1;
 }
 
 - (void)aop_layoutSubviews {

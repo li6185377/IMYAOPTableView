@@ -114,6 +114,48 @@
 
 // UI Calling
 
+- (void)aop_bringSubviewToFront:(UIView *)view {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper_1(@selector(bringSubviewToFront:), view);
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_sendSubviewToBack:(UIView *)view {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper_1(@selector(sendSubviewToBack:), view);
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_willMoveToWindow:(UIWindow *)newWindow {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper_1(@selector(willMoveToWindow:), newWindow);
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_willMoveToSuperview:(UIView *)newSuperview {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper_1(@selector(willMoveToSuperview:), newSuperview);
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_didMoveToWindow {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper(@selector(didMoveToWindow));
+    aop_utils.isUICalling -= 1;
+}
+
+- (void)aop_didMoveToSuperview {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    AopCallSuper(@selector(didMoveToSuperview));
+    aop_utils.isUICalling -= 1;
+}
+
 - (void)aop_reloadData {
     AopDefineVars;
     aop_utils.isUICalling += 1;
@@ -132,13 +174,6 @@
     AopDefineVars;
     aop_utils.isUICalling += 1;
     ((void (*)(void *, SEL, CGRect))(void *)objc_msgSendSuper)(&objcSuper, @selector(setBounds:), bounds);
-    aop_utils.isUICalling -= 1;
-}
-
-- (void)aop__updateAnimationDidStop:(id)arg1 finished:(id)arg2 context:(id)arg3 {
-    AopDefineVars;
-    aop_utils.isUICalling += 1;
-    ((void (*)(void *, SEL, id, id, id))(void *)objc_msgSendSuper)(&objcSuper, [UICollectionView aop_updateAnimationDidStopSEL], arg1, arg2, arg3);
     aop_utils.isUICalling -= 1;
 }
 
