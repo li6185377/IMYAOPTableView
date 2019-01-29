@@ -421,7 +421,12 @@ static BOOL IMYAOPGlobalUICalling = NO;
 }
 
 - (NSIndexPath *)aop_indexPathForCell:(UITableViewCell *)cell {
+    BOOL isGlobalUICalling = IMYAOPGlobalUICalling;
     AopDefineVars;
+    if (isGlobalUICalling) {
+        aop_utils = nil;
+        IMYAOPGlobalUICalling = YES;
+    }
     aop_utils.isUICalling += 1;
     NSIndexPath *indexPath = AopCallSuperResult_1(@selector(indexPathForCell:), cell);
     aop_utils.isUICalling -= 1;
@@ -617,7 +622,12 @@ static BOOL IMYAOPGlobalUICalling = NO;
 
 // Selection
 - (NSIndexPath *)aop_indexPathForSelectedRow {
+    BOOL isGlobalUICalling = IMYAOPGlobalUICalling;
     AopDefineVars;
+    if (isGlobalUICalling) {
+        aop_utils = nil;
+        IMYAOPGlobalUICalling = YES;
+    }
     aop_utils.isUICalling += 1;
     NSIndexPath *indexPath = AopCallSuperResult(@selector(indexPathForSelectedRow));
     aop_utils.isUICalling -= 1;
