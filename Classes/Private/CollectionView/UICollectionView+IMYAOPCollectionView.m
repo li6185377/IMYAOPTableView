@@ -41,15 +41,6 @@
 
 @implementation UICollectionView (IMYAOPCollectionUtils)
 
-+ (SEL)aop_updateAnimationDidStopSEL {
-    static SEL sel;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sel = NSSelectorFromString([NSString stringWithFormat:@"%@%@", @"_updateAnimationDidStop:", @"finished:context:"]);
-    });
-    return sel;
-}
-
 + (Class)imy_aopClass {
     return [_IMYAOPCollectionView class];
 }
