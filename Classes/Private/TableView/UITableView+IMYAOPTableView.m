@@ -19,11 +19,12 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 };
 
 #define AopDefineVars                                 \
+    IMYAOPGlobalUICalling = NO;                       \
     IMYAOPTableViewUtils *aop_utils = self.aop_utils; \
     AopDefineObjcSuper;                               \
     if (aop_utils.isUICalling > 0) {                  \
         aop_utils = nil;                              \
-    }
+    }                                                 \
 
 #define AopCallSuper(selector) ((void (*)(void *, SEL))(void *)objc_msgSendSuper)(&objcSuper, selector);
 #define AopCallSuperResult(selector) ((id(*)(void *, SEL))(void *)objc_msgSendSuper)(&objcSuper, selector);
@@ -60,6 +61,8 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
 
 @end
 
+static BOOL IMYAOPGlobalUICalling = NO;
+
 @implementation UITableView (IMYAOPTableUtils)
 
 + (Class)imy_aopClass {
@@ -90,7 +93,20 @@ extern BOOL imyaop_swizzleMethod(Class clazz, SEL origSel_, SEL altSel_);
     }
 }
 
+- (BOOL)aop_allowsSelection {
+    AopDefineVars;
+    aop_utils.isUICalling += 1;
+    BOOL allowsSelection = ((BOOL(*)(void *, SEL))(void *)objc_msgSendSuper)(&objcSuper, @selector(allowsSelection));
+    aop_utils.isUICalling -= 1;
+    IMYAOPGlobalUICalling = YES;
+    return allowsSelection;
+}
+
 - (id<UITableViewDelegate>)aop_delegate {
+    if (IMYAOPGlobalUICalling && self.aop_utils.isUICalling == 0) {
+        AopDefineVars;
+        return AopCallSuperResult(@selector(delegate));
+    }
     AopDefineVars;
     if (aop_utils) {
         return aop_utils.origDelegate;

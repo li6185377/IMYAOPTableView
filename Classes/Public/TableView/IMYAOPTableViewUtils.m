@@ -91,7 +91,8 @@
     [self addOverriteMethod:@selector(setDataSource:) aopClass:aopClass];
     [self addOverriteMethod:@selector(delegate) aopClass:aopClass];
     [self addOverriteMethod:@selector(dataSource) aopClass:aopClass];
-
+    [self addOverriteMethod:@selector(allowsSelection) aopClass:aopClass];
+    
     ///UI Calling
     [self addOverriteMethod:@selector(reloadData) aopClass:aopClass];
     [self addOverriteMethod:@selector(layoutSubviews) aopClass:aopClass];
