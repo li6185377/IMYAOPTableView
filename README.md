@@ -24,7 +24,7 @@ pod 'IMYAOPTableView'
 ## 用法
 
 ```
-look ./AOPTableViewDemo
+Demo: ./AOPTableViewDemo
 ```
 
 《如何优雅的插入广告》
@@ -177,6 +177,7 @@ look ./AOPTableViewDemo
 	
 ```
 
+### UICollectionView 用法类似就不写了
 
 效果图 （GIF , 如不播放，可点击到新页面试试）:  
 
