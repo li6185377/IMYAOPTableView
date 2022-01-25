@@ -654,7 +654,7 @@ static BOOL IMYAOPGlobalUICalling = NO;
         indexPath = [aop_utils feedsIndexPathByUser:indexPath];
     }
     aop_utils.isUICalling += 1;
-    ((void (*)(void *, SEL, id, BOOL, UITableViewScrollPosition))(void *)objc_msgSendSuper)(&objcSuper, @selector(reloadRowsAtIndexPaths:withRowAnimation:), indexPath, animated, scrollPosition);
+    ((void (*)(void *, SEL, id, BOOL, UITableViewScrollPosition))(void *)objc_msgSendSuper)(&objcSuper, @selector(selectRowAtIndexPath:animated:scrollPosition:), indexPath, animated, scrollPosition);
     aop_utils.isUICalling -= 1;
 }
 
