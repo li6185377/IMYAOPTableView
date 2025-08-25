@@ -3,6 +3,7 @@
 无业务入侵，无逻辑入侵，业务端察觉不到 UITableView/UICollectionView 的 广告注入框架
 
 1、线上日活超千万，极佳的代码稳定性。（线上App直接用pod依赖，直接用github代码）
+
 2、长期保持迭代，iOS 7 ~ iOS 26 系统均无问题。
 
 ## 要求
