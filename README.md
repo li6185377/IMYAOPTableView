@@ -2,11 +2,8 @@
 
 无业务入侵，无逻辑入侵，业务端察觉不到 UITableView/UICollectionView 的 广告注入框架
 
-按道理最低应该是支持 iOS 5.0 的，但是已经没有 iOS 7 之前的机子测试了。 所以不敢保证没问题。
-
-美柚总用户突破3亿，日活超千万，代码的稳定性是可以放心的。有需求或者bug可以提issues，我会尽快回复。
-
-![](http://sc.seeyouyima.com/shopGuide/data/59647e039f684_1920_576.png?imageView2/2/w/800/h/600)
+1、线上日活超千万，极佳的代码稳定性。（线上App直接用pod依赖，直接用github代码）
+2、长期保持迭代，iOS 7 ~ iOS 26 系统均无问题。
 
 ## 要求
 
